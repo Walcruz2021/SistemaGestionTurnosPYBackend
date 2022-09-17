@@ -63,13 +63,14 @@ router.get("/listClients/:id", async (req, res, next) => {
 });
 
 router.post("/client", async (req, res, next) => {
-  const { name, phone, address, notesCli } = req.body;
+  const { name, phone, address, notesCli ,status} = req.body;
   const cliente = new Cliente({
     name,
     // nameDog:nameDog,
     phone,
     address,
     notesCli,
+    status
   });
   await cliente.save();
   res.json({
