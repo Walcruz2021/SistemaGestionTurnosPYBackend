@@ -15,7 +15,7 @@ const clienteSchema = new Schema({
     ref: 'Perro',
     nameDog: String
   }],
-  status:{type:Boolean,defaul:true}
+  status:{type:Boolean,default:true}
 })
 
 module.exports = mongoose.model('Cliente', clienteSchema)
