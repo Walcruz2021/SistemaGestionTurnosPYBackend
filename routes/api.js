@@ -158,8 +158,10 @@ router.get("/ventaCli/:idDog", async (req, res, next) => {
   });
 });
 
-router.get("/ventasxAnio22/", async (req, res) => {
-  const ventas = await Venta.find({ año: 2022 });
+router.get("/ventasxAnio/", async (req, res) => {
+  const vtaFind=req.body
+  console.log(vtaFind.año)
+  const ventas = await Venta.find({ año: vtaFind.año });
 
   if (ventas.length > 0) {
     res.status(200).json({
