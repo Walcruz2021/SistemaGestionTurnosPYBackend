@@ -158,14 +158,14 @@ router.get("/ventaCli/:idDog", async (req, res, next) => {
   });
 });
 
-router.get("/ventasxAnio/", async (req, res) => {
-  const vtaFind=req.body
-  console.log(vtaFind.año)
-  const ventas = await Venta.find({ año: vtaFind.año });
+router.get("/ventasxAnio/:anio", async (req, res) => {
+  const vtaFind=req.params.anio
+  console.log(vtaFind)
+  const ventas = await Venta.find({ año: vtaFind });
 
   if (ventas.length > 0) {
     res.status(200).json({
-      ventas,
+      ventas
     });
   } else {
     res.status(204).json({
