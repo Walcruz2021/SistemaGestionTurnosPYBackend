@@ -1,18 +1,10 @@
 const Cliente = require('../models/cliente')
 const Turno = require('../models/turno')
+// si no coloco el async y el await se enviara a la consola respuestas antes
+// de terminar de hacer la bsusqueda por completo de la BD y tirara errores
+// busqueda de todos los registros que existen en la BD
 
-const listTurnos=async (req, res) => {
-  // si no coloco el async y el await se enviara a la consola respuestas antes
-  // de terminar de hacer la bsusqueda por completo de la BD y tirara errores
-  // busqueda de todos los registros que existen en la BD
-  const turnos = await Turno.find();
-  console.log("turnos");
-  // res.send("hola mundo")
 
-  res.json({
-    turnos,
-  });
-}
 
 const addTurno=async (req, res, next) => {
   const { name, nameDog, phone, date, notesTurn, idClient, time, idDog } =
@@ -47,7 +39,7 @@ const addTurno=async (req, res, next) => {
 const deleteTurno=async (req, res) => {
   await Turno.findByIdAndRemove(req.params.id, { userFindAndModify: false })
     .then(() =>
-      res.json({
+      res.status(200).json({
         status: "TURNO ELIMINADO",
       })
     )
@@ -64,14 +56,52 @@ const editTurno=async (req, res) => {
   await Turno.findByIdAndUpdate(req.params.id, newTurno, {
     userFindAndModify: false,
   });
-  res.json({
+  res.status(200).json({
     status: "turno actualizado",
   });
+}
+
+const listTurnos=async (req,res) => {
+  const turnos = await Turno.find();
+ return turnos
+//return turnos
+  // res.status(200).json({
+  //   turnos
+  // });
+
+
+  // try {
+  //   const turnos = await Turno.find();
+  //   return turnos;
+  // } catch (error) {
+  //   console.error(error);
+  //   throw error; // Puedes relanzar el error o manejarlo de otra forma según tus necesidades
+  // }
+
+}
+
+const availableTurns=async (req,res)=>{
+  try{
+  const turnos =await listTurnos()
+  
+    const turnosTime  =turnos.map((turn)=>turn.time)
+    res.status(200).json({
+      turnosTime 
+    })
+  
+
+}catch(err){
+res.status(500).json({
+  status:"error al obtener turnos disponibles"
+})
+}
+
 }
 
 module.exports={
     listTurnos,
     addTurno,
     deleteTurno,
-    editTurno
+    editTurno,
+    availableTurns
 }

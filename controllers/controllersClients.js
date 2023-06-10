@@ -2,6 +2,18 @@ const Cliente = require('../models/cliente')
 const Perro = require('../models/perro')
 const Venta = require('../models/venta')
 
+
+//     //si no coloco el async y el await se enviara a la consola respuestas antes
+//     //de terminar de hacer la bsusqueda por completo de la BD y tirara errores
+//     //busqueda de todos los registros que existen en la BD
+//     const clientes = await Cliente.find();
+//     console.log("clientes")
+//     //res.send("hola mundo")
+//     res.json({
+//         clientes: clientes
+//     })
+//
+
 const searchClient = async (name) => {
   const client = await Cliente.findOne({ name: `${name}` })
   return client || null
