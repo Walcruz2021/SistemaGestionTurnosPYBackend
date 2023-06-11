@@ -4,8 +4,6 @@ const Turno = require('../models/turno')
 // de terminar de hacer la bsusqueda por completo de la BD y tirara errores
 // busqueda de todos los registros que existen en la BD
 
-
-
 const addTurno=async (req, res, next) => {
   const { name, nameDog, phone, date, notesTurn, idClient, time, idDog } =
     req.body;
@@ -62,34 +60,29 @@ const editTurno=async (req, res) => {
 }
 
 const listTurnos=async (req,res) => {
-  const turnos = await Turno.find();
- return turnos
-//return turnos
-  // res.status(200).json({
-  //   turnos
-  // });
-
-
-  // try {
-  //   const turnos = await Turno.find();
-  //   return turnos;
-  // } catch (error) {
-  //   console.error(error);
-  //   throw error; // Puedes relanzar el error o manejarlo de otra forma según tus necesidades
-  // }
+  try {
+    const turnos = await Turno.find();
+    if(turnos){
+      res.status(200).json({
+        turnos
+      })
+    }
+  } catch (error) {
+    console.error(error);
+    throw error; 
+  }
 
 }
 
-const availableTurns=async (req,res)=>{
+//turnosOcu=array de turnos ya ocupados
+//turnosEmpr= es el array de turnos los cuales la empresa piensa abastecer
+
+const availableTurns=async (turnosOcu,turnosEmpr)=>{
   try{
-  const turnos =await listTurnos()
-  
     const turnosTime  =turnos.map((turn)=>turn.time)
     res.status(200).json({
       turnosTime 
     })
-  
-
 }catch(err){
 res.status(500).json({
   status:"error al obtener turnos disponibles"

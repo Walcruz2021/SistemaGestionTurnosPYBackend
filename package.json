@@ -8,7 +8,8 @@
     "start": "nodemon server.js",
     "dev": "concurrently -n 'server,client' -c 'red,green'  \"nodemon server.js\" \"npm run client\"",
     "lint": "standard",
-    "lint-fix": "standard --fix"
+    "lint-fix": "standard --fix",
+    "index": "node indexPruebas.js" 
   },
   "keywords": [],
   "author": "",
