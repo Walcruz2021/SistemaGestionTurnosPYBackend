@@ -36,14 +36,7 @@ router.get("/listClients", async (req, res) => {
 
 //     //si no coloco el async y el await se enviara a la consola respuestas antes
 //     //de terminar de hacer la bsusqueda por completo de la BD y tirara errores
-//     //busqueda de todos los registros que existen en la BD
-//     const clientes = await Cliente.find();
-//     console.log("clientes")
-//     //res.send("hola mundo")
-//     res.json({
-//         clientes: clientes
-//     })
-//
+
 
 router.get("/listClients/:id", async (req, res, next) => {
   if (req.params.id) {
@@ -131,7 +124,7 @@ router.get("/listVentas", async (req, res) => {
   // busqueda de todos los registros que existen en la BD
   const ventas = await Venta.find();
 
-  // res.send("hola mundo")
+
   res.json({
     ventas,
   });
@@ -261,9 +254,8 @@ router.post("/turno", async (req, res, next) => {
   try {
     const cliente = await Cliente.findById(req.body.idClient);
     // console.log(cliente)
-    turno.seller = cliente;
+    turno.sellers = cliente;
     await turno.save();
-
     cliente.turnos.push(turno);
     await cliente.save();
     res.send(turno);
@@ -271,6 +263,7 @@ router.post("/turno", async (req, res, next) => {
       status: "turno agendado",
     });
   } catch (err) {
+    
     next(err);
   }
 });
@@ -289,7 +282,7 @@ router.post("/addPerro/:id", async (req, res, next) => {
   try {
     const cliente = await Cliente.findById(req.params.id);
     // se guarda en el campo perro.client el id del cliente al que se le va a guardar el perro
-    perro.client = cliente;
+    // perro.client = cliente;
     await perro.save();
     // perro es el arrayq ue tengo en el modelo el cual va  a guarar el listado de perros
     cliente.perros.push(perro);

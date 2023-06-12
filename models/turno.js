@@ -10,6 +10,8 @@ const turnoSchema = new Schema({
   date: { type: String, require: true },
   notesTurn: { type: String, require: true },
   time: { type: String, require: true },
+  //(sellers)nombre de campo el cual contendra no solo el id del cliente sino ademas todos
+  //los datos del mismo(pedidos,turnos,etc)
   sellers: {
     type: Schema.Types.ObjectId,
     ref: 'Cliente'

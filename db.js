@@ -9,23 +9,7 @@ const{
 }=process.env
 
 const mongoUrl=`mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.b5p91.mongodb.net/BDMascotas?retryWrites=true&w=majority`
-//const mongoUrl=""
-// async function connectDB() {
-//     if (connection) return connection
-//     let client
-//     try {
-//         client=await mongoose.connect(mongoUrl, {
-//             useNewUrlParser: true,
-//             useUnifiedTopology: true,
-//             useFindAndModify: false
-//         });
-//  //connection=client.db(DB_NAME)
-//     } catch (error) {
-// console.error("could no connection",mongoUrl,error)
-// process.exit(1)
-//     }
-//     return connection
-// }
+
 
 const connectDB=mongoose.connect(mongoUrl, {
     useNewUrlParser: true,
