@@ -2,14 +2,17 @@ const express = require("express");
 const router = express.Router();
 // const BlogPost = require('../models/blogPost');
 const res = require("express/lib/response");
-
+const { body, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const { searchClient, searchallClients,listClients,listClientId,addClient,editClient,deleteClient} = require("../controllers/controllersClients.js");
 const { addVenta,listVentas,ventaXanio,vtasxAnioandMesNow,vtasxAnioandMesParam,listVentasxId,ventasxIdClient} = require("../controllers/controllersVentas.js");
 const {listTurnos,addTurno,deleteTurno,editTurno,availableTurns} = require("../controllers/controllersTurnos.js");
 const {editDog,deleteDog,addDog,getDogxId} = require("../controllers/controllersDog.js");
+const {authRoutes,createUser} = require("../controllers/controllersUserAdmin.js");
 
 const perro = require("../models/perro");
-const { findByIdAndUpdate } = require("../models/users");
+//const { findByIdAndUpdate } = require("../models/users");
 
 
 router.delete("/deleteClient/:id",deleteClient);
@@ -57,5 +60,6 @@ router.get("/perro/:id", getDogxId);
 router.put("/deleteDog/:idDog", deleteDog);
 
 router.put("/editDog/:id", editDog)
-
+router.post('/login',authRoutes)
+router.post('/createUser',createUser)
 module.exports = router;
