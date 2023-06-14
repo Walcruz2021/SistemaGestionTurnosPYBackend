@@ -10,7 +10,7 @@ const { addVenta,listVentas,ventaXanio,vtasxAnioandMesNow,vtasxAnioandMesParam,l
 const {listTurnos,addTurno,deleteTurno,editTurno,availableTurns,addBreak} = require("../controllers/controllersTurnos.js");
 const {editDog,deleteDog,addDog,getDogxId} = require("../controllers/controllersDog.js");
 const {authRoutes,createUser} = require("../controllers/controllersUserAdmin.js");
-
+const {checkAuth} =require("../middleware/auth.js")
 const perro = require("../models/perro");
 //const { findByIdAndUpdate } = require("../models/users");
 
@@ -40,7 +40,7 @@ router.get("/listVentas/:id", listVentasxId);
 
 //TURNOS
 
-router.get("/getTurnos", listTurnos);
+router.get("/getTurnos",listTurnos);
 
 router.post("/turno", addTurno);
 
@@ -50,8 +50,6 @@ router.post("/addBreak/:id",addBreak);
 
 //turnosOcu=array de turnos ya ocupados
 //turnosEmpr= es el array de turnos los cuales la empresa piensa abastecer
-
-
 // modificacmos un turno que ya existe
 router.put("/editTurno/:id", editTurno);
 /// ////////////////////////PERROS//////////////////////////////

@@ -1,6 +1,6 @@
 const Cliente = require("../models/cliente");
 const Turno = require("../models/turno");
-const UserAdmin=require("../models/admin")
+const UserAdmin=require("../models/user")
 
 // si no coloco el async y el await se enviara a la consola respuestas antes
 // de terminar de hacer la bsusqueda por completo de la BD y tirara errores

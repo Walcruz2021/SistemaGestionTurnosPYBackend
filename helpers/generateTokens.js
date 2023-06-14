@@ -24,7 +24,6 @@ const tokenSign = async (user) => {
     });
   };
 
-  //terminar de ver video https://www.youtube.com/watch?v=gkzLAVh8tGM&ab_channel=LeiferMendez
   const verifyToken = async(token)=>{
     try{
         return jwt.verify(token, JWT_SECRET)

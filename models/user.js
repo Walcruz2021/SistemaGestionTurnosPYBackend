@@ -10,7 +10,8 @@ const userSchema = new Schema({
   date: { type: String, require: true },
   email: { type: String, require: true },
   password: { type: String, require: true },
-  role:{type: String}
+  role:{type: String},
+  arrayBreaks: [{ type: Schema.Types.ObjectId, ref: 'Break' }]
 })
 
 userSchema.methods.comparePassword = async function (password) {
