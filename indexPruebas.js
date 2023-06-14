@@ -88,3 +88,8 @@ function filterTurnos(turnosOcu,turnosEmpr){
 }
 
 console.log(filterTurnos(turnosOcu,turnosEmpr))
+
+
+//login con json web token
+//se instala npm install express express-validator jsonwebtoken bcryptjs
+
