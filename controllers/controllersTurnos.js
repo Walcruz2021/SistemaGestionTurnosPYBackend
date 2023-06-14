@@ -1,10 +1,12 @@
-const Cliente = require('../models/cliente')
-const Turno = require('../models/turno')
+const Cliente = require("../models/cliente");
+const Turno = require("../models/turno");
+const UserAdmin=require("../models/admin")
+
 // si no coloco el async y el await se enviara a la consola respuestas antes
 // de terminar de hacer la bsusqueda por completo de la BD y tirara errores
 // busqueda de todos los registros que existen en la BD
 
-const addTurno=async (req, res, next) => {
+const addTurno = async (req, res, next) => {
   const { name, nameDog, phone, date, notesTurn, idClient, time, idDog } =
     req.body;
   const turno = new Turno({
@@ -32,9 +34,33 @@ const addTurno=async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-}
+};
 
-const deleteTurno=async (req, res) => {
+const addBreak = async (req, res, next) => {
+  const { hourEntry, hourExit,idUserAdmin} =
+    req.body;
+  const breakAdmin = new Break({
+    idUserAdmin,
+    hourEntry,
+    hourExit
+  });
+  try {
+    const userAdmin = await UserAdmin.findById(req.body.idUserAdmin);
+    // console.log(cliente)
+    await breakAdmin.save();
+    userAdmin.arrayBreaks.push(breakAdmin);
+    await userAdmin.save();
+    res.send(breakAdmin);
+    res.status(200).json({
+      status: "break agended",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+const deleteTurno = async (req, res) => {
   await Turno.findByIdAndRemove(req.params.id, { userFindAndModify: false })
     .then(() =>
       res.status(200).json({
@@ -42,9 +68,9 @@ const deleteTurno=async (req, res) => {
       })
     )
     .catch((err) => res.status(400).json("Error: " + err));
-}
+};
 
-const editTurno=async (req, res) => {
+const editTurno = async (req, res) => {
   const { date, time, notesTurn } = req.body;
   const newTurno = {
     date,
@@ -57,44 +83,27 @@ const editTurno=async (req, res) => {
   res.status(200).json({
     status: "turno actualizado",
   });
-}
+};
 
-const listTurnos=async (req,res) => {
+const listTurnos = async (req, res) => {
   try {
     const turnos = await Turno.find();
-    if(turnos){
+    if (turnos) {
       res.status(200).json({
-        turnos
-      })
+        turnos,
+      });
     }
   } catch (error) {
     console.error(error);
-    throw error; 
+    throw error;
   }
+};
 
-}
 
-//turnosOcu=array de turnos ya ocupados
-//turnosEmpr= es el array de turnos los cuales la empresa piensa abastecer
-
-const availableTurns=async (turnosOcu,turnosEmpr)=>{
-  try{
-    const turnosTime  =turnos.map((turn)=>turn.time)
-    res.status(200).json({
-      turnosTime 
-    })
-}catch(err){
-res.status(500).json({
-  status:"error al obtener turnos disponibles"
-})
-}
-
-}
-
-module.exports={
-    listTurnos,
-    addTurno,
-    deleteTurno,
-    editTurno,
-    availableTurns
-}
+module.exports = {
+  listTurnos,
+  addTurno,
+  deleteTurno,
+  editTurno,
+  addBreak
+};

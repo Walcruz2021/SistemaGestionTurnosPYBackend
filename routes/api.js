@@ -5,7 +5,7 @@ const res = require("express/lib/response");
 
 const { searchClient, searchallClients,listClients,listClientId,addClient,editClient,deleteClient} = require("../controllers/controllersClients.js");
 const { addVenta,listVentas,ventaXanio,vtasxAnioandMesNow,vtasxAnioandMesParam,listVentasxId,ventasxIdClient} = require("../controllers/controllersVentas.js");
-const {listTurnos,addTurno,deleteTurno,editTurno,availableTurns} = require("../controllers/controllersTurnos.js");
+const {listTurnos,addTurno,deleteTurno,editTurno,availableTurns,addBreak} = require("../controllers/controllersTurnos.js");
 const {editDog,deleteDog,addDog,getDogxId} = require("../controllers/controllersDog.js");
 
 const perro = require("../models/perro");
@@ -43,7 +43,11 @@ router.post("/turno", addTurno);
 
 router.delete("/deleteTurno/:id",deleteTurno);
 
-router.get("/availableTurns",availableTurns)
+router.post("/addBreak/:id",addBreak);
+
+//turnosOcu=array de turnos ya ocupados
+//turnosEmpr= es el array de turnos los cuales la empresa piensa abastecer
+
 
 // modificacmos un turno que ya existe
 router.put("/editTurno/:id", editTurno);
