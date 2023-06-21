@@ -15,7 +15,9 @@ const clienteSchema = new Schema({
     ref: 'Perro',
     nameDog: String
   }],
-  status:{type:Boolean,default:true}
+  status:{type:Boolean,default:true},
+  userLogin:{type:Boolean,default:false},
+  userName:{type:String}
 })
 
 module.exports = mongoose.model('Cliente', clienteSchema)

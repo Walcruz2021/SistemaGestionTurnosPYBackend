@@ -8,13 +8,28 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
  
 
+
+/////////////////////////////////////////////
+//CORS: la respuesta a la solicitud de verificación previa no pasa la verificación de control de acceso: 
+//El valor del encabezado 'Access-Control-Allow-Origin' en la respuesta no debe ser el comodín '*' cuando el modo 
+//de credenciales de la solicitud es 'incluir'. El modo de credenciales de las solicitudes iniciadas por 
+//XMLHttpRequest está controlado por el atributo withCredentials.A continuacion esta configuracion solucionaria 
+//dicho error
+
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true
+};
+
+app.use(cors(corsOptions));
+
 require('dotenv').config()
 
 const routes = require('./routes/api');
 
 
 connect
-app.use(cors());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

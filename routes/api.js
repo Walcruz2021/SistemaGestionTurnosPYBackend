@@ -9,7 +9,7 @@ const { searchClient, searchallClients,listClients,listClientId,addClient,editCl
 const { addVenta,listVentas,ventaXanio,vtasxAnioandMesNow,vtasxAnioandMesParam,listVentasxId,ventasxIdClient} = require("../controllers/controllersVentas.js");
 const {listTurnos,addTurno,deleteTurno,editTurno,availableTurns,addBreak} = require("../controllers/controllersTurnos.js");
 const {editDog,deleteDog,addDog,getDogxId} = require("../controllers/controllersDog.js");
-const {authRoutes,createUser} = require("../controllers/controllersUserAdmin.js");
+const {authRoutes,createUserRolUserClient} = require("../controllers/controllersUserAdmin.js");
 const {checkAuth} =require("../middleware/auth.js")
 const perro = require("../models/perro");
 //const { findByIdAndUpdate } = require("../models/users");
@@ -46,7 +46,7 @@ router.post("/turno", addTurno);
 
 router.delete("/deleteTurno/:id",deleteTurno);
 
-router.post("/addBreak/:id",addBreak);
+router.post("/addBreak",addBreak);
 
 //turnosOcu=array de turnos ya ocupados
 //turnosEmpr= es el array de turnos los cuales la empresa piensa abastecer
@@ -63,5 +63,5 @@ router.put("/deleteDog/:idDog", deleteDog);
 
 router.put("/editDog/:id", editDog)
 router.post('/login',authRoutes)
-router.post('/createUser',createUser)
+router.post('/createUserRolUserClient',createUserRolUserClient)
 module.exports = router;

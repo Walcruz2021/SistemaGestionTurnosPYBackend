@@ -3,15 +3,22 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 const bcrypt = require('bcryptjs');
 
+
 const userSchema = new Schema({
   firstName: { type: String, require: true },
   lastName: { type: String, require: true },
   phone: { type: Number, require: true },
   date: { type: String, require: true },
-  email: { type: String, require: true },
+  userName: { type: String, require: true },
   password: { type: String, require: true },
-  role:{type: String},
-  arrayBreaks: [{ type: Schema.Types.ObjectId, ref: 'Break' }]
+  roles:{ UserClient: {
+            type: Number,
+            default: 2001
+        },
+        Editor: Number,
+        Admin: Number},
+  arrayBreaks: [{ type: Schema.Types.ObjectId, ref: 'Break' }],
+  idClient:{type:Schema.Types.ObjectId,ref:'Cliente'}
 })
 
 userSchema.methods.comparePassword = async function (password) {

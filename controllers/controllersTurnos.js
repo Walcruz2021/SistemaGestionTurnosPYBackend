@@ -1,7 +1,7 @@
 const Cliente = require("../models/cliente");
 const Turno = require("../models/turno");
 const UserAdmin=require("../models/user")
-
+const Break=require("../models/break")
 // si no coloco el async y el await se enviara a la consola respuestas antes
 // de terminar de hacer la bsusqueda por completo de la BD y tirara errores
 // busqueda de todos los registros que existen en la BD
@@ -37,16 +37,18 @@ const addTurno = async (req, res, next) => {
 };
 
 const addBreak = async (req, res, next) => {
-  const { hourEntry, hourExit,idUserAdmin} =
+  const { date,notesBreak,ourEntry,timeBreak,idAdmin} =
     req.body;
   const breakAdmin = new Break({
-    idUserAdmin,
-    hourEntry,
-    hourExit
+    notesBreak,
+    date,
+    ourEntry,
+    timeBreak,
+    idAdmin
   });
   try {
-    const userAdmin = await UserAdmin.findById(req.body.idUserAdmin);
-    // console.log(cliente)
+    const userAdmin = await UserAdmin.findById(idAdmin);
+    console.log(userAdmin)
     await breakAdmin.save();
     userAdmin.arrayBreaks.push(breakAdmin);
     await userAdmin.save();
