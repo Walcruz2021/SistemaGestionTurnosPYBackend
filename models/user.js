@@ -11,12 +11,12 @@ const userSchema = new Schema({
   date: { type: String, require: true },
   userName: { type: String, require: true },
   password: { type: String, require: true },
-  roles:{ UserClient: {
+  roles:{ Admin: {
             type: Number,
             default: 2001
         },
         Editor: Number,
-        Admin: Number},
+        User: Number},
   arrayBreaks: [{ type: Schema.Types.ObjectId, ref: 'Break' }],
   idClient:{type:Schema.Types.ObjectId,ref:'Cliente'}
 })
