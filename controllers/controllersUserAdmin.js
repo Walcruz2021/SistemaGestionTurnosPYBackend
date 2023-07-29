@@ -5,15 +5,17 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 const { tokenSign } = require("../helpers/generateTokens");
 const Client = require("../models/cliente");
+const getUserInfo = require("../lib/getUserInfo");
+const {jsonRespon}= require("../lib/jsonRespon");
 
 //el controlador authRoutes se encarga de manejar la autenticación de un usuario existente en la base de datos.
 //Verifica si el correo electrónico y la contraseña proporcionados coinciden con los datos almacenados en la base de datos.
 
 const authRoutes = async (req, res) => {
-  const { userName, password } = req.body;
-  if (!userName || !password) return res.status(400).json({ 'message': 'Username and password are required.' });
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ 'message': 'email and password are required.' });
 
-  const foundUser = await User.findOne({ userName: userName }).exec();
+  const foundUser = await User.findOne({ email: email }).exec();
   if (!foundUser) return res.sendStatus(401); //Unauthorized 
   // evaluate password 
   const match = await bcrypt.compare(password, foundUser.password);
@@ -23,7 +25,7 @@ const authRoutes = async (req, res) => {
       const accessToken = jwt.sign(
           {
               "UserInfo": {
-                  "userName": foundUser.userName,
+                  "email": foundUser.email,
                   "roles": roles
               }
           },
@@ -31,22 +33,24 @@ const authRoutes = async (req, res) => {
           { expiresIn: '10s' }
       );
       const refreshToken = jwt.sign(
-          { "userName": foundUser.userName },
+          { "email": foundUser.email },
           "12345",
           { expiresIn: '1d' }
       );
       // Saving refreshToken with current user
       foundUser.refreshToken = refreshToken;
       const result = await foundUser.save();
-      console.log(result);
-      console.log(roles);
-
       // Creates Secure Cookie with refresh token
       res.cookie('jwt', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
-
       // Send authorization roles and access token to user
-      res.json({ roles, accessToken });
-
+      //res.json({ roles, accessToken });
+      res.json(
+        jsonRespon(200, {
+          accessToken,
+          refreshToken,
+          user: getUserInfo(foundUser),
+        })
+      );
   } else {
       res.sendStatus(401);
   }
@@ -59,25 +63,25 @@ const createUserRolUserClient = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { userName, password, role, idClient } = req.body;
+  const { email, password, role, idClient } = req.body;
 
-  if (!userName || !password)
+  if (!email || !password)
     return res
       .status(400)
-      .json({ message: "userName and Passsword are required" });
+      .json({ message: "email and Passsword are required" });
 
   try {
     // Verifica si el usuario ya existe en la base de datos
-    let userDuplicate = await User.findOne({ userName });
+    let userDuplicate = await User.findOne({ email });
     if (userDuplicate) {
       return res
         .status(400)
-        .json({ error: `El usuario ${userName} ya existe` });
+        .json({ error: `El usuario ${email} ya existe` });
     }
 
     // Crea un nuevo usuario
     const user = new User({
-      userName,
+      email,
       password,
       idClient,
       role,
@@ -91,7 +95,7 @@ const createUserRolUserClient = async (req, res) => {
     await user.save();
 
     const newData = {
-      userName: userName,
+      email: email,
       userLogin: true,
     };
 
@@ -99,7 +103,7 @@ const createUserRolUserClient = async (req, res) => {
       userFindAndModify: false,
     });
 
-    res.json({ message: `${userName} creado exitosamente` });
+    res.json({ message: `${email} creado exitosamente` });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Error del servidor");
