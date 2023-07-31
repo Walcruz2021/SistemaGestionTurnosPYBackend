@@ -10,6 +10,7 @@ const { addVenta,listVentas,ventaXanio,vtasxAnioandMesNow,vtasxAnioandMesParam,l
 const {listTurnos,addTurno,deleteTurno,editTurno,availableTurns,addBreak} = require("../controllers/controllersTurnos.js");
 const {editDog,deleteDog,addDog,getDogxId} = require("../controllers/controllersDog.js");
 const {authRoutes,createUserRolUserClient} = require("../controllers/controllersUserAdmin.js");
+const {refreshToken} =require ("../controllers/controllersRefreshToken.js")
 const {checkAuth} =require("../middleware/auth.js")
 const perro = require("../models/perro");
 //const { findByIdAndUpdate } = require("../models/users");
@@ -64,4 +65,7 @@ router.put("/deleteDog/:idDog", deleteDog);
 router.put("/editDog/:id", editDog)
 router.post('/login',authRoutes)
 router.post('/createUserRolUserClient',createUserRolUserClient)
+
+router.post('/refresh-token',refreshToken)
+
 module.exports = router;
