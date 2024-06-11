@@ -1,6 +1,6 @@
 // libreria que nos permitira conectarse a mongodb
-const mongoose = require('mongoose')
-const { Schema } = mongoose
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const turnoSchema = new Schema({
   name: { type: String, require: true },
@@ -12,11 +12,11 @@ const turnoSchema = new Schema({
   time: { type: String, require: true },
   //(sellers)nombre de campo el cual contendra no solo el id del cliente sino ademas todos
   //los datos del mismo(pedidos,turnos,etc)
-  sellers: {
+  Client: {
     type: Schema.Types.ObjectId,
-    ref: 'Cliente'
+    ref: "Cliente",
   },
-  idClient: { type: String, require: true }
-})
+  Company: { type: Schema.Types.ObjectId, ref: "Company" },
+});
 
-module.exports = mongoose.model('Turno', turnoSchema)
+module.exports = mongoose.model("Turno", turnoSchema);

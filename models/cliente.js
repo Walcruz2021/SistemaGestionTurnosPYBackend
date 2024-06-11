@@ -17,7 +17,8 @@ const clienteSchema = new Schema({
   }],
   status:{type:Boolean,default:true},
   userLogin:{type:Boolean,default:false},
-  userName:{type:String}
+  userName:{type:String},
+  Company:{type:Schema.Types.ObjectId,ref:'Company'}
 })
 
 module.exports = mongoose.model('Cliente', clienteSchema)

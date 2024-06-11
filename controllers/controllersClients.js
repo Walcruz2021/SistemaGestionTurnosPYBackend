@@ -31,21 +31,25 @@ const searchallClients = async () => {
 
 const listClients=async (req, res) => {
   try {
-    await Cliente.find({status:true}, function (err, clientes) {
-      Venta.populate(
-        clientes,
-        { path: "pedidos" },
-        function (err, clientes) {}
-      ),
-        Perro.populate(clientes, { path: "perros" }, function (err, clientes) {
-          // res.status(200).send(clientes)
-          
-            return res.status(200).json({
-              clientes,
-            });
-          
-        });
-    });
+    if(req.params.id){
+      const idCompany=req.params.id
+      console.log(idCompany)
+      await Cliente.find({status:true,Company:idCompany}, function (err, clientes) {
+        Venta.populate(
+          clientes,
+          { path: "pedidos" },
+          function (err, clientes) {}
+        ),
+          Perro.populate(clientes, { path: "perros" }, function (err, clientes) {
+            // res.status(200).send(clientes)
+            
+              return res.status(200).json({
+                clientes,
+              });
+            
+          });
+      });
+    }
   } catch (err) {
     return err;
   }
@@ -53,7 +57,7 @@ const listClients=async (req, res) => {
 
 const listClientId=async (req, res, next) => {
   if (req.params.id) {
-    if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+    
       const buscado = await Cliente.findById(req.params.id);
       console.log(buscado);
       try {
@@ -63,25 +67,33 @@ const listClientId=async (req, res, next) => {
       } catch (error) {
         console.log(error);
       }
-    }
+    
     return res.status(400);
   }
 }
 
 const addClient=async (req, res, next) => {
-  const { name, phone, address, notesCli ,status} = req.body;
-  const cliente = new Cliente({
-    name,
-    // nameDog:nameDog,
-    phone,
-    address,
-    notesCli,
-    status
-  });
-  await cliente.save();
-  res.json({
-    status: "cliente guardado satisfactoriamente",
-  });
+ 
+  try{
+    const { name, phone, address, notesCli ,status,Company} = req.body;
+    const cliente = new Cliente({
+      name,
+      // nameDog:nameDog,
+      phone,
+      address,
+      notesCli,
+      status,
+      Company
+    });
+    await cliente.save();
+    res.json({
+      status: "cliente guardado satisfactoriamente",
+    });
+
+  }catch(error){
+    console.log(error)
+  }
+  
 }
 
 const editClient=async (req, res) => {

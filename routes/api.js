@@ -10,15 +10,18 @@ const { addVenta,listVentas,ventaXanio,vtasxAnioandMesNow,vtasxAnioandMesParam,l
 const {listTurnos,addTurno,deleteTurno,editTurno,availableTurns,addBreak} = require("../controllers/controllersTurnos.js");
 const {editDog,deleteDog,addDog,getDogxId} = require("../controllers/controllersDog.js");
 const {authRoutes,createUserRolUserClient} = require("../controllers/controllersUserAdmin.js");
+const {addUser,validationCompanyExist}=require("../controllers/controllersUser.js")
 const {refreshToken} =require ("../controllers/controllersRefreshToken.js")
 const {checkAuth} =require("../middleware/auth.js")
 const perro = require("../models/perro");
+const{addCompany,getCompany}=require ("../controllers/controllerCompany.js")
+
 //const { findByIdAndUpdate } = require("../models/users");
 
 
 router.delete("/deleteClient/:id",deleteClient);
 router.put("/editClient/:id", editClient);
-router.get("/listClients", listClients);
+router.get("/listClientsCompany/:id", listClients);
 router.get("/listClients/:id", listClientId);
 router.post("/client", addClient);
 
@@ -41,7 +44,7 @@ router.get("/listVentas/:id", listVentasxId);
 
 //TURNOS
 
-router.get("/getTurnos",listTurnos);
+router.get("/getTurnos/:id",listTurnos);
 
 router.post("/turno", addTurno);
 
@@ -57,15 +60,20 @@ router.put("/editTurno/:id", editTurno);
 
 //DOG
 router.post("/addPerro/:id", addDog);
-
 router.get("/perro/:id", getDogxId);
-
 router.put("/deleteDog/:idDog", deleteDog);
-
 router.put("/editDog/:id", editDog)
 router.post('/login',authRoutes)
 router.post('/createUserRolUserClient',createUserRolUserClient)
-
 router.post('/refresh-token',refreshToken)
+
+//COMPANY   
+
+router.get("/getCompany/:id",getCompany)
+router.post("/addCompany",addCompany)
+
+//USER
+router.post("/addUser",addUser);
+router.get("/validationCompanyExist/:email",validationCompanyExist)
 
 module.exports = router;

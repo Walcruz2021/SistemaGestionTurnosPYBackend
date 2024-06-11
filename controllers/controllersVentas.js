@@ -140,7 +140,7 @@ const addVenta=async (req, res, next) => {
     // console.log(perro)
     // const {dog}=req.body
     const dog = req.params.idDog;
-    console.log(dog);
+    
     await Venta.find({ Dog: dog }, function (err, vta) {
       Perro.populate(vta, { path: "Dog" }, function (err, vta) {
         if (vta.length > 0) {

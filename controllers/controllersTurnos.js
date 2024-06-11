@@ -7,7 +7,7 @@ const Break=require("../models/break")
 // busqueda de todos los registros que existen en la BD
 
 const addTurno = async (req, res, next) => {
-  const { name, nameDog, phone, date, notesTurn, idClient, time, idDog } =
+  const { name, nameDog, phone, date, notesTurn, idClient, time, idDog, Company} =
     req.body;
   const turno = new Turno({
     name,
@@ -18,18 +18,26 @@ const addTurno = async (req, res, next) => {
     idClient,
     time,
     idDog,
+    Company
   });
+  
   try {
     const cliente = await Cliente.findById(req.body.idClient);
     // console.log(cliente)
-    turno.seller = cliente;
+    if(!cliente){
+      return res.status(204).json({
+        msg:"Client not found"
+      })
+    }
+    turno.Client = cliente;
     await turno.save();
 
     cliente.turnos.push(turno);
     await cliente.save();
-    res.send(turno);
+    
     res.status(200).json({
       status: "turno agendado",
+      turno
     });
   } catch (err) {
     next(err);
@@ -88,12 +96,19 @@ const editTurno = async (req, res) => {
 };
 
 const listTurnos = async (req, res) => {
+  const idCompany=req.params.id
+  console.log(idCompany)
   try {
-    const turnos = await Turno.find();
-    if (turnos) {
+    const turnos = await Turno.find({Company:idCompany});
+    
+    if (turnos.length>0) {
       res.status(200).json({
         turnos,
       });
+    }else{
+      res.status(204).json({
+        msg:"not found turnos"
+      })
     }
   } catch (error) {
     console.error(error);
