@@ -26,7 +26,8 @@ app.use(cors(corsOptions));
 require('dotenv').config()
 
 const routes = require('./routes/api');
-
+const routesGastos=require('./routes/routeGastos')
+const routeMascota=require('./routes/routeMascota')
 
 connect
 
@@ -36,11 +37,10 @@ app.use(express.urlencoded({ extended: false }));
 //BODYPARSER middleware para analizar el cuerpo de la solicitud.
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(morgan('tiny'));
-
-
 app.use('/api', routes);
+app.use('/api',routesGastos)
+app.use('/api',routeMascota)
 
 
 app.listen(PORT, console.log(`Server is starting at ${PORT}`));

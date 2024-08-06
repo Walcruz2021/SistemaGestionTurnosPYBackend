@@ -8,9 +8,8 @@ const jwt = require('jsonwebtoken');
 const { searchClient, searchallClients,listClients,listClientId,addClient,editClient,deleteClient} = require("../controllers/controllersClients.js");
 const { addVenta,listVentas,ventaXanio,vtasxAnioandMesNow,vtasxAnioandMesParam,listVentasxId,ventasxIdClient} = require("../controllers/controllersVentas.js");
 const {listTurnos,addTurno,deleteTurno,editTurno,availableTurns,addBreak} = require("../controllers/controllersTurnos.js");
-const {editDog,deleteDog,addDog,getDogxId} = require("../controllers/controllersDog.js");
 const {authRoutes,createUserRolUserClient} = require("../controllers/controllersUserAdmin.js");
-const {addUser,validationCompanyExist}=require("../controllers/controllersUser.js")
+const {addUser,validationCompanyExist,searchUser}=require("../controllers/controllersUser.js")
 const {refreshToken} =require ("../controllers/controllersRefreshToken.js")
 const {checkAuth} =require("../middleware/auth.js")
 const perro = require("../models/perro");
@@ -34,11 +33,11 @@ router.get("/listVentas", listVentas);
 // recibira idclient y buscara en la coleccion de ventas, las que tengan incorporados el idClient
 router.get("/ventaCli/:idDog", ventasxIdClient);
 
-router.get("/ventasxAnio/:anio",ventaXanio);
+router.get("/ventasxAnio/:idCompany",ventaXanio);
 
-router.get("/vtasxAnioandMesNow",vtasxAnioandMesNow );
+router.get("/vtasxAnioandMesNow/:idCompany",vtasxAnioandMesNow );
 
-router.get("/vtasxAnioandMesParam/:date",vtasxAnioandMesParam);
+router.get("/vtasxAnioandMesParam/:idCompany",vtasxAnioandMesParam);
 
 router.get("/listVentas/:id", listVentasxId);
 
@@ -58,15 +57,6 @@ router.post("/addBreak",addBreak);
 router.put("/editTurno/:id", editTurno);
 /// ////////////////////////PERROS//////////////////////////////
 
-//DOG
-router.post("/addPerro/:id", addDog);
-router.get("/perro/:id", getDogxId);
-router.put("/deleteDog/:idDog", deleteDog);
-router.put("/editDog/:id", editDog)
-router.post('/login',authRoutes)
-router.post('/createUserRolUserClient',createUserRolUserClient)
-router.post('/refresh-token',refreshToken)
-
 //COMPANY   
 
 router.get("/getCompany/:id",getCompany)
@@ -75,5 +65,5 @@ router.post("/addCompany",addCompany)
 //USER
 router.post("/addUser",addUser);
 router.get("/validationCompanyExist/:email",validationCompanyExist)
-
+router.get("/searchUser/:email",searchUser)
 module.exports = router;

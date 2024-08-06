@@ -24,7 +24,11 @@ const ventaSchema = new Schema({
   },
   efectivo: { type: Number, require: true },
   transferencia: { type: Number, require: true },
-  tarjeta: { type: Number, require: true }
+  tarjeta: { type: Number, require: true },
+  idCompany:{
+    type:Schema.Types.ObjectId,
+    ref:'Company'
+  }
 })
 
 module.exports = mongoose.model('Venta', ventaSchema)
