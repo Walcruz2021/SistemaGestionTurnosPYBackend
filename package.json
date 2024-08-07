@@ -10,7 +10,7 @@
     "lint": "standard",
     "lint-fix": "standard --fix",
     "index": "node indexPruebas.js",
-    "vercel-build": "npm start"
+    "vercel-build": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
