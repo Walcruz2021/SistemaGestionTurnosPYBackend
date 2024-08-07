@@ -10,7 +10,8 @@
     "lint": "standard",
     "lint-fix": "standard --fix",
     "index": "node indexPruebas.js",
-    "vercel-build": "npm run build"
+    "vercel-build": "npm run build",
+    "build": "echo 'Build step running...'"
   },
   "keywords": [],
   "author": "",
