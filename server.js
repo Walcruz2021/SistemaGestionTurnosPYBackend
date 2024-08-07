@@ -7,8 +7,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
  
-
-
+//new changes
 /////////////////////////////////////////////
 //CORS: la respuesta a la solicitud de verificación previa no pasa la verificación de control de acceso: 
 //El valor del encabezado 'Access-Control-Allow-Origin' en la respuesta no debe ser el comodín '*' cuando el modo 
