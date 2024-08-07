@@ -9,7 +9,8 @@
     "dev": "concurrently -n 'server,client' -c 'red,green'  \"nodemon server.js\" \"npm run client\"",
     "lint": "standard",
     "lint-fix": "standard --fix",
-    "index": "node indexPruebas.js"
+    "index": "node indexPruebas.js",
+    "vercel-build": "npm start"
   },
   "keywords": [],
   "author": "",
