@@ -10,8 +10,7 @@
     "lint": "standard",
     "lint-fix": "standard --fix",
     "index": "node indexPruebas.js",
-    "vercel-build": "npm start",
-    "build": "echo 'Build step running...'"
+    "heroku-postbuild": "npm run install-client && npm run build"
   },
   "keywords": [],
   "author": "",
