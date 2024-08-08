@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "install-client": "cd client && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build",
     "start": "nodemon index.js",
+    "client": "cd client && npm start",
     "dev": "concurrently -n 'server,client' -c 'red,green'  \"nodemon server.js\" \"npm run client\"",
     "lint": "standard",
-    "lint-fix": "standard --fix",
-    "index": "node indexPruebas.js",
-    "heroku-postbuild": "npm run install-client && npm run build"
+    "lint-fix": "standard --fix"
   },
   "keywords": [],
   "author": "",
