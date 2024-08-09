@@ -1,11 +1,10 @@
 
 const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 3002; // Step 1
-const connect=require("./db")
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
 const cors = require('cors');
+const connect=require("./db")
+require('dotenv').config()
+const bodyParser = require('body-parser');
  
 //new changes
 /////////////////////////////////////////////
@@ -19,24 +18,21 @@ const corsOptions = {
     origin: 'http://localhost:3000',
     credentials: true
 };
-
-app.use(cors(corsOptions));
-
-require('dotenv').config()
-
+const app = express();
+const PORT = process.env.PORT || 3002; // Step 1
 const routes = require('./routes/api');
-const routesGastos=require('./routes/routeGastos')
-const routeMascota=require('./routes/routeMascota')
-
 connect
-
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(morgan('tiny'));
+
+const routesGastos=require('./routes/routeGastos')
+const routeMascota=require('./routes/routeMascota')
 
 //BODYPARSER middleware para analizar el cuerpo de la solicitud.
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(morgan('tiny'));
 app.use('/api', routes);
 app.use('/api',routesGastos)
 app.use('/api',routeMascota)
