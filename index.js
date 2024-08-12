@@ -22,6 +22,7 @@ const app = express();
 const PORT = process.env.PORT || 3002; // Step 1
 const routes = require('./routes/api');
 connect
+console.log(corsOptions)
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
