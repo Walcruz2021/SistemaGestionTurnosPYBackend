@@ -67,10 +67,10 @@ const listVentas = async (req, res) => {
 };
 
 const ventaXanio = async (req, res) => {
-  const idCompany=req.params.idCompany
-  const {anio} = req.query;
-  
-  const ventas = await Venta.find({ idCompany:idCompany,año: anio });
+  const idCompany = req.params.idCompany;
+  const { anio } = req.query;
+
+  const ventas = await Venta.find({ idCompany: idCompany, año: anio });
   if (ventas.length > 0) {
     res.status(200).json({
       ventas,
@@ -88,7 +88,7 @@ const vtasxAnioandMesNow = async (req, res) => {
   let anio = now.getFullYear();
 
   const idCompany = req.params.idCompany;
-console.log(idCompany)
+  console.log(idCompany);
   const vtas = await Venta.find({
     idCompany: idCompany,
     mes: mes,
@@ -110,14 +110,14 @@ console.log(idCompany)
 };
 
 const vtasxAnioandMesParam = async (req, res) => {
-  const { date } = req.query;
+  const { date } = req.body;
 
   let año = Math.trunc(date / 10);
-  
+
   let mes = date % 10;
-  
+
+  console.log(date);
   const idCompany = req.params.idCompany;
- 
 
   if (((Math.log(año) * Math.LOG10E + 1) | 0) > 4) {
     mes = "" + (año % 10) + mes;
