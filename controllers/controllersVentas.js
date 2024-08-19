@@ -68,7 +68,7 @@ const listVentas = async (req, res) => {
 
 const ventaXanio = async (req, res) => {
   const idCompany = req.params.idCompany;
-  const { anio } = req.query;
+  const { anio } = req.body;
 
   const ventas = await Venta.find({ idCompany: idCompany, año: anio });
   if (ventas.length > 0) {
@@ -112,11 +112,11 @@ const vtasxAnioandMesNow = async (req, res) => {
 const vtasxAnioandMesParam = async (req, res) => {
   const { date } = req.body;
 
-  let año = Math.trunc(date / 10);
+let año = Math.trunc(date / 10);
 
   let mes = date % 10;
 
-  console.log(date);
+  
   const idCompany = req.params.idCompany;
 
   if (((Math.log(año) * Math.LOG10E + 1) | 0) > 4) {
@@ -132,7 +132,7 @@ const vtasxAnioandMesParam = async (req, res) => {
   } else
     return res.status(204).json({
       msg: "no existen ventas",
-    });
+    });  
 };
 
 const listVentasxId = async (req, res, next) => {
