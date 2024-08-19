@@ -68,7 +68,7 @@ const listVentas = async (req, res) => {
 
 const ventaXanio = async (req, res) => {
   const idCompany = req.params.idCompany;
-  const { anio } = req.body;
+  const { anio } = req.query;
 
   const ventas = await Venta.find({ idCompany: idCompany, año: anio });
   if (ventas.length > 0) {
@@ -110,7 +110,7 @@ const vtasxAnioandMesNow = async (req, res) => {
 };
 
 const vtasxAnioandMesParam = async (req, res) => {
-  const { date } = req.body;
+  const { date } = req.query;
 
 let año = Math.trunc(date / 10);
 
