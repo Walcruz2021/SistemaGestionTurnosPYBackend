@@ -1,50 +1,25 @@
-// const express = require('express');
-// const morgan = require('morgan');
-// const cors = require('cors');
-// const connect = require("./db");
-// require('dotenv').config();
-// const bodyParser = require('body-parser');
-
-// const app = express();
-// const PORT = process.env.PORT || 3002;
 
 
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-// app.use(morgan('tiny'));
-
-// const routes = require('./routes/api');
-// const routesGastos = require('./routes/routeGastos');
-// const routeMascota = require('./routes/routeMascota');
-
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-
-// app.use('/api', routes);
-// app.use('/api', routesGastos);
-// app.use('/api', routeMascota);
-
-// app.listen(PORT, () => {
-//     console.log(`Server is starting at ${PORT}`);
-// });
+import express from "express"
+import {startApolloServer} from "./app.js"
+import morgan from "morgan"
+import cors from "cors"
+import connectDB from "./db.js"
 
 
 
-const express = require("express");
-const morgan = require("morgan");
-const cors = require("cors");
-const connect = require("./db");
 require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 3002;
-
 const routes = require("./routes/api");
 const routesGastos = require("./routes/routeGastos");
 const routeMascota = require("./routes/routeMascota");
+const resolvers=require("./graphql/resolvers")
+const typeDefs=require("./graphql/typeDefs")
+connectDB;
 
-connect;
-
+startApolloServer(typeDefs,resolvers)
 // // Orígenes permitidos
 const allowedOrigins = [
     "http://localhost:3000",
@@ -61,8 +36,9 @@ const allowedOrigins = [
     },
     credentials: true,
   };
-  
-  app.use(cors(corsOptions));
+
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("tiny"));

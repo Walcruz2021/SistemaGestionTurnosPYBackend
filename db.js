@@ -1,6 +1,8 @@
 require('dotenv').config()
-const express = require('express');
-const mongoose = require('mongoose');
+import express from "express"
+import mongoose from "mongoose"
+
+
 let connection
 
 const{
@@ -11,7 +13,7 @@ const{
 const mongoUrl=`mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.b5p91.mongodb.net/BDAPlicacionMascotas?retryWrites=true&w=majority`
 
 
-const connectDB=mongoose.connect(mongoUrl, {
+export const connectDB=mongoose.connect(mongoUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
@@ -25,4 +27,3 @@ mongoose.connection.on('connected', () => {
 });
 
 
-module.exports = connectDB
