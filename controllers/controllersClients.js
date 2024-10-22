@@ -1,6 +1,8 @@
-const Cliente = require('../models/cliente')
-const Perro = require('../models/perro')
-const Venta = require('../models/venta')
+
+import Cliente from "../models/cliente.js"
+import Perro from "../models/perro.js"
+
+import Venta from "../models/venta.js"
 
 
 //     //si no coloco el async y el await se enviara a la consola respuestas antes
@@ -14,12 +16,12 @@ const Venta = require('../models/venta')
 //     })
 //
 
-const searchClient = async (name) => {
+export const searchClient = async (name) => {
   const client = await Cliente.findOne({ name: `${name}` })
   return client || null
 }
 
-const searchallClients = async () => {
+export const searchallClients = async () => {
 //     const clients=await Cliente.find();
 // return clients?clients:null
   Cliente.find({}, function (err, clientes) {
@@ -29,7 +31,7 @@ const searchallClients = async () => {
   })
 }
 
-const listClients=async (req, res) => {
+export const listClients=async (req, res) => {
   try {
     if(req.params.id){
       const idCompany=req.params.id
@@ -55,7 +57,7 @@ const listClients=async (req, res) => {
   }
 }
 
-const listClientId=async (req, res, next) => {
+export const listClientId=async (req, res, next) => {
   if (req.params.id) {
     
       const buscado = await Cliente.findById(req.params.id);
@@ -72,7 +74,7 @@ const listClientId=async (req, res, next) => {
   }
 }
 
-const addClient=async (req, res, next) => {
+export const addClient=async (req, res, next) => {
  
   try{
     const { name, phone, address, notesCli ,status,Company} = req.body;
@@ -96,7 +98,7 @@ const addClient=async (req, res, next) => {
   
 }
 
-const editClient=async (req, res) => {
+export const editClient=async (req, res) => {
   const { name, phone, address, notesCli } = req.body;
   const newClient = {
     name,
@@ -112,7 +114,7 @@ const editClient=async (req, res) => {
   });
 }
 
-const deleteClient= async (req, res) => {
+export const deleteClient = async (req, res) => {
   // await Cliente.findByIdAndRemove(req.params.id, { userFindAndModify: false });
 
   const newStatus = {
@@ -128,14 +130,4 @@ const deleteClient= async (req, res) => {
       })
     )
     .catch((err) => res.status(400).json("Error: " + err));
-}
-
-module.exports = {
-  searchClient,
-  searchallClients,
-  listClients,
-  listClientId,
-  addClient,
-  editClient,
-  deleteClient
 }

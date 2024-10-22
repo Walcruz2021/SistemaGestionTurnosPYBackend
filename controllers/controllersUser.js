@@ -1,6 +1,6 @@
-const User = require("../models/user");
+import User from "../models/user.js";
 
-const addUser = async (req, res) => {
+export const addUser = async (req, res) => {
   const { fullName, status, email } = req.body;
   const newUser = new User({
     fullName,
@@ -24,7 +24,7 @@ const addUser = async (req, res) => {
   }
 };
 
-const validationCompanyExist = async (req, res) => {
+export const validationCompanyExist = async (req, res) => {
   const email = req.params.email;
   console.log(email);
   try {
@@ -54,7 +54,7 @@ const validationCompanyExist = async (req, res) => {
   }
 };
 
-const searchUser = async (req, res) => {
+export const searchUser = async (req, res) => {
   const email = req.params.email;
   console.log(email);
   try {
@@ -75,8 +75,4 @@ const searchUser = async (req, res) => {
   }
 };
 
-module.exports = {
-  addUser,
-  validationCompanyExist,
-  searchUser
-};
+

@@ -1,8 +1,7 @@
-const Gastos = require("../models/gastos");
-const Company = require("../models/company");
+import  Gastos from "../models/gastos.js";
+import  Company  from "../models/company.js";
 
-
-const addGastos = async (req, res) => {
+export const addGastos = async (req, res) => {
   const {
     año,
     date,
@@ -14,7 +13,7 @@ const addGastos = async (req, res) => {
     value,
     mes,
     typeGasto,
-    idCompany
+    idCompany,
   } = req.body;
   const gasto = new Gastos({
     año,
@@ -27,7 +26,7 @@ const addGastos = async (req, res) => {
     value,
     mes,
     typeGasto,
-    idCompany
+    idCompany,
   });
   const findCompany = await Company.find({ _id: idCompany });
 
@@ -43,16 +42,18 @@ const addGastos = async (req, res) => {
   }
 };
 
-
-
-const getGastosDirXanio = async (req, res) => {
+export const getGastosDirXanio = async (req, res) => {
   const { año } = req.body;
-  const idCompany  = req.params.idCompany;
-  console.log(idCompany)
-  const gastosFind = await Gastos.find({ idCompany: idCompany, año: año,typeGasto:"Gasto Directo"});
+  const idCompany = req.params.idCompany;
+  console.log(idCompany);
+  const gastosFind = await Gastos.find({
+    idCompany: idCompany,
+    año: año,
+    typeGasto: "Gasto Directo",
+  });
   if (gastosFind.length) {
     res.status(200).json({
-      gastosFind
+      gastosFind,
     });
   } else {
     res.status(204).json({
@@ -61,12 +62,12 @@ const getGastosDirXanio = async (req, res) => {
   }
 };
 
-const gtosXanio = async (req, res) => {
-  const idCompany=req.params.idCompany
-  const {anio} = req.query;
-  
-  const gastos = await Gastos.find({ idCompany:idCompany,año: anio });
-  console.log(gastos)
+export const gtosXanio = async (req, res) => {
+  const idCompany = req.params.idCompany;
+  const { anio } = req.query;
+
+  const gastos = await Gastos.find({ idCompany: idCompany, año: anio });
+  console.log(gastos);
   if (gastos.length > 0) {
     res.status(200).json({
       gastos,
@@ -78,24 +79,27 @@ const gtosXanio = async (req, res) => {
   }
 };
 
-const getGastosIndXanio = async (req, res) => {
-    const { año } = req.body;
-    const idCompany  = req.params.idCompany;
-    console.log(idCompany)
-    const gastosFind = await Gastos.find({ idCompany: idCompany, año: año,typeGasto:"Gasto Indirecto"});
-    if (gastosFind.length) {
-      res.status(200).json({
-        gastosFind
-      });
-    } else {
-      res.status(204).json({
-        msg: "gastos not found",
-      });
-    }
-  };
+export const getGastosIndXanio = async (req, res) => {
+  const { año } = req.body;
+  const idCompany = req.params.idCompany;
+  console.log(idCompany);
+  const gastosFind = await Gastos.find({
+    idCompany: idCompany,
+    año: año,
+    typeGasto: "Gasto Indirecto",
+  });
+  if (gastosFind.length) {
+    res.status(200).json({
+      gastosFind,
+    });
+  } else {
+    res.status(204).json({
+      msg: "gastos not found",
+    });
+  }
+};
 
-  
-const gastosXanioandMesNow = async (req, res) => {
+export const gastosXanioandMesNow = async (req, res) => {
   let now = new Date();
   let mes = now.getMonth() + 1;
   let anio = now.getFullYear();
@@ -122,15 +126,14 @@ const gastosXanioandMesNow = async (req, res) => {
   }
 };
 
-const gastosXanioandMesParam = async (req, res) => {
+export const gastosXanioandMesParam = async (req, res) => {
   const { date } = req.query;
 
   let año = Math.trunc(date / 10);
-  
+
   let mes = date % 10;
-  
+
   const idCompany = req.params.idCompany;
- 
 
   if (((Math.log(año) * Math.LOG10E + 1) | 0) > 4) {
     mes = "" + (año % 10) + mes;
@@ -146,13 +149,4 @@ const gastosXanioandMesParam = async (req, res) => {
     return res.status(204).json({
       msg: "no existen gastos",
     });
-};
-
-module.exports = {
-  addGastos,
-  getGastosDirXanio,
-  getGastosIndXanio,
-  gastosXanioandMesNow,
-  gastosXanioandMesParam,
-  gtosXanio
 };

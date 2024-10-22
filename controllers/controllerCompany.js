@@ -1,7 +1,7 @@
-const Company = require("../models/company");
-const User=require("../models/user")
+import Company from "../models/company.js";
+import User from "../models/user.js"
 
-const addCompany = async (req, res, next) => {
+export const addCompany = async (req, res, next) => {
   const { nameCompany, address, cuit, province, country,emailUser} = req.body;
   console.log(emailUser)
   const newCompany = new Company({
@@ -25,7 +25,7 @@ const addCompany = async (req, res, next) => {
   });
 };
 
-const getCompany = async (req, res, next) => {
+export const getCompany = async (req, res, next) => {
   try {
     if (req.params.id) {
         const findCompany = await Company.findById(req.params.id);
@@ -45,7 +45,4 @@ const getCompany = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  addCompany,
-  getCompany
-};
+

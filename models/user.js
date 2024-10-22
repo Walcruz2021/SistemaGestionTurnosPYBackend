@@ -1,10 +1,10 @@
 // libreria que nos permitira conectarse a mongodb
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 const { Schema } = mongoose
-const bcrypt = require('bcryptjs');
-const { generateAccessToken, generateRefreshToken } = require("../auth/sign");
-const getUserInfo = require("../lib/getUserInfo");
-const Token = require("./token");
+import bcrypt from 'bcryptjs';
+//const { generateAccessToken, generateRefreshToken } = require("../auth/sign");
+//const getUserInfo = require("../lib/getUserInfo");
+//const Token = require("./token");
 
 
 const userSchema = new Schema({
@@ -71,4 +71,5 @@ const userSchema = new Schema({
 //   }
 // };
 
-module.exports = mongoose.model('User', userSchema)
+const User= mongoose.model('User', userSchema)
+export default User

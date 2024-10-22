@@ -1,6 +1,6 @@
-const express=require("express")
+import express from "express"
 const router=express.Router()
-const {addGastos,getGastosDirXanio,gtosXanio,getGastosIndXanio,gastosXanioandMesNow,gastosXanioandMesParam}=require("../controllers/controllersGastos")
+import  {addGastos,getGastosDirXanio,gtosXanio,getGastosIndXanio,gastosXanioandMesNow,gastosXanioandMesParam} from "../controllers/controllersGastos.js"
 
 
 router.post("/addGastos",addGastos)
@@ -10,4 +10,4 @@ router.get("/gastosXanioandMesNow/:idCompany",gastosXanioandMesNow );
 router.get("/gastosXanioandMesParam/:idCompany",gastosXanioandMesParam);
 router.get("/gtosXanio/:idCompany",gtosXanio);
 
-module.exports=router
+export default router

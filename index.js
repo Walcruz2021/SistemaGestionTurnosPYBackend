@@ -5,20 +5,20 @@ import {startApolloServer} from "./app.js"
 import morgan from "morgan"
 import cors from "cors"
 import connectDB from "./db.js"
-
-
-
-require("dotenv").config();
-
-const app = express();
+//import app from "express"
+//const app = express();
 const PORT = process.env.PORT || 3002;
-const routes = require("./routes/api");
-const routesGastos = require("./routes/routeGastos");
-const routeMascota = require("./routes/routeMascota");
-const resolvers=require("./graphql/resolvers")
-const typeDefs=require("./graphql/typeDefs")
+import routes from "./routes/api.js"
+import routesGastos from "./routes/routeGastos.js"
+import routeMascota from "./routes/routeGastos.js"
+// const routesGastos = require("./routes/routeGastos");
+// const routeMascota = require("./routes/routeMascota");
+import resolvers from "./graphql/resolvers.js"
+import typeDefs from "./graphql/typeDefs.js"
+// const resolvers=require("./graphql/resolvers")
+// const typeDefs=require("./graphql/typeDefs")
 connectDB;
-
+const app=express()
 startApolloServer(typeDefs,resolvers)
 // // Orígenes permitidos
 const allowedOrigins = [

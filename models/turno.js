@@ -1,5 +1,5 @@
 // libreria que nos permitira conectarse a mongodb
-const mongoose = require("mongoose");
+import mongoose from "mongoose"
 const { Schema } = mongoose;
 
 const turnoSchema = new Schema({
@@ -19,4 +19,5 @@ const turnoSchema = new Schema({
   Company: { type: Schema.Types.ObjectId, ref: "Company" },
 });
 
-module.exports = mongoose.model("Turno", turnoSchema);
+const Turno = mongoose.model("Turno", turnoSchema);
+export default Turno

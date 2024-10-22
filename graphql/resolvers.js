@@ -4,4 +4,4 @@ Query:{
 }
 }
 
-module.exports={resolvers}
+export default resolvers
