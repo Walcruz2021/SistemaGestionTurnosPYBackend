@@ -1,14 +1,14 @@
-import Cliente from "../../models/cliente.js";
-import Perro from "../../models/perro.js";
+//import Cliente from "../../models/cliente.js";
+//import Perro from "../../models/perro.js";
 import Company from "../../models/company.js";
-
+import User from "../../models/user.js";
 const resolvers = {
   Query: {
     hello: () => "Hello Walter",
-    getClients: async () => {
-      const clients = await Cliente.find();
-      return clients;
-    },
+    // getClients: async () => {
+    //   const clients = await Cliente.find();
+    //   return clients;
+    // },
     getCompanyxId: async (_, { id }) => {
       try {
         if (id) {
@@ -23,18 +23,25 @@ const resolvers = {
         console.log(error);
       }
     },
-  },
-  Mutation: {
-    createMascota: async (_, { nameDog, raza }) => {
-      console.log(nameDog);
-      const newPerro = new Perro({
-        nameDog,
-        raza,
-      });
-      const perroSaved = await newPerro.save();
-      return perroSaved;
+    getUser: async () => {
+      try {
+        return;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
+  // Mutation: {
+  //   createMascota: async (_, { nameDog, raza }) => {
+  //     console.log(nameDog);
+  //     const newPerro = new Perro({
+  //       nameDog,
+  //       raza,
+  //     });
+  //     const perroSaved = await newPerro.save();
+  //     return perroSaved;
+  //   },
+  // },
 };
 
 export default resolvers;

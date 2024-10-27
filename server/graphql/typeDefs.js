@@ -1,31 +1,12 @@
-import gql from "graphql-tag";
+import { mergeTypeDefs } from "@graphql-tools/merge";
+//  import Cliente from "../../modelsTypesGraphQL";
+import Company from "./TypesGraphQL/company.js";
+import User from "./TypesGraphQL/user.js";
+//import Company from "../../models/company.js";
+//import Mascota from "./types/Mascota.js";
+import Query from "./query.js";
+import { QueryDocumentKeys } from "graphql/language/ast.js";
+//import Mutation from "./mutation.js";
 
-const typeDefs = gql`
-  type Cliente {
-    id: ID
-    name: String
-  }
-
-  type Company {
-    id: ID
-    nameCompany: String
-  }
-
-  type Query {
-    hello: String
-    getClients: [Cliente]
-    getCompanyxId(id: ID!): Company
-  }
-
-  type Mutation {
-    createMascota(nameDog: String, raza: String): Mascota
-  }
-
-  type Mascota {
-    _id: ID
-    nameDog: String
-    raza: String
-  }
-`;
-
+const typeDefs = mergeTypeDefs([Company, Query, User]); //[Mascota. Cliente]
 export default typeDefs;
