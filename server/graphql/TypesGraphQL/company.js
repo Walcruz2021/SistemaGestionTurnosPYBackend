@@ -8,6 +8,7 @@ const Company = gql`
     cuit: String
     province: String
     country: String
+    emailUser:String
   }
 `;
 

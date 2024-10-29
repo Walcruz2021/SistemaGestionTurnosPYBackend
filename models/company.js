@@ -11,7 +11,7 @@ const companyShema = new Schema({
     //     type:Schema.Types.ObjectId,
     //     ref:'Users'
     // }
-});
+},{timestamps:true});
 
 const Company=mongoose.model("Company", companyShema);
 export default Company

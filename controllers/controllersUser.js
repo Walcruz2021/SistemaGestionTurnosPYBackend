@@ -24,6 +24,7 @@ export const addUser = async (req, res) => {
   }
 };
 
+//postman OK
 export const validationCompanyExist = async (req, res) => {
   const email = req.params.email;
   console.log(email);
@@ -54,6 +55,8 @@ export const validationCompanyExist = async (req, res) => {
   }
 };
 
+//postman OK
+//graphQL OK
 export const searchUser = async (req, res) => {
   const email = req.params.email;
   console.log(email);

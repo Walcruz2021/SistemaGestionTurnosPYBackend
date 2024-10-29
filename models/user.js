@@ -9,13 +9,9 @@ import bcrypt from 'bcryptjs';
 
 const userSchema = new Schema({
   fullName: { type: String, required: false },
-  //lastName: { type: String, required: false },
-  //phone: { type: Number, required: false },
-  //date: { type: String, required: false },
   email: { type: String, required: true,unique:true},
   companies:[{type:Schema.Types.ObjectId,ref:'Company'}],
   status:{type:Boolean}
- 
 })
 
 // userSchema.pre("save", function (next) {

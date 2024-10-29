@@ -1,11 +1,12 @@
 import gql from "graphql-tag";
-import Company from "../TypesGraphQL/company";
+
 const User = gql`
   type User {
+    id:ID
     fullName: String
     email: String
-    companies: Company
     status: Boolean
+    companies:[Company]
   }
 `;
 
