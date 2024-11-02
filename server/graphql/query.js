@@ -4,8 +4,8 @@ const Query = gql`
   type Query {
     hello: String
     getCompanyxId(id: ID!): Company
-    validationCompanyExist(email:String!):Company
-    searchUser(email:String!):User
+    validationCompanyExist(email: String!): [Company]
+    searchUser(email: String!): User
   }
 `;
 

@@ -28,7 +28,7 @@ const resolvers = {
     },
     searchUser: async (_, { email }) => {
       try {
-        const findUser = await User.findOne({ email}).populate('companies');
+        const findUser = await User.findOne({ email }).populate("companies");
 
         if (findUser) {
           return findUser;
@@ -39,7 +39,7 @@ const resolvers = {
         console.log(error);
       }
     },
-    validationCompanyExist:async(_,{email})=>{
+    validationCompanyExist: async (_, { email }) => {
       try {
         const findUser = await User.findOne({ email: email }).populate(
           "companies",
@@ -47,29 +47,19 @@ const resolvers = {
         );
         if (findUser) {
           if (findUser.companies.length > 0) {
-            
-            return findUser.companies
+            return findUser.companies;
           } else {
-            throw new Error("companies not found")
+            throw new Error("companies not found");
           }
         } else {
-        throw new Error("User not found")
+          throw new Error("User not found");
         }
       } catch (error) {
         console.log(error);
       }
-    }
+    },
   },
   Mutation: {
-    // createMascota: async (_, { nameDog, raza }) => {
-    //   console.log(nameDog);
-    //   const newPerro = new Perro({
-    //     nameDog,
-    //     raza,
-    //   });
-    //   const perroSaved = await newPerro.save();
-    //   return perroSaved;
-    // },
     addCompany: async (
       _,
       { nameCompany, address, cuit, province, country, emailUser }
@@ -91,6 +81,21 @@ const resolvers = {
           await findUser.save();
         }
         return newCompany;
+      }
+    },
+    addUser: async (_, { fullName, status, email }) => {
+      const newUser = new User({
+        fullName,
+        status,
+        email,
+      });
+
+      const findUser = await User.findOne({ email: email });
+      if (!findUser) {
+        await newUser.save();
+        return newUser;
+      } else {
+        throw new Error("User not found");
       }
     },
   },

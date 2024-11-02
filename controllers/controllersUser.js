@@ -5,29 +5,28 @@ export const addUser = async (req, res) => {
   const newUser = new User({
     fullName,
     status,
-    email
+    email,
   });
-  
-  const findUser = await User.findOne({email: email});
+
+  const findUser = await User.findOne({ email: email });
   if (!findUser) {
-    console.log("user NO se encontro")
+    console.log("user NO se encontro");
     await newUser.save();
     return res.status(200).json({
       msg: "user add correctly",
-      newUser
+      newUser,
     });
-  }else{
-    
+  } else {
     return res.status(204).json({
       msg: "user NOT added",
     });
   }
 };
 
-//postman OK
+//postman OK graphQl ok
 export const validationCompanyExist = async (req, res) => {
   const email = req.params.email;
-  console.log(email);
+
   try {
     const findUser = await User.findOne({ email: email }).populate(
       "companies",
@@ -77,5 +76,3 @@ export const searchUser = async (req, res) => {
     console.log(error);
   }
 };
-
-
