@@ -1,5 +1,6 @@
 import User from "../models/user.js";
-
+//graphQL OK
+//postman OK
 export const addUser = async (req, res) => {
   const { fullName, status, email } = req.body;
   const newUser = new User({
@@ -7,7 +8,7 @@ export const addUser = async (req, res) => {
     status,
     email,
   });
-
+  console.log(newUser);
   const findUser = await User.findOne({ email: email });
   if (!findUser) {
     console.log("user NO se encontro");

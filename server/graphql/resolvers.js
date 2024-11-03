@@ -2,16 +2,11 @@
 //import Perro from "../../models/perro.js";
 import User from "../../models/user.js";
 import Company from "../../models/company.js";
-
+import Turno from "../../models/turno.js";
 //import User from "../../models/user.js";
 
 const resolvers = {
   Query: {
-    hello: () => "Hello Walter",
-    // getClients: async () => {
-    //   const clients = await Cliente.find();
-    //   return clients;
-    // },
     getCompanyxId: async (_, { id }) => {
       try {
         if (id) {
@@ -56,6 +51,26 @@ const resolvers = {
         }
       } catch (error) {
         console.log(error);
+      }
+    },
+    getTurnos: async (_, { id }) => {
+      const idCompany = id;
+
+      try {
+        const turnos = await Turno.find({ Company: idCompany });
+
+        if (turnos.length > 0) {
+          res.status(200).json({
+            turnos,
+          });
+        } else {
+          res.status(204).json({
+            msg: "not found turnos",
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        throw error;
       }
     },
   },

@@ -1,14 +1,23 @@
 import Cliente from "../models/cliente.js";
 import Turno from "../models/turno.js";
-import UserAdmin from "../models/user.js"
+import UserAdmin from "../models/user.js";
 //const Break=require("../models/break.js")
 // si no coloco el async y el await se enviara a la consola respuestas antes
 // de terminar de hacer la bsusqueda por completo de la BD y tirara errores
 // busqueda de todos los registros que existen en la BD
 
 export const addTurno = async (req, res, next) => {
-  const { name, nameDog, phone, date, notesTurn, idClient, time, idDog, Company} =
-    req.body;
+  const {
+    name,
+    nameDog,
+    phone,
+    date,
+    notesTurn,
+    idClient,
+    time,
+    idDog,
+    Company,
+  } = req.body;
   const turno = new Turno({
     name,
     nameDog,
@@ -18,26 +27,26 @@ export const addTurno = async (req, res, next) => {
     idClient,
     time,
     idDog,
-    Company
+    Company,
   });
-  
+
   try {
     const cliente = await Cliente.findById(req.body.idClient);
     // console.log(cliente)
-    if(!cliente){
+    if (!cliente) {
       return res.status(204).json({
-        msg:"Client not found"
-      })
+        msg: "Client not found",
+      });
     }
     turno.Client = cliente;
     await turno.save();
 
     cliente.turnos.push(turno);
     await cliente.save();
-    
+
     res.status(200).json({
       status: "turno agendado",
-      turno
+      turno,
     });
   } catch (err) {
     next(err);
@@ -69,7 +78,6 @@ export const addTurno = async (req, res, next) => {
 //   }
 // };
 
-
 export const deleteTurno = async (req, res) => {
   await Turno.findByIdAndRemove(req.params.id, { userFindAndModify: false })
     .then(() =>
@@ -96,24 +104,22 @@ export const editTurno = async (req, res) => {
 };
 
 export const listTurnos = async (req, res) => {
-  const idCompany=req.params.id
-  console.log(idCompany)
+  const idCompany = req.params.id;
+  console.log(idCompany);
   try {
-    const turnos = await Turno.find({Company:idCompany});
-    
-    if (turnos.length>0) {
+    const turnos = await Turno.find({ Company: idCompany });
+
+    if (turnos.length > 0) {
       res.status(200).json({
         turnos,
       });
-    }else{
+    } else {
       res.status(204).json({
-        msg:"not found turnos"
-      })
+        msg: "not found turnos",
+      });
     }
   } catch (error) {
     console.error(error);
     throw error;
   }
 };
-
-
