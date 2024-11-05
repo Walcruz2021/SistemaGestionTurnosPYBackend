@@ -5,7 +5,7 @@ const Query = gql`
     getCompanyxId(id: ID!): Company
     validationCompanyExist(email: String!): [Company]
     searchUser(email: String!): User
-    getTurnos(id: ID!): Turno
+    getTurnos(id: ID!): [Turno]
   }
 `;
 

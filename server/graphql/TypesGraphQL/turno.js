@@ -11,8 +11,8 @@ const Turno = gql`
     time: String
     #   //(sellers)nombre de campo el cual contendra no solo el id del cliente sino ademas todos
     #   //los datos del mismo(pedidos,turnos,etc)
-    #Client: Cliente
-    #Company: Company
+    Client: String
+    Company: String
   }
 `;
 export default Turno;

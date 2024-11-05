@@ -55,18 +55,12 @@ const resolvers = {
     },
     getTurnos: async (_, { id }) => {
       const idCompany = id;
-
       try {
-        const turnos = await Turno.find({ Company: idCompany });
-
+        const turnos = await Turno.find({ Company:idCompany })
         if (turnos.length > 0) {
-          res.status(200).json({
-            turnos,
-          });
+          return turnos;
         } else {
-          res.status(204).json({
-            msg: "not found turnos",
-          });
+          throw new Error("not found turnos");
         }
       } catch (error) {
         console.error(error);

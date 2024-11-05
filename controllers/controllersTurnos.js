@@ -53,30 +53,6 @@ export const addTurno = async (req, res, next) => {
   }
 };
 
-// const addBreak = async (req, res, next) => {
-//   const { date,notesBreak,ourEntry,timeBreak,idAdmin} =
-//     req.body;
-//   const breakAdmin = new Break({
-//     notesBreak,
-//     date,
-//     ourEntry,
-//     timeBreak,
-//     idAdmin
-//   });
-//   try {
-//     const userAdmin = await UserAdmin.findById(idAdmin);
-//     console.log(userAdmin)
-//     await breakAdmin.save();
-//     userAdmin.arrayBreaks.push(breakAdmin);
-//     await userAdmin.save();
-//     res.send(breakAdmin);
-//     res.status(200).json({
-//       status: "break agended",
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// };
 
 export const deleteTurno = async (req, res) => {
   await Turno.findByIdAndRemove(req.params.id, { userFindAndModify: false })
@@ -103,6 +79,8 @@ export const editTurno = async (req, res) => {
   });
 };
 
+//postman OK
+//graphQL OK
 export const listTurnos = async (req, res) => {
   const idCompany = req.params.id;
   console.log(idCompany);

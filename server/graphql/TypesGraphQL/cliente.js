@@ -1,21 +1,22 @@
-import gql from "graphql-tag"
+import gql from "graphql-tag";
 
-const Cliente=gql`
-type cliente{
+const Cliente = gql`
+type Cliente{
+  id:ID
   name: String,
-  phone: Number,
+  phone: Float,
   address: String,
   notesCli: String,
   turnos: [Turno],
-  pedidos: [Venta],
-  perros: [Perro,
-    nameDog: String
-  ],
-  status:Boolean,default:true,
-  userLogin:Boolean,default:false,
+  # pedidos: [Venta],
+  # perros: [Perro,
+  #   nameDog: String
+  # ],
+  status:Boolean,
+  userLogin:Boolean,
   userName:String,
-  Company:Company
+  company:Company
 }
-`
+`;
 
-export default Cliente
+export default Cliente;
