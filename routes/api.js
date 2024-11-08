@@ -5,8 +5,6 @@ import jwt from "jsonwebtoken";
 
 // Importaciones de controladores
 import {
-  searchClient,
-  searchallClients,
   listClients,
   listClientId,
   addClient,
@@ -28,7 +26,7 @@ import {
   listTurnos,
   addTurno,
   deleteTurno,
-  editTurno
+  editTurno,
   //addBreak
 } from "../controllers/controllersTurnos.js";
 
@@ -58,6 +56,8 @@ const router = express.Router();
 router.delete("/deleteClient/:id", deleteClient);
 router.put("/editClient/:id", editClient);
 router.get("/listClientsCompany/:id", listClients);
+
+//find Client by idClient
 router.get("/listClients/:id", listClientId);
 router.post("/client", addClient);
 
@@ -85,8 +85,6 @@ router.get("/getTurnos/:id", listTurnos);
 router.post("/turno", addTurno);
 
 router.delete("/deleteTurno/:id", deleteTurno);
-
-
 
 //turnosOcu=array de turnos ya ocupados
 //turnosEmpr= es el array de turnos los cuales la empresa piensa abastecer

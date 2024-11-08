@@ -1,6 +1,7 @@
-import gql from "graphql-tag"
+import gql from "graphql-tag";
 
-const Perro=gql`
+const Perro = gql`
+"""Customer's Pet"""
 type Perro{
   raza: String,
   tamaño: String,
@@ -8,6 +9,6 @@ type Perro{
   notaP: String,
   status:Boolean
 }
-`
+`;
 
-export default Perro
+export default Perro;

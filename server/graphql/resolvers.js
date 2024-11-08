@@ -3,7 +3,9 @@
 import User from "../../models/user.js";
 import Company from "../../models/company.js";
 import Turno from "../../models/turno.js";
+import Cliente from "../../models/cliente.js";
 //import User from "../../models/user.js";
+import { faker } from "@faker-js/faker";
 
 const resolvers = {
   Query: {
@@ -53,10 +55,10 @@ const resolvers = {
         console.log(error);
       }
     },
-    getTurnos: async (_, { id }) => {
-      const idCompany = id;
+    getTurnos: async (_, { idComp }) => {
+      const idCompany = idComp;
       try {
-        const turnos = await Turno.find({ Company:idCompany })
+        const turnos = await Turno.find({ Company: idCompany });
         if (turnos.length > 0) {
           return turnos;
         } else {
@@ -65,6 +67,25 @@ const resolvers = {
       } catch (error) {
         console.error(error);
         throw error;
+      }
+    },
+    listClientId: async (_, { idClient }) => {
+      const buscado = await Cliente.findById(idClient);
+      if (buscado) {
+        return buscado;
+      } else throw new Error("client not found");
+    },
+    listClients: async (_, { idCompany }) => {
+      try {
+        if (idCompany) {
+          const findClients = await Cliente.find({
+            status: true,
+            Company: idCompany,
+          });
+          return findClients;
+        }
+      } catch (err) {
+        return err;
       }
     },
   },
@@ -105,6 +126,24 @@ const resolvers = {
         return newUser;
       } else {
         throw new Error("User not found");
+      }
+    },
+    addClient: async (
+      _,
+      { name, phone, address, notesCli, status, Company }
+    ) => {
+      try {
+        const cliente = new Cliente({
+          name: name || faker.person.fullName(),
+          phone: phone || faker.phone.number("+1 ###-###-####"),
+          address: address || `${faker.location.streetAddress()}`,
+          notesCli: notesCli || faker.lorem.sentence(),
+          status: status !== undefined ? status : true,
+          Company,
+        });
+        await cliente.save();
+      } catch (error) {
+        console.log(error);
       }
     },
   },

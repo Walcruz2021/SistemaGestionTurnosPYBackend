@@ -1,6 +1,9 @@
 import gql from "graphql-tag";
 
 const Turno = gql`
+  """
+  Client's Turns
+  """
   type Turno {
     name: String
     nameDog: String
