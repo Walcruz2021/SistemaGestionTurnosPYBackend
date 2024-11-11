@@ -97,11 +97,11 @@ const resolvers = {
       const findUser = await User.findOne({ email: emailUser });
       if (findUser) {
         const newCompany = new Company({
-          nameCompany,
-          address,
-          cuit,
-          province,
-          country,
+          nameCompany: nameCompany || faker.person.fullName(),
+          address: address || `${faker.location.streetAddress()}`,
+          cuit: cuit || faker.phone.number("+1 ###-###-####"),
+          province: province || faker.location.city(),
+          country: country || faker.location.country(),
         });
         newCompany.seller = findUser;
         await newCompany.save();
@@ -115,9 +115,9 @@ const resolvers = {
     },
     addUser: async (_, { fullName, status, email }) => {
       const newUser = new User({
-        fullName,
-        status,
-        email,
+        fullName: fullName || faker.person.fullName(),
+        status: status !== null ? status : true,
+        email: email || faker.internet.email(),
       });
 
       const findUser = await User.findOne({ email: email });
@@ -138,12 +138,47 @@ const resolvers = {
           phone: phone || faker.phone.number("+1 ###-###-####"),
           address: address || `${faker.location.streetAddress()}`,
           notesCli: notesCli || faker.lorem.sentence(),
-          status: status !== undefined ? status : true,
+          status: status !== null ? status : true,
           Company,
         });
         await cliente.save();
       } catch (error) {
         console.log(error);
+      }
+    },
+
+    addTurno: async (
+      _,
+      { name, nameDog, phone, date, notesTurn, idClient, time, idDog, Company }
+    ) => {
+      try {
+        const cliente = await Cliente.findById(idClient);
+
+        if (!cliente) {
+          throw new Error("Client not found");
+        }
+
+        const turno = new Turno({
+          name,
+          nameDog,
+          phone,
+          date,
+          notesTurn,
+          idClient,
+          time,
+          idDog,
+          Company,
+        });
+
+        turno.Client = cliente;
+        await turno.save();
+
+        cliente.turnos.push(turno);
+        await cliente.save();
+
+        return turno;
+      } catch (err) {
+        next(err);
       }
     },
   },

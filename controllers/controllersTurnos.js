@@ -32,27 +32,27 @@ export const addTurno = async (req, res, next) => {
 
   try {
     const cliente = await Cliente.findById(req.body.idClient);
+    console.log(req.body.idClient);
     // console.log(cliente)
-    if (!cliente) {
-      return res.status(204).json({
-        msg: "Client not found",
-      });
-    }
-    turno.Client = cliente;
-    await turno.save();
+    // if (!cliente) {
+    //   return res.status(204).json({
+    //     msg: "Client not found",
+    //   });
+    // }
+    // turno.Client = cliente;
+    // await turno.save();
 
-    cliente.turnos.push(turno);
-    await cliente.save();
+    // cliente.turnos.push(turno);
+    // await cliente.save();
 
-    res.status(200).json({
-      status: "turno agendado",
-      turno,
-    });
+    // res.status(200).json({
+    //   status: "turno agendado",
+    //   turno,
+    // });
   } catch (err) {
     next(err);
   }
 };
-
 
 export const deleteTurno = async (req, res) => {
   await Turno.findByIdAndRemove(req.params.id, { userFindAndModify: false })

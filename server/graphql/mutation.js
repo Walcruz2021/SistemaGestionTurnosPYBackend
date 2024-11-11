@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 const Mutation = gql`
   type Mutation {
     """
-    Create a company for the user who was passed via email
+    Create a company for the user who was passed via email. the email must be an existing one
     """
     addCompany(
       nameCompany: String
@@ -30,6 +30,18 @@ const Mutation = gql`
       status: Boolean
       Company: String
     ): Cliente
+
+    addTurno(
+      name: String
+      nameDog: String
+      phone: String
+      date: Date
+      notesTurn: String
+      idClient: String
+      time: Time
+      idDog: String
+      Company: String
+    ): Turno
   }
 `;
 
