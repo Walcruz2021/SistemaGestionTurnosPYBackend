@@ -32,6 +32,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const connect = require("./db");
 require("dotenv").config();
+require("./routes/alertScheduler");
 
 const app = express();
 const PORT = process.env.PORT || 3002;

@@ -17,6 +17,7 @@ const turnoSchema = new Schema({
     ref: "Cliente",
   },
   Company: { type: Schema.Types.ObjectId, ref: "Company" },
+  alertSent:{type:Boolean,default:false}
 });
 
 module.exports = mongoose.model("Turno", turnoSchema);
