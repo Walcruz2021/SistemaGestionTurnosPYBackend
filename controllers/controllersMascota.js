@@ -66,6 +66,7 @@ const addDog = async (req, res, next) => {
 
 const getDogxId = async (req, res) => {
   if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+    console.log(req.params.id)
     const buscado = await Perro.findById(req.params.id);
     // res.json(buscado)
     res.send(buscado);

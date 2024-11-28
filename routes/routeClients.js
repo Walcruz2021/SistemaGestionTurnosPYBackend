@@ -1,7 +1,7 @@
-const express=require("express")
+import express from "express"
 const router=express.Router()
-const {addClient,uploadClients}=require("../controllers/controllersClients")
-const multer = require('multer');
+import {addClient,uploadClients} from "../controllers/controllersClients.js"
+import multer from 'multer'
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -9,4 +9,4 @@ const upload = multer({ storage: storage });
 router.post('/client',addClient)
 router.post('/importClientsExcel',upload.single('file'),uploadClients)
 
-module.exports=router
+export default router

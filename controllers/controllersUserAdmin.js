@@ -1,17 +1,17 @@
-const User = require("../models/user");
+import User from "../models/user.js";
 //const { body, validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs");
+import bcrypt from "bcryptjs";
 //const jwt = require("jsonwebtoken");
 //const { JWT_SECRET } = process.env;
 //const { tokenSign } = require("../helpers/generateTokens");
-const Client = require("../models/cliente");
-const getUserInfo = require("../lib/getUserInfo");
-const jsonResponse = require("../lib/jsonResponse");
+import Client from "../models/cliente.js";
+//import getUserInfo from "../lib/getUserInfo.js";
+//const jsonResponse = require("../lib/jsonResponse");
 
 //el controlador authRoutes se encarga de manejar la autenticación de un usuario existente en la base de datos.
 //Verifica si el correo electrónico y la contraseña proporcionados coinciden con los datos almacenados en la base de datos.
 
-const authRoutes = async (req, res) => {
+export const authRoutes = async (req, res) => {
   const { userName, password } = req.body;
   if (!userName || !password) return res.status(400).json({ 'message': 'Username and password are required.' });
 
@@ -98,7 +98,7 @@ const authRoutes = async (req, res) => {
   // }
 };
 
-const createUserRolUserClient = async (req, res) => {
+export const createUserRolUserClient = async (req, res) => {
   // Verifica si hay errores de validación
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -152,7 +152,3 @@ const createUserRolUserClient = async (req, res) => {
   }
 };
 
-module.exports = {
-  authRoutes,
-  createUserRolUserClient,
-};

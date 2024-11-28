@@ -1,11 +1,11 @@
 // libreria que nos permitira conectarse a mongodb
-const mongoose = require('mongoose')
-const { Schema } = mongoose
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
-const clienteSchema = new Schema({
+ export const clienteSchema = new Schema({
   name: { type: String, require: true },
   // nameDog:{type:String,require:true},
-  phone: { type: Number, require: true },
+  phone: { type: String, require: true },
   address: { type: String, require: true },
   notesCli: { type: String},
   turnos: [{ type: Schema.Types.ObjectId, ref: 'Turno' }],
@@ -22,4 +22,6 @@ const clienteSchema = new Schema({
   email:{type:String}
 },{timestamps:true})
 
-module.exports = mongoose.model('Cliente', clienteSchema)
+
+const Cliente=mongoose.model('Cliente', clienteSchema)
+export default Cliente

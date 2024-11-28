@@ -1,9 +1,9 @@
-const Cliente = require("../models/cliente");
-const Perro = require("../models/perro");
-const Venta = require("../models/venta");
-const Company = require("../models/company");
+import Cliente from "../models/cliente.js";
+import Perro from "../models/perro.js";
+import Venta from "../models/venta.js";
+import Company from "../models/company.js";
 
-const addVenta = async (req, res, next) => {
+export const addVenta = async (req, res, next) => {
   //console.log(req.params.idClient);
   const {
     date,
@@ -54,7 +54,7 @@ const addVenta = async (req, res, next) => {
   }
 };
 
-const listVentas = async (req, res) => {
+export const listVentas = async (req, res) => {
   // si no coloco el async y el await se enviara a la consola respuestas antes
   // de terminar de hacer la bsusqueda por completo de la BD y tirara errores
   // busqueda de todos los registros que existen en la BD
@@ -66,7 +66,7 @@ const listVentas = async (req, res) => {
   });
 };
 
-const ventaXanio = async (req, res) => {
+export const ventaXanio = async (req, res) => {
   const idCompany = req.params.idCompany;
   const { anio } = req.query;
 
@@ -82,7 +82,7 @@ const ventaXanio = async (req, res) => {
   }
 };
 
-const vtasxAnioandMesNow = async (req, res) => {
+export const vtasxAnioandMesNow = async (req, res) => {
   let now = new Date();
   let mes = now.getMonth() + 1;
   let anio = now.getFullYear();
@@ -109,7 +109,7 @@ const vtasxAnioandMesNow = async (req, res) => {
   }
 };
 
-const vtasxAnioandMesParam = async (req, res) => {
+export const vtasxAnioandMesParam = async (req, res) => {
   const { date } = req.query;
 
 let año = Math.trunc(date / 10);
@@ -135,7 +135,7 @@ let año = Math.trunc(date / 10);
     });  
 };
 
-const listVentasxId = async (req, res, next) => {
+export const listVentasxId = async (req, res, next) => {
   // mongoose.Types.ObjectId.isValid(req.params) para resolver
   // CastError: Cast to ObjectId failed for value "{ _id: '[object Object]' }" (type Object) at path "_id" for model "Venta"
   // se valida si el valor del criterio para la búsqueda es un ObjectId válido
@@ -156,7 +156,7 @@ const listVentasxId = async (req, res, next) => {
   }
 };
 
-const ventasxIdClient = async (req, res, next) => {
+export const ventasxIdClient = async (req, res, next) => {
   // const perro=req.body
   // console.log(perro)
   // const {dog}=req.body
@@ -176,12 +176,4 @@ const ventasxIdClient = async (req, res, next) => {
   });
 };
 
-module.exports = {
-  addVenta,
-  listVentas,
-  ventaXanio,
-  vtasxAnioandMesNow,
-  vtasxAnioandMesParam,
-  listVentasxId,
-  ventasxIdClient,
-};
+
