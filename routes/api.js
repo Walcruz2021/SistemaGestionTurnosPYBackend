@@ -22,7 +22,7 @@ router.delete("/deleteClient/:id",deleteClient);
 router.put("/editClient/:id", editClient);
 router.get("/listClientsCompany/:id", listClients);
 router.get("/listClients/:id", listClientId);
-router.post("/client", addClient);
+
 
 //VENTAS
 

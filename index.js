@@ -32,7 +32,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const connect = require("./db");
 require("dotenv").config();
-require("./routes/alertScheduler");
+//require("./routes/alertScheduler"); esto debe estar activado para que se ejecute la opcion de envio de notificaciones
 
 const app = express();
 const PORT = process.env.PORT || 3002;
