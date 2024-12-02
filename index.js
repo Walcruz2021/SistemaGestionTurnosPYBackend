@@ -61,3 +61,5 @@ app.use("/api", routeClients);
 app.listen(PORT, () => {
   console.log(`Server is starting at ${PORT}`);
 });
+
+export default app
