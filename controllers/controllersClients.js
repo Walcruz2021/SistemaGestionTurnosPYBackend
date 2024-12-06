@@ -1,87 +1,59 @@
-const Cliente = require("../models/cliente");
-const Perro = require("../models/perro");
-const Venta = require("../models/venta");
-const multer = require("multer");
-const XLSX = require("xlsx");
+import server from "react-prime/lib/server.js";
+import Cliente from "../models/cliente.js";
+import Perro from "../models/perro.js";
+import Venta from "../models/venta.js";
+import Turno from "../models/turno.js";
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
-//     //si no coloco el async y el await se enviara a la consola respuestas antes
-//     //de terminar de hacer la bsusqueda por completo de la BD y tirara errores
-//     //busqueda de todos los registros que existen en la BD
-//     const clientes = await Cliente.find();
-//     console.log("clientes")
-//     //res.send("hola mundo")
-//     res.json({
-//         clientes: clientes
-//     })
-//
-
-const searchClient = async (name) => {
-  const client = await Cliente.findOne({ name: `${name}` });
-  return client || null;
-};
-
-const searchallClients = async () => {
-  //     const clients=await Cliente.find();
-  // return clients?clients:null
-  Cliente.find({}, function (err, clientes) {
-    Perro.populate(clientes, { path: "perro" }, function (err, clientes) {
-      res.status(200).send(clientes);
-    });
-  });
-};
-
-const listClients = async (req, res) => {
+//postman OK
+//graphQL OK
+export const listClients = async (req, res) => {
   try {
-    if (req.params.id) {
-      const idCompany = req.params.id;
-      console.log(idCompany);
-      await Cliente.find(
-        { status: true, Company: idCompany },
-        function (err, clientes) {
-          Venta.populate(
-            clientes,
-            { path: "pedidos" },
-            function (err, clientes) {}
-          ),
-            Perro.populate(
-              clientes,
-              { path: "perros" },
-              function (err, clientes) {
-                // res.status(200).send(clientes)
+    const { id } = req.params;
 
-                return res.status(200).json({
-                  clientes,
-                });
-              }
-            );
-        }
-      );
+    if (!id) {
+      return res
+        .status(400)
+        .json({ message: "ID de la compañía es requerido" });
     }
+
+    // Buscar clientes con la compañía y estado activos
+    let clientes = await Cliente.find({ status: true, Company: id }).exec();
+
+    // Población de pedidos y perros
+    clientes = await Cliente.populate(clientes, { path: "pedidos" });
+    clientes = await Perro.populate(clientes, { path: "perros" });
+
+    return res.status(200).json({ clientes });
   } catch (err) {
-    return err;
+    console.error("Error al listar los clientes:", err);
+    return res
+      .status(500)
+      .json({ message: "Error interno del servidor", error: err.message });
   }
 };
 
-const listClientId = async (req, res, next) => {
-  if (req.params.id) {
-    const buscado = await Cliente.findById(req.params.id);
-    console.log(buscado);
-    try {
-      res.json({
+//postman OK
+//graphQL OK
+export const listClientId = async (req, res, next) => {
+  const { idClient } = req.params;
+
+  const buscado = await Cliente.findById(idClient);
+  try {
+    if (buscado) {
+      res.status(200).json({
         buscado,
       });
-    } catch (error) {
-      console.log(error);
+    } else {
+      res.status(404).json({
+        msg: "clients not found",
+      });
     }
-
-    return res.status(400);
+  } catch (error) {
+    console.log(error);
   }
 };
 
-const addClient = async (req, res, next) => {
+export const addClient = async (req, res, next) => {
   try {
     const { name, phone, address, notesCli, status, Company } = req.body;
     const cliente = new Cliente({
@@ -102,7 +74,7 @@ const addClient = async (req, res, next) => {
   }
 };
 
-const editClient = async (req, res) => {
+export const editClient = async (req, res) => {
   const { name, phone, address, notesCli } = req.body;
   const newClient = {
     name,
@@ -110,33 +82,55 @@ const editClient = async (req, res) => {
     address,
     notesCli,
   };
-  await Cliente.findByIdAndUpdate(req.params.id, newClient, {
+
+  const {idClient}=req.params
+
+  const findClient=await Cliente.findByIdAndUpdate(idClient, newClient, {
     userFindAndModify: false,
   });
-  res.json({
-    status: "cliente actualizado",
-  });
+  
+  if(findClient){
+    res.status(200).json({
+      status: "client updated",
+    });
+  }else{
+    res.status(400).json({
+      "msg":"Client not found"
+    })
+  }
 };
 
-const deleteClient = async (req, res) => {
+//eliminar un cliente implica primero verificar que dicho Id no este ligado a las colecciones
+//ventas y turnos
+
+export const deleteClient = async (req, res) => {
   // await Cliente.findByIdAndRemove(req.params.id, { userFindAndModify: false });
 
   const newStatus = {
     status: false,
   };
-
-  await Cliente.findByIdAndUpdate(req.params.id, newStatus, {
-    userFindAndModify: false,
-  })
-    .then(() =>
-      res.json({
-        status: "CLENTE  ELIMINADO",
-      })
-    )
-    .catch((err) => res.status(400).json("Error: " + err));
+  const { idClient } = req.params;
+  const turns = await Turno.findOne({ idClient: idClient });
+  const ventas=await Venta.findOne({client:idClient})
+  if (turns || ventas) {
+    console.log(turns)
+    res.status(404).json({
+      msg: "turnos o ventas existente",
+    });
+  } else {
+    await Cliente.findByIdAndUpdate(req.params.idClient, newStatus, {
+      userFindAndModify: false,
+    })
+      .then(() =>
+        res.json({
+          status: "CLENT DELETED",
+        })
+      )
+      .catch((err) => res.status(400).json("Error: " + err));
+  }
 };
 
-const uploadClients = async (req, res) => {
+export const uploadClients = async (req, res) => {
   //isNaN(valor) false si el valor es un número o puede ser convertido a un número
   //isNaN(true) por ejempo true puede convertirse a 1
 
@@ -184,7 +178,7 @@ const uploadClients = async (req, res) => {
 
     // Guardar cada entrada en la base de datos
     //console.log(arrayDataFilter)
-    if (arrayDataFilter.length===data.length) {
+    if (arrayDataFilter.length === data.length) {
       //console.log(arrayDataFilter)
       await Promise.all(
         arrayDataFilter.map(async (entry) => {
@@ -199,22 +193,10 @@ const uploadClients = async (req, res) => {
       //   await newClient.save();
       // });
     } else {
-   
       res.status(400).send("Revise su Archivo");
     }
   } catch (error) {
     console.error("Error al procesar el archivo:", error);
     res.status(500).send("Hubo un error al procesar el archivo.");
   }
-};
-
-module.exports = {
-  searchClient,
-  searchallClients,
-  listClients,
-  listClientId,
-  addClient,
-  editClient,
-  deleteClient,
-  uploadClients,
 };

@@ -1,5 +1,5 @@
 // libreria que nos permitira conectarse a mongodb
-const mongoose = require('mongoose')
+import mongoose from "mongoose"
 const { Schema } = mongoose
 
 const ventaSchema = new Schema({
@@ -29,6 +29,9 @@ const ventaSchema = new Schema({
     type:Schema.Types.ObjectId,
     ref:'Company'
   }
-})
+},
+{timestamps:true}
+)
 
-module.exports = mongoose.model('Venta', ventaSchema)
+const Venta=mongoose.model('Venta', ventaSchema)
+export default Venta

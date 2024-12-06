@@ -1,9 +1,9 @@
-const Cliente = require("../models/cliente");
-const Perro = require("../models/perro");
-const Venta = require("../models/venta");
-const Company = require("../models/company");
+import Cliente from "../models/cliente.js";
+import Perro from "../models/perro.js";
+import Venta from "../models/venta.js";
+import Company from "../models/company.js";
 
-const addVenta = async (req, res, next) => {
+export const addVenta = async (req, res, next) => {
   //console.log(req.params.idClient);
   const {
     date,
@@ -54,7 +54,7 @@ const addVenta = async (req, res, next) => {
   }
 };
 
-const listVentas = async (req, res) => {
+export const listVentas = async (req, res) => {
   // si no coloco el async y el await se enviara a la consola respuestas antes
   // de terminar de hacer la bsusqueda por completo de la BD y tirara errores
   // busqueda de todos los registros que existen en la BD
@@ -66,11 +66,13 @@ const listVentas = async (req, res) => {
   });
 };
 
-const ventaXanio = async (req, res) => {
+export const ventaXanio = async (req, res) => {
   const idCompany = req.params.idCompany;
-  const { anio } = req.query;
-
+  console.log(idCompany,"ventas x anio")
+  const { anio } = req.body;
+  
   const ventas = await Venta.find({ idCompany: idCompany, año: anio });
+  
   if (ventas.length > 0) {
     res.status(200).json({
       ventas,
@@ -82,7 +84,7 @@ const ventaXanio = async (req, res) => {
   }
 };
 
-const vtasxAnioandMesNow = async (req, res) => {
+export const vtasxAnioandMesNow = async (req, res) => {
   let now = new Date();
   let mes = now.getMonth() + 1;
   let anio = now.getFullYear();
@@ -109,8 +111,8 @@ const vtasxAnioandMesNow = async (req, res) => {
   }
 };
 
-const vtasxAnioandMesParam = async (req, res) => {
-  const { date } = req.query;
+export const vtasxAnioandMesParam = async (req, res) => {
+  const { date } = req.body;
 
 let año = Math.trunc(date / 10);
 
@@ -135,7 +137,7 @@ let año = Math.trunc(date / 10);
     });  
 };
 
-const listVentasxId = async (req, res, next) => {
+export const listVentasxId = async (req, res, next) => {
   // mongoose.Types.ObjectId.isValid(req.params) para resolver
   // CastError: Cast to ObjectId failed for value "{ _id: '[object Object]' }" (type Object) at path "_id" for model "Venta"
   // se valida si el valor del criterio para la búsqueda es un ObjectId válido
@@ -156,32 +158,19 @@ const listVentasxId = async (req, res, next) => {
   }
 };
 
-const ventasxIdClient = async (req, res, next) => {
-  // const perro=req.body
-  // console.log(perro)
-  // const {dog}=req.body
+export const ventasxIdDog = async (req, res, next) => {
+
   const dog = req.params.idDog;
 
-  await Venta.find({ Dog: dog }, function (err, vta) {
-    Perro.populate(vta, { path: "Dog" }, function (err, vta) {
-      if (vta.length > 0) {
-        res.status(200).json({
-          vta,
-        });
-      } else
-        res.status(204).json({
-          msg: "no existe dog",
-        });
+  const vta=await Venta.find({ Dog: dog }).populate('Dog').exec()
+  if (vta.length > 0) {
+    res.status(200).json({
+      vta,
     });
-  });
+  } else
+    res.status(204).json({
+      msg: "no existe dog",
+    });
 };
 
-module.exports = {
-  addVenta,
-  listVentas,
-  ventaXanio,
-  vtasxAnioandMesNow,
-  vtasxAnioandMesParam,
-  listVentasxId,
-  ventasxIdClient,
-};
+

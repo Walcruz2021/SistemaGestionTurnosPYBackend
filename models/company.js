@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const companyShema = new Schema({
@@ -11,6 +11,7 @@ const companyShema = new Schema({
     //     type:Schema.Types.ObjectId,
     //     ref:'Users'
     // }
-});
+},{timestamps:true});
 
-module.exports = mongoose.model("Company", companyShema);
+const Company=mongoose.model("Company", companyShema);
+export default Company
