@@ -29,7 +29,9 @@ const ventaSchema = new Schema({
     type:Schema.Types.ObjectId,
     ref:'Company'
   }
-})
+},
+{timestamps:true}
+)
 
 const Venta=mongoose.model('Venta', ventaSchema)
 export default Venta

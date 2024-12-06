@@ -11,8 +11,8 @@ const userSchema = new Schema({
   fullName: { type: String, required: false },
   email: { type: String, required: true,unique:true},
   companies:[{type:Schema.Types.ObjectId,ref:'Company'}],
-  status:{type:Boolean}
-})
+  status:{type:Boolean,default:true}
+},{timestamps:true})
 
 // userSchema.pre("save", function (next) {
 //   if (this.isModified("password") || this.isNew) {

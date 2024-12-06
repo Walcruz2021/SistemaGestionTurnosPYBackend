@@ -16,7 +16,7 @@ const gastoSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref:'Company'
   }
-});
+},{timestamps:true});
 
 const Gasto = mongoose.model("Gasto", gastoSchema);
 export default Gasto

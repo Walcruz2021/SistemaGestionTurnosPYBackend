@@ -1,3 +1,4 @@
+import { assertValidExecutionArguments } from "graphql/execution/execute.js";
 import Cliente from "../models/cliente.js";
 import Turno from "../models/turno.js";
 import UserAdmin from "../models/user.js";
@@ -54,14 +55,41 @@ export const addTurno = async (req, res, next) => {
   }
 };
 
+//al eliminar un turno debe quitarse el idTurn del array turnos de la coleccion clientes
+//luego se elimina el turno seleccionado
 export const deleteTurno = async (req, res) => {
-  await Turno.findByIdAndRemove(req.params.id, { userFindAndModify: false })
-    .then(() =>
-      res.status(200).json({
-        status: "TURNO ELIMINADO",
-      })
-    )
-    .catch((err) => res.status(400).json("Error: " + err));
+  const { idTurn } = req.params;
+
+  const clientFind = await Cliente.findOneAndUpdate(
+    { turnos: idTurn },
+    {
+      $pull: { turnos: idTurn },
+    }
+  );
+
+  const turnFind = await Turno.findOneAndDelete({_id:idTurn});
+
+  if(clientFind && turnFind){
+    res.status(200).json({
+      "msg":"Turn deleted"
+    })
+  }else{
+    res.status(400).json({
+      "msg":"turn or client not found"
+    })
+  }
+
+  //   const clientFind=await Cliente.findOne(
+  //   { "turnos": idTurn }
+  // );
+  // console.log(clientFind)
+  // await Turno.findByIdAndRemove(idTurno, { userFindAndModify: false })
+  //   .then(() =>
+  //     res.status(200).json({
+  //       status: "TURNO ELIMINADO",
+  //     })
+  //   )
+  //   .catch((err) => res.status(400).json("Error: " + err));
 };
 
 export const editTurno = async (req, res) => {
@@ -81,9 +109,9 @@ export const editTurno = async (req, res) => {
 
 //postman OK
 //graphQL OK
-export const listTurnos = async (req, res) => {
-  const idCompany = req.params.id;
-  console.log(idCompany);
+export const listTurnosXComp = async (req, res) => {
+  const { idCompany } = req.params;
+
   try {
     const turnos = await Turno.find({ Company: idCompany });
 

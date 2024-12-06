@@ -1,57 +1,55 @@
+import server from "react-prime/lib/server.js";
 import Cliente from "../models/cliente.js";
 import Perro from "../models/perro.js";
 import Venta from "../models/venta.js";
-
+import Turno from "../models/turno.js";
 
 //postman OK
 //graphQL OK
 export const listClients = async (req, res) => {
   try {
-    if (req.params.id) {
-      const idCompany = req.params.id;
-      console.log(idCompany);
-      await Cliente.find(
-        { status: true, Company: idCompany },
-        function (err, clientes) {
-          Venta.populate(
-            clientes,
-            { path: "pedidos" },
-            function (err, clientes) {}
-          ),
-            Perro.populate(
-              clientes,
-              { path: "perros" },
-              function (err, clientes) {
-                // res.status(200).send(clientes)
+    const { id } = req.params;
 
-                return res.status(200).json({
-                  clientes,
-                });
-              }
-            );
-        }
-      );
+    if (!id) {
+      return res
+        .status(400)
+        .json({ message: "ID de la compañía es requerido" });
     }
+
+    // Buscar clientes con la compañía y estado activos
+    let clientes = await Cliente.find({ status: true, Company: id }).exec();
+
+    // Población de pedidos y perros
+    clientes = await Cliente.populate(clientes, { path: "pedidos" });
+    clientes = await Perro.populate(clientes, { path: "perros" });
+
+    return res.status(200).json({ clientes });
   } catch (err) {
-    return err;
+    console.error("Error al listar los clientes:", err);
+    return res
+      .status(500)
+      .json({ message: "Error interno del servidor", error: err.message });
   }
 };
 
 //postman OK
 //graphQL OK
 export const listClientId = async (req, res, next) => {
-  if (req.params.id) {
-    const buscado = await Cliente.findById(req.params.id);
-    console.log(buscado);
-    try {
-      res.json({
+  const { idClient } = req.params;
+
+  const buscado = await Cliente.findById(idClient);
+  try {
+    if (buscado) {
+      res.status(200).json({
         buscado,
       });
-    } catch (error) {
-      console.log(error);
+    } else {
+      res.status(404).json({
+        msg: "clients not found",
+      });
     }
-
-    return res.status(400);
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -84,13 +82,26 @@ export const editClient = async (req, res) => {
     address,
     notesCli,
   };
-  await Cliente.findByIdAndUpdate(req.params.id, newClient, {
+
+  const {idClient}=req.params
+
+  const findClient=await Cliente.findByIdAndUpdate(idClient, newClient, {
     userFindAndModify: false,
   });
-  res.json({
-    status: "cliente actualizado",
-  });
+  
+  if(findClient){
+    res.status(200).json({
+      status: "client updated",
+    });
+  }else{
+    res.status(400).json({
+      "msg":"Client not found"
+    })
+  }
 };
+
+//eliminar un cliente implica primero verificar que dicho Id no este ligado a las colecciones
+//ventas y turnos
 
 export const deleteClient = async (req, res) => {
   // await Cliente.findByIdAndRemove(req.params.id, { userFindAndModify: false });
@@ -98,16 +109,25 @@ export const deleteClient = async (req, res) => {
   const newStatus = {
     status: false,
   };
-
-  await Cliente.findByIdAndUpdate(req.params.id, newStatus, {
-    userFindAndModify: false,
-  })
-    .then(() =>
-      res.json({
-        status: "CLENTE  ELIMINADO",
-      })
-    )
-    .catch((err) => res.status(400).json("Error: " + err));
+  const { idClient } = req.params;
+  const turns = await Turno.findOne({ idClient: idClient });
+  const ventas=await Venta.findOne({client:idClient})
+  if (turns || ventas) {
+    console.log(turns)
+    res.status(404).json({
+      msg: "turnos o ventas existente",
+    });
+  } else {
+    await Cliente.findByIdAndUpdate(req.params.idClient, newStatus, {
+      userFindAndModify: false,
+    })
+      .then(() =>
+        res.json({
+          status: "CLENT DELETED",
+        })
+      )
+      .catch((err) => res.status(400).json("Error: " + err));
+  }
 };
 
 export const uploadClients = async (req, res) => {
@@ -158,7 +178,7 @@ export const uploadClients = async (req, res) => {
 
     // Guardar cada entrada en la base de datos
     //console.log(arrayDataFilter)
-    if (arrayDataFilter.length===data.length) {
+    if (arrayDataFilter.length === data.length) {
       //console.log(arrayDataFilter)
       await Promise.all(
         arrayDataFilter.map(async (entry) => {
@@ -173,7 +193,6 @@ export const uploadClients = async (req, res) => {
       //   await newClient.save();
       // });
     } else {
-   
       res.status(400).send("Revise su Archivo");
     }
   } catch (error) {
@@ -181,4 +200,3 @@ export const uploadClients = async (req, res) => {
     res.status(500).send("Hubo un error al procesar el archivo.");
   }
 };
-

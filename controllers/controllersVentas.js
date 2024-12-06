@@ -68,9 +68,11 @@ export const listVentas = async (req, res) => {
 
 export const ventaXanio = async (req, res) => {
   const idCompany = req.params.idCompany;
-  const { anio } = req.query;
-
+  console.log(idCompany,"ventas x anio")
+  const { anio } = req.body;
+  
   const ventas = await Venta.find({ idCompany: idCompany, año: anio });
+  
   if (ventas.length > 0) {
     res.status(200).json({
       ventas,
@@ -110,7 +112,7 @@ export const vtasxAnioandMesNow = async (req, res) => {
 };
 
 export const vtasxAnioandMesParam = async (req, res) => {
-  const { date } = req.query;
+  const { date } = req.body;
 
 let año = Math.trunc(date / 10);
 
@@ -156,24 +158,19 @@ export const listVentasxId = async (req, res, next) => {
   }
 };
 
-export const ventasxIdClient = async (req, res, next) => {
-  // const perro=req.body
-  // console.log(perro)
-  // const {dog}=req.body
+export const ventasxIdDog = async (req, res, next) => {
+
   const dog = req.params.idDog;
 
-  await Venta.find({ Dog: dog }, function (err, vta) {
-    Perro.populate(vta, { path: "Dog" }, function (err, vta) {
-      if (vta.length > 0) {
-        res.status(200).json({
-          vta,
-        });
-      } else
-        res.status(204).json({
-          msg: "no existe dog",
-        });
+  const vta=await Venta.find({ Dog: dog }).populate('Dog').exec()
+  if (vta.length > 0) {
+    res.status(200).json({
+      vta,
     });
-  });
+  } else
+    res.status(204).json({
+      msg: "no existe dog",
+    });
 };
 
 

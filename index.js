@@ -1,33 +1,21 @@
-
-// import express from "express";
-// import { startApolloServer } from "./server/app.js";
-// import morgan from "morgan";
-// import cors from "cors";
-// import connectDB from "./db.js";
-// const PORT = process.env.PORT || 3002;
-// import routes from "./routes/api.js";
-// import routesGastos from "./routes/routeGastos.js";
-// import routeMascota from "./routes/routeGastos.js";
-// import resolvers from "./server/graphql/resolvers.js";
-// import routeClients from "./routes/routeClients.js"
-// import typeDefs from "./server/graphql/typeDefs.js";
-
-const express = require("express");
-const morgan = require("morgan");
-const cors = require("cors");
-
-require("dotenv").config();
-
-
+import express from "express";
+import { startApolloServer } from "./server/app.js";
+import morgan from "morgan";
+import cors from "cors";
+import connectDB from "./db.js";
+//import app from "express"
+//const app = express();
 const PORT = process.env.PORT || 3002;
-
-const routes = require("./routes/api");
-const routesGastos = require("./routes/routeGastos");
-const routeMascota = require("./routes/routeMascota");
-
-//esto debe estar activado para que se ejecute la opcion de envio de notificaciones
-//import alertScheduler from "././routes/alertScheduler.js"
-
+import routeTurns from "./routes/routeTurns.js";
+import routesGastos from "./routes/routeGastos.js";
+import routeMascota from "./routes/routeGastos.js";
+import routeClients from "./routes/routeClients.js";
+import routeVentas from "./routes/routeVentas.js"
+import routeUser from "./routes/routeUser.js";
+import resolvers from "./server/graphql/resolvers.js";
+import typeDefs from "./server/graphql/typeDefs.js";
+// const resolvers=require("./graphql/resolvers")
+// const typeDefs=require("./graphql/typeDefs")
 connectDB;
 const app = express();
 startApolloServer(typeDefs, resolvers);
@@ -53,13 +41,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("tiny"));
 
-app.use("/api", routes);
-app.use("/api", routesGastos);
-app.use("/api", routeMascota);
-app.use("/api", routeClients);
+app.use("/api", routeTurns);
+app.use("/api", routesGastos)
+app.use("/api", routeMascota)
+app.use("/api", routeClients)
+app.use("/api", routeVentas)
+app.use("/api", routeUser)
 
 app.listen(PORT, () => {
   console.log(`Server is starting at ${PORT}`);
 });
-
-export default app

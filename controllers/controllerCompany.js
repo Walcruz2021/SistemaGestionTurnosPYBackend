@@ -34,10 +34,10 @@ export const addCompany = async (req, res, next) => {
 
 //postman OK
 //graphql OK
-export const getCompany = async (req, res, next) => {
+export const getCompanyXId = async (req, res, next) => {
   try {
-    if (req.params.id) {
-      const findCompany = await Company.findById(req.params.id);
+    if (req.params.idCompany) {
+      const findCompany = await Company.findById(req.params.idCompany);
       if (findCompany) {
         res.status(200).json({
           findCompany,

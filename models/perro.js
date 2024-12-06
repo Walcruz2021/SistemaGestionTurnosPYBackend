@@ -11,7 +11,7 @@ export const perroShema = new Schema({
   nameDog: { type: String, require: true },
   notaP: { type: String, require: true },
   status:{type:Boolean,deafult:true}
-})
+},{timestamps:true})
 
 const Perro=mongoose.model('Perro', perroShema)
 export default Perro
