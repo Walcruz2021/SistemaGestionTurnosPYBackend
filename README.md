@@ -1,7 +1,7 @@
 ### Build a MERN (MongoDB | Express | ReactJS | Nodejs)
 
 <p align="center">
-  <a href="http://www.pymesya.com/" target="blank"><img src="../BackendAppOmar/LogoNew.png" width="200" alt="PYMESYA" /></a>
+  <a href="https://www.pymesya.com/tecnologias/sistemaGestionTurnos/" target="blank"><img src="../BackendAppOmar/LogoNew.png" width="200" alt="SISTEMA DE GESTION DE TURNO PY" /></a>
 </p>
 
 # Ejecutar en desarrollo
@@ -33,10 +33,15 @@ npm start
 
 # 📂 Descripción Proyecto
 
-PymesYa es una plataforma diseñada para conectar a las personas con negocios y servicios de terceros de manera eficiente. El proyecto cuenta con un BackOffice que permite a los administradores gestionar contenido dinámico como noticias, historias, imágenes, servicios, y nuevos negocios, garantizando una experiencia flexible y escalable para el usuario final.  
+Sistema de Gestion de Turnos PY optimiza la administración en establecimientos dedicados al cuidado de mascotas, incluyendo:
+
+- ✅ **Gestión de turnos**:  Programación eficiente y automatizada para clientes..  
+- ✅ **Manejo de clientes**: Base de datos organizada para un seguimiento detallado..  
+- ✅ **Control de inventarios**: Gestión precisa de productos y suministros.  
+- ✅ **Generación de informes**: Análisis de gastos, ventas y rendimiento del negocio.   
+- 🚀 **Impacto**: Este sistema mejora significativamente la productividad y la experiencia del cliente, aportando herramientas clave para la toma de decisiones estratégicas. 
 
 # 📝 Características del Backend
-
 
 - ✅ **Framework**: Node.js (Express.js para REST y Apollo Server para GraphQL).  
 - ✅ **Base de datos**: MongoDB con **Mongoose** para modelado y validación de datos.  
@@ -44,7 +49,7 @@ PymesYa es una plataforma diseñada para conectar a las personas con negocios y 
 - ✅ **Control de acceso**: Middleware de autenticación y autorización con **JSON Web Tokens (JWT)**.  
 - ✅ **Gestión de errores**: Sistema centralizado para manejo de errores en el servidor.  
 - ✅ **Despliegue**: Backend implementado en servidores escalables con soporte para ambientes de desarrollo y producción.  
-- 
+  
 # 🚀 Implementaciones Nuevas
 
 
