@@ -59,20 +59,22 @@ export const listVentas = async (req, res) => {
   // de terminar de hacer la bsusqueda por completo de la BD y tirara errores
   // busqueda de todos los registros que existen en la BD
   const ventas = await Venta.find();
-
-  // res.send("hola mundo")
-  res.json({
-    ventas,
-  });
+  ventas.length
+    ? res.status(200).json({
+        ventas,
+      })
+    : res.status(404).json({
+        "message": "Ventas not found",
+      });
 };
 
 export const ventaXanio = async (req, res) => {
   const idCompany = req.params.idCompany;
-  console.log(idCompany,"ventas x anio")
+  console.log(idCompany, "ventas x anio");
   const { anio } = req.body;
-  
+
   const ventas = await Venta.find({ idCompany: idCompany, año: anio });
-  
+
   if (ventas.length > 0) {
     res.status(200).json({
       ventas,
@@ -114,11 +116,10 @@ export const vtasxAnioandMesNow = async (req, res) => {
 export const vtasxAnioandMesParam = async (req, res) => {
   const { date } = req.body;
 
-let año = Math.trunc(date / 10);
+  let año = Math.trunc(date / 10);
 
   let mes = date % 10;
 
-  
   const idCompany = req.params.idCompany;
 
   if (((Math.log(año) * Math.LOG10E + 1) | 0) > 4) {
@@ -134,35 +135,34 @@ let año = Math.trunc(date / 10);
   } else
     return res.status(204).json({
       msg: "no existen ventas",
-    });  
+    });
 };
 
 export const listVentasxId = async (req, res, next) => {
-  // mongoose.Types.ObjectId.isValid(req.params) para resolver
-  // CastError: Cast to ObjectId failed for value "{ _id: '[object Object]' }" (type Object) at path "_id" for model "Venta"
-  // se valida si el valor del criterio para la búsqueda es un ObjectId válido
-
-  const ventaID = await Venta.findById(req.params.id);
+ 
+  const {idVta}=req.params
+  const ventaID = await Venta.findById({_id :idVta});
   // res.json(buscado)
   try {
     if (ventaID) {
       res.status(200).json({
         ventaID,
       });
+    }else{
+      res.status(204).json({
+        "msg": "venta not found",
+      });
+
     }
-    res.status(204).json({
-      status: "venta no encontrada",
-    });
   } catch (err) {
     console.log(err);
   }
 };
 
 export const ventasxIdDog = async (req, res, next) => {
-
   const dog = req.params.idDog;
 
-  const vta=await Venta.find({ Dog: dog }).populate('Dog').exec()
+  const vta = await Venta.find({ Dog: dog }).populate("Dog").exec();
   if (vta.length > 0) {
     res.status(200).json({
       vta,
@@ -172,5 +172,3 @@ export const ventasxIdDog = async (req, res, next) => {
       msg: "no existe dog",
     });
 };
-
-

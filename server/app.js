@@ -21,15 +21,16 @@ export async function startApolloServer(typeDefs, resolvers) {
 
   app.use("/graphql", cors(), express.json(), expressMiddleware(serverGQL));
 
-  await new Promise((resolve) =>
-    httpServer.listen(
-      {
-        port: 4000,
-      },
-      resolve
-    )
-  );
-  console.log("Server is running on http://localhost:4000/graphql");
+  //SE COMENTA ESTE AL CORRER LOS TEST PORQUE DE LO CONTRARIO SE VISUALIZA ERROR
+  // await new Promise((resolve) =>
+  //   httpServer.listen(
+  //     {
+  //       port: 4000,
+  //     },
+  //     resolve
+  //   )
+  // );
+  // console.log("Server is running on http://localhost:4000/graphql");
 }
 
 //https://graphql.org/learn/execution/ documentation

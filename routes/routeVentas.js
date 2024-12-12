@@ -5,7 +5,7 @@ import {listVentas,ventaXanio,vtasxAnioandMesNow,listVentasxId,ventasxIdDog,addV
 router.get("/listVentas", listVentas)
 router.get("/ventasxAnio/:idCompany", ventaXanio);
 router.get("/vtasxAnioandMesNow/:idCompany", vtasxAnioandMesNow);
-router.get("/listVentas/:id", listVentasxId);
+router.get("/listVentas/:idVta", listVentasxId);
 // recibira idDog y buscara en la coleccion de ventas, las que tengan incorporados el idClient
 router.get("/ventaCli/:idDog", ventasxIdDog);
 

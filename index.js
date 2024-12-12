@@ -10,7 +10,7 @@ import routeTurns from "./routes/routeTurns.js";
 import routesGastos from "./routes/routeGastos.js";
 import routeMascota from "./routes/routeGastos.js";
 import routeClients from "./routes/routeClients.js";
-import routeVentas from "./routes/routeVentas.js"
+import routeVentas from "./routes/routeVentas.js";
 import routeUser from "./routes/routeUser.js";
 import resolvers from "./server/graphql/resolvers.js";
 import typeDefs from "./server/graphql/typeDefs.js";
@@ -42,12 +42,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morgan("tiny"));
 
 app.use("/api", routeTurns);
-app.use("/api", routesGastos)
-app.use("/api", routeMascota)
-app.use("/api", routeClients)
-app.use("/api", routeVentas)
-app.use("/api", routeUser)
+app.use("/api", routesGastos);
+app.use("/api", routeMascota);
+app.use("/api", routeClients);
+app.use("/api", routeVentas);
+app.use("/api", routeUser);
 
-app.listen(PORT, () => {
-  console.log(`Server is starting at ${PORT}`);
-});
+//SE COMENTA ESTE AL CORRER LOS TEST PORQUE DE LO CONTRARIO SE VISUALIZA ERROR
+// app.listen(PORT, () => {
+//   console.log(`Server is starting at ${PORT}`);
+// });
+
+export default app;
