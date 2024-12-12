@@ -1,6 +1,7 @@
-### Build a MERN (MongoDB | Express | ReactJS | Nodejs) stack app from scratch
+### Build a MERN (MongoDB | Express | ReactJS | Nodejs)
+
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="../BackendAppOmar/LogoNew.png" width="200" alt="PYMESYA" /></a>
+  <a href="http://www.pymesya.com/" target="blank"><img src="../BackendAppOmar/LogoNew.png" width="200" alt="PYMESYA" /></a>
 </p>
 
 # Ejecutar en desarrollo
@@ -32,16 +33,21 @@ npm start
 
 # 📂 Descripción Proyecto
 
-```
-
 PymesYa es una plataforma diseñada para conectar a las personas con negocios y servicios de terceros de manera eficiente. El proyecto cuenta con un BackOffice que permite a los administradores gestionar contenido dinámico como noticias, historias, imágenes, servicios, y nuevos negocios, garantizando una experiencia flexible y escalable para el usuario final.  
 
-Este proyecto de backend, desarrollado con Node.js, gestiona la lógica de negocio, rutas, y la conexión a la base de datos MongoDB. La arquitectura del proyecto está optimizada para manejar solicitudes RESTful, permitiendo un flujo de datos robusto entre el cliente y el servidor.
-```
+# 📝 Características del Backend
 
+
+- ✅ **Framework**: Node.js (Express.js para REST y Apollo Server para GraphQL).  
+- ✅ **Base de datos**: MongoDB con **Mongoose** para modelado y validación de datos.  
+- ✅ **Pruebas automatizadas**: Configuración con **Jest** para pruebas unitarias e integración continua.  
+- ✅ **Control de acceso**: Middleware de autenticación y autorización con **JSON Web Tokens (JWT)**.  
+- ✅ **Gestión de errores**: Sistema centralizado para manejo de errores en el servidor.  
+- ✅ **Despliegue**: Backend implementado en servidores escalables con soporte para ambientes de desarrollo y producción.  
+- 
 # 🚀 Implementaciones Nuevas
 
-```
+
  Para mejorar la calidad y escalabilidad del backend, se han introducido las siguientes implementaciones en ramas dedicadas, las cuales posteriormente se integran a la rama principal (master):  
 
 1. **Integración de GraphQL**:  
@@ -55,15 +61,7 @@ Este proyecto de backend, desarrollado con Node.js, gestiona la lógica de negoc
 3. **Estrategias de control de versiones y colaboración**:  
    - Todas las nuevas características se desarrollan en ramas específicas siguiendo las mejores prácticas de control de versiones con **Git**.  
    - Esto asegura que los cambios sean revisados, probados, y fusionados de manera estructurada.  
-```
 
-# 📝 Características del Backend
 
-```
-- ✅ **Framework**: Node.js (Express.js para REST y Apollo Server para GraphQL).  
-- ✅ **Base de datos**: MongoDB con **Mongoose** para modelado y validación de datos.  
-- ✅ **Pruebas automatizadas**: Configuración con **Jest** para pruebas unitarias e integración continua.  
-- ✅ **Control de acceso**: Middleware de autenticación y autorización con **JSON Web Tokens (JWT)**.  
-- ✅ **Gestión de errores**: Sistema centralizado para manejo de errores en el servidor.  
-- ✅ **Despliegue**: Backend implementado en servidores escalables con soporte para ambientes de desarrollo y producción.  
-```
+
+
