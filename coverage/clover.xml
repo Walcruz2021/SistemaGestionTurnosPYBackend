@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1733940743257" clover="3.2.0">
-  <project timestamp="1733940743258" name="All files">
+<coverage generated="1734967934160" clover="3.2.0">
+  <project timestamp="1734967934160" name="All files">
     <metrics statements="1582" coveredstatements="876" conditionals="22" coveredconditionals="13" methods="41" coveredmethods="11" elements="1645" coveredelements="900" complexity="0" loc="1582" ncloc="1582" packages="8" files="30" classes="30"/>
-    <package name="BackendAppOmar">
+    <package name="SitioWebPymesYaBackend">
       <metrics statements="77" coveredstatements="75" conditionals="3" coveredconditionals="2" methods="1" coveredmethods="1"/>
-      <file name="db.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\db.js">
+      <file name="db.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\db.js">
         <metrics statements="21" coveredstatements="21" conditionals="1" coveredconditionals="1" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -28,7 +28,7 @@
         <line num="20" count="1" type="stmt"/>
         <line num="21" count="1" type="stmt"/>
       </file>
-      <file name="index.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\index.js">
+      <file name="index.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\index.js">
         <metrics statements="56" coveredstatements="54" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -88,9 +88,9 @@
         <line num="56" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="BackendAppOmar.controllers">
+    <package name="SitioWebPymesYaBackend.controllers">
       <metrics statements="740" coveredstatements="187" conditionals="14" coveredconditionals="6" methods="26" coveredmethods="6"/>
-      <file name="controllersClients.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\controllers\controllersClients.js">
+      <file name="controllersClients.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\controllers\controllersClients.js">
         <metrics statements="202" coveredstatements="24" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -295,7 +295,7 @@
         <line num="201" count="0" type="stmt"/>
         <line num="202" count="0" type="stmt"/>
       </file>
-      <file name="controllersGastos.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\controllers\controllersGastos.js">
+      <file name="controllersGastos.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\controllers\controllersGastos.js">
         <metrics statements="152" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -450,7 +450,7 @@
         <line num="151" count="0" type="stmt"/>
         <line num="152" count="0" type="stmt"/>
       </file>
-      <file name="controllersTurnos.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\controllers\controllersTurnos.js">
+      <file name="controllersTurnos.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\controllers\controllersTurnos.js">
         <metrics statements="131" coveredstatements="76" conditionals="5" coveredconditionals="2" methods="4" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -584,7 +584,7 @@
         <line num="130" count="0" type="stmt"/>
         <line num="131" count="1" type="stmt"/>
       </file>
-      <file name="controllersUser.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\controllers\controllersUser.js">
+      <file name="controllersUser.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\controllers\controllersUser.js">
         <metrics statements="81" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -668,7 +668,7 @@
         <line num="80" count="0" type="stmt"/>
         <line num="81" count="0" type="stmt"/>
       </file>
-      <file name="controllersVentas.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\controllers\controllersVentas.js">
+      <file name="controllersVentas.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\controllers\controllersVentas.js">
         <metrics statements="174" coveredstatements="61" conditionals="9" coveredconditionals="4" methods="7" coveredmethods="4"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -846,9 +846,9 @@
         <line num="174" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="BackendAppOmar.models">
+    <package name="SitioWebPymesYaBackend.models">
       <metrics statements="219" coveredstatements="219" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="cliente.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\models\cliente.js">
+      <file name="cliente.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\models\cliente.js">
         <metrics statements="27" coveredstatements="27" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -878,7 +878,7 @@
         <line num="26" count="1" type="stmt"/>
         <line num="27" count="1" type="stmt"/>
       </file>
-      <file name="company.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\models\company.js">
+      <file name="company.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\models\company.js">
         <metrics statements="17" coveredstatements="17" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -898,7 +898,7 @@
         <line num="16" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
       </file>
-      <file name="gastos.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\models\gastos.js">
+      <file name="gastos.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\models\gastos.js">
         <metrics statements="22" coveredstatements="22" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -923,7 +923,7 @@
         <line num="21" count="1" type="stmt"/>
         <line num="22" count="1" type="stmt"/>
       </file>
-      <file name="perro.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\models\perro.js">
+      <file name="perro.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\models\perro.js">
         <metrics statements="17" coveredstatements="17" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -943,7 +943,7 @@
         <line num="16" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
       </file>
-      <file name="turno.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\models\turno.js">
+      <file name="turno.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\models\turno.js">
         <metrics statements="28" coveredstatements="28" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -974,7 +974,7 @@
         <line num="27" count="1" type="stmt"/>
         <line num="28" count="1" type="stmt"/>
       </file>
-      <file name="user.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\models\user.js">
+      <file name="user.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\models\user.js">
         <metrics statements="71" coveredstatements="71" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1048,7 +1048,7 @@
         <line num="70" count="1" type="stmt"/>
         <line num="71" count="1" type="stmt"/>
       </file>
-      <file name="venta.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\models\venta.js">
+      <file name="venta.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\models\venta.js">
         <metrics statements="37" coveredstatements="37" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1089,9 +1089,9 @@
         <line num="37" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="BackendAppOmar.routes">
+    <package name="SitioWebPymesYaBackend.routes">
       <metrics statements="97" coveredstatements="97" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="routeClients.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\routes\routeClients.js">
+      <file name="routeClients.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\routes\routeClients.js">
         <metrics statements="17" coveredstatements="17" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1111,7 +1111,7 @@
         <line num="16" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
       </file>
-      <file name="routeGastos.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\routes\routeGastos.js">
+      <file name="routeGastos.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\routes\routeGastos.js">
         <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1127,7 +1127,7 @@
         <line num="12" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
       </file>
-      <file name="routeTurns.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\routes\routeTurns.js">
+      <file name="routeTurns.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\routes\routeTurns.js">
         <metrics statements="27" coveredstatements="27" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1157,7 +1157,7 @@
         <line num="26" count="1" type="stmt"/>
         <line num="27" count="1" type="stmt"/>
       </file>
-      <file name="routeUser.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\routes\routeUser.js">
+      <file name="routeUser.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\routes\routeUser.js">
         <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1171,7 +1171,7 @@
         <line num="10" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
       </file>
-      <file name="routeVentas.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\routes\routeVentas.js">
+      <file name="routeVentas.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\routes\routeVentas.js">
         <metrics statements="29" coveredstatements="29" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1204,9 +1204,9 @@
         <line num="29" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="BackendAppOmar.server">
+    <package name="SitioWebPymesYaBackend.server">
       <metrics statements="36" coveredstatements="36" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
-      <file name="app.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\server\app.js">
+      <file name="app.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\server\app.js">
         <metrics statements="36" coveredstatements="36" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1246,9 +1246,9 @@
         <line num="36" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="BackendAppOmar.server.graphql">
+    <package name="SitioWebPymesYaBackend.server.graphql">
       <metrics statements="285" coveredstatements="134" conditionals="0" coveredconditionals="0" methods="10" coveredmethods="0"/>
-      <file name="mutation.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\server\graphql\mutation.js">
+      <file name="mutation.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\server\graphql\mutation.js">
         <metrics statements="48" coveredstatements="48" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1299,7 +1299,7 @@
         <line num="47" count="1" type="stmt"/>
         <line num="48" count="1" type="stmt"/>
       </file>
-      <file name="query.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\server\graphql\query.js">
+      <file name="query.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\server\graphql\query.js">
         <metrics statements="36" coveredstatements="36" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1338,7 +1338,7 @@
         <line num="35" count="1" type="stmt"/>
         <line num="36" count="1" type="stmt"/>
       </file>
-      <file name="resolvers.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\server\graphql\resolvers.js">
+      <file name="resolvers.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\server\graphql\resolvers.js">
         <metrics statements="187" coveredstatements="36" conditionals="0" coveredconditionals="0" methods="10" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1528,7 +1528,7 @@
         <line num="186" count="1" type="stmt"/>
         <line num="187" count="1" type="stmt"/>
       </file>
-      <file name="typeDefs.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\server\graphql\typeDefs.js">
+      <file name="typeDefs.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\server\graphql\typeDefs.js">
         <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1546,9 +1546,9 @@
         <line num="14" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="BackendAppOmar.server.graphql.TypesGraphQL">
+    <package name="SitioWebPymesYaBackend.server.graphql.TypesGraphQL">
       <metrics statements="102" coveredstatements="102" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="cliente.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\server\graphql\TypesGraphQL\cliente.js">
+      <file name="cliente.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\server\graphql\TypesGraphQL\cliente.js">
         <metrics statements="23" coveredstatements="23" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1574,7 +1574,7 @@
         <line num="22" count="1" type="stmt"/>
         <line num="23" count="1" type="stmt"/>
       </file>
-      <file name="company.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\server\graphql\TypesGraphQL\company.js">
+      <file name="company.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\server\graphql\TypesGraphQL\company.js">
         <metrics statements="15" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1592,7 +1592,7 @@
         <line num="14" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
       </file>
-      <file name="turno.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\server\graphql\TypesGraphQL\turno.js">
+      <file name="turno.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\server\graphql\TypesGraphQL\turno.js">
         <metrics statements="23" coveredstatements="23" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1618,7 +1618,7 @@
         <line num="22" count="1" type="stmt"/>
         <line num="23" count="1" type="stmt"/>
       </file>
-      <file name="user.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\server\graphql\TypesGraphQL\user.js">
+      <file name="user.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\server\graphql\TypesGraphQL\user.js">
         <metrics statements="16" coveredstatements="16" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1637,7 +1637,7 @@
         <line num="15" count="1" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
       </file>
-      <file name="venta.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\server\graphql\TypesGraphQL\venta.js">
+      <file name="venta.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\server\graphql\TypesGraphQL\venta.js">
         <metrics statements="25" coveredstatements="25" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -1666,9 +1666,9 @@
         <line num="25" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="BackendAppOmar.test">
+    <package name="SitioWebPymesYaBackend.test">
       <metrics statements="26" coveredstatements="26" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="3"/>
-      <file name="config.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\BackendAppOmar\test\config.js">
+      <file name="config.js" path="D:\WALTER\PROYECTOS\PELUQUERIA CANINA\SitioWebPymesYaBackend\test\config.js">
         <metrics statements="26" coveredstatements="26" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="3"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
