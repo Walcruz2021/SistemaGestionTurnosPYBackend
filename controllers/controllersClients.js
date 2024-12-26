@@ -8,22 +8,26 @@ import Turno from "../models/turno.js";
 //graphQL OK
 export const listClients = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { idCompany } = req.params;
 
-    if (!id) {
+    if (!idCompany) {
       return res
         .status(400)
         .json({ message: "ID de la compañía es requerido" });
     }
 
     // Buscar clientes con la compañía y estado activos
-    let clientes = await Cliente.find({ status: true, Company: id }).exec();
+    let clientes = await Cliente.find({ status: true, Company: idCompany }).exec();
 
-    // Población de pedidos y perros
-    clientes = await Cliente.populate(clientes, { path: "pedidos" });
-    clientes = await Perro.populate(clientes, { path: "perros" });
-
-    return res.status(200).json({ clientes });
+    if(clientes.length>0){
+      // Población de pedidos y perros
+      clientes = await Cliente.populate(clientes, { path: "pedidos" });
+      clientes = await Perro.populate(clientes, { path: "perros" });
+  
+      return res.status(200).json({ clientes });
+    }else{
+      return res.status(404).json({ message: "Clients not found" });
+    }
   } catch (err) {
     console.error("Error al listar los clientes:", err);
     return res
@@ -37,15 +41,15 @@ export const listClients = async (req, res) => {
 export const listClientId = async (req, res, next) => {
   const { idClient } = req.params;
 
-  const buscado = await Cliente.findById(idClient);
+  const findClient = await Cliente.findById(idClient);
   try {
-    if (buscado) {
+    if (findClient) {
       res.status(200).json({
-        buscado,
+        findClient,
       });
     } else {
       res.status(404).json({
-        msg: "clients not found",
+        "msg": "clients not found",
       });
     }
   } catch (error) {
@@ -113,9 +117,8 @@ export const deleteClient = async (req, res) => {
   const turns = await Turno.findOne({ idClient: idClient });
   const ventas=await Venta.findOne({client:idClient})
   if (turns || ventas) {
-    console.log(turns)
     res.status(404).json({
-      msg: "turnos o ventas existente",
+      "msg": "turnos o ventas existente",
     });
   } else {
     await Cliente.findByIdAndUpdate(req.params.idClient, newStatus, {
@@ -123,7 +126,7 @@ export const deleteClient = async (req, res) => {
     })
       .then(() =>
         res.json({
-          status: "CLENT DELETED",
+          status: "CLIENT DELETED",
         })
       )
       .catch((err) => res.status(400).json("Error: " + err));

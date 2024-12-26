@@ -1,0 +1,135 @@
+[33mcommit 9d2fc7c423e02524d635f986dc1db5eedee8b093[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mrelease[m[33m)[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Thu Dec 26 11:47:51 2024 -0300
+
+    send notificaction by email
+
+[33mcommit 32a4054da8dbf22165a7c855cac0b67cef36c1e1[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Thu Dec 26 11:44:36 2024 -0300
+
+    cron send notifications by email
+
+[33mcommit 96faf4ce7a318312c091bff0442bbbf3bf61227e[m
+Merge: 59e4d51 11e355d
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Mon Dec 23 12:36:43 2024 -0300
+
+    merge with notificationsAI
+
+[33mcommit 11e355d806005f22a1e7e7a092555fe3a8bae3b7[m[33m ([m[1;31morigin/NotificationsAI[m[33m, [m[1;32mNotificationsAI[m[33m)[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Mon Dec 23 12:33:05 2024 -0300
+
+    merge with master
+
+[33mcommit 10c22df17bf1e31eba1ad096d57cb4783d76257d[m
+Merge: f951db3 7066fae
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Mon Dec 23 12:30:28 2024 -0300
+
+    merge with master
+
+[33mcommit 59e4d51a9f5b264387d0e8b1b2a446d32c7c13a9[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Mon Dec 23 12:15:42 2024 -0300
+
+    notifications with OpenAI
+
+[33mcommit af21abbef59d7daa8f9e085586ceafadfb706fa5[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Mon Dec 23 12:14:14 2024 -0300
+
+    notifications with OpenAI
+
+[33mcommit 420f9c8a6f7624796636495149d4d4743f610d43[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Mon Dec 23 12:12:32 2024 -0300
+
+    notifications with OpenAI
+
+[33mcommit 7066faeb74a84626e81bf477797bf4895e3c12bf[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Wed Dec 18 14:16:11 2024 -0300
+
+    install multer
+
+[33mcommit fa99caad59f7d0acf1399f81de0d8df2c4a6e5db[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Thu Dec 12 17:55:17 2024 -0300
+
+    refactoring readme description project
+
+[33mcommit 0d754001918fcacbe522d0808a3b0b1366b43541[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Thu Dec 12 17:42:51 2024 -0300
+
+    description readme refactoring
+
+[33mcommit 2b767ce3df0088fdc95e3be59e381e6b2fc249d8[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Thu Dec 12 17:20:52 2024 -0300
+
+    MODIFIED README NEW DESCRIPTIONS
+
+[33mcommit 4cbf96ed52b99c69c98453c93e66f02abe382b54[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Thu Dec 12 17:10:16 2024 -0300
+
+    readme descriptions
+
+[33mcommit f951db3c250bb389b3f25fbcf7fd5f1962e52ab3[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Thu Dec 12 16:41:27 2024 -0300
+
+    Prueba unitarias con Jest
+
+[33mcommit 6228bab4d5307321eb4d5fa53b2508f1fe57f7fc[m
+Merge: 19ef4c2 a2fbef4
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Fri Dec 6 11:58:48 2024 -0300
+
+    merge notificacionAI
+
+[33mcommit a2fbef4da2ee44c506e8d4cf405961f9aa024299[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Fri Dec 6 11:40:50 2024 -0300
+
+    module routes-import
+
+[33mcommit 19ef4c2a6652f15222f9c12fa0f303304d51fa01[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Mon Dec 2 18:56:38 2024 -0300
+
+    reverse master
+
+[33mcommit 7a89d286084ff8abab065956e795115ebc1b6d6a[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Mon Dec 2 18:49:17 2024 -0300
+
+    index
+
+[33mcommit 0d54465d80ad2204faccea9173790303d202560c[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Fri Nov 29 08:02:53 2024 -0300
+
+    package json mocha y chai
+
+[33mcommit 312c9cf7b405a56622a27a77ffd30ed4a391a330[m
+Merge: 369f0b9 17ed7f1
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Thu Nov 28 19:47:38 2024 -0300
+
+    initial test jest
+
+[33mcommit 369f0b976b662b3abf4da069b26ad27d03ab51ed[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Thu Nov 28 08:41:35 2024 -0300
+
+    new route modified add turn
+
+[33mcommit 05f3b248f1712addb5eea77eb0ff9675d6ea934f[m
+Author: Walcruz2021 <cruzherreria1@gmail.com>
+Date:   Wed Nov 27 14:28:46 2024 -0300
+
+    notifications inicio

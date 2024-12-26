@@ -6,7 +6,7 @@ import multer from 'multer'
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-router.get('/listClientsCompany/:id',listClients)
+router.get('/listClientsCompany/:idCompany',listClients)
 router.post('/client',addClient)
 router.post('/importClientsExcel',upload.single('file'),uploadClients)
 //find Client by idClient
