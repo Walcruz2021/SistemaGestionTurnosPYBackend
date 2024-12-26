@@ -59,7 +59,7 @@ export const listClientId = async (req, res, next) => {
 
 export const addClient = async (req, res, next) => {
   try {
-    const { name, phone, address, notesCli, status, Company } = req.body;
+    const { name, phone, address, notesCli, status, Company,email } = req.body;
     const cliente = new Cliente({
       name,
       // nameDog:nameDog,
@@ -68,6 +68,7 @@ export const addClient = async (req, res, next) => {
       notesCli,
       status,
       Company,
+      email
     });
     await cliente.save();
     res.json({
@@ -79,12 +80,13 @@ export const addClient = async (req, res, next) => {
 };
 
 export const editClient = async (req, res) => {
-  const { name, phone, address, notesCli } = req.body;
+  const { name, phone, address, notesCli,email } = req.body;
   const newClient = {
     name,
     phone,
     address,
     notesCli,
+    email
   };
 
   const {idClient}=req.params
