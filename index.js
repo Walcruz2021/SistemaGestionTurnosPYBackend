@@ -45,6 +45,7 @@ app.use("/api", routesGastos);
 app.use("/api", routeMascota);
 app.use("/api", routeClients);
 app.use("/api", routeVentas);
+<<<<<<< HEAD
 app.use("/api", routeCompany)
 app.use("/api", routeUser);
 
@@ -55,5 +56,13 @@ if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => console.log(`Servidor en puerto ${PORT}`));
 }
 
+=======
+app.use("/api", routeUser);
+
+//SE COMENTA ESTE AL CORRER LOS TEST PORQUE DE LO CONTRARIO SE VISUALIZA ERROR
+// app.listen(PORT, () => {
+//   console.log(`Server is starting at ${PORT}`);
+// });
+>>>>>>> f951db3 (Prueba unitarias con Jest)
 
 export default app;

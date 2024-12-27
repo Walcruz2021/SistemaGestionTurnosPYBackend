@@ -40,4 +40,7 @@ describe("GET /api/getTurnos/:idCompany", () => {
   });
 });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f951db3 (Prueba unitarias con Jest)
