@@ -40,11 +40,3 @@ describe("GET /api/getTurnos/:idCompany", () => {
   });
 });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> f951db3 (Prueba unitarias con Jest)
-=======
-
->>>>>>> 32a4054 (cron send notifications by email)
