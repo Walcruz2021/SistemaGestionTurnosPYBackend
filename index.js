@@ -45,8 +45,6 @@ app.use("/api", routesGastos);
 app.use("/api", routeMascota);
 app.use("/api", routeClients);
 app.use("/api", routeVentas);
-<<<<<<< HEAD
-<<<<<<< HEAD
 app.use("/api", routeCompany)
 app.use("/api", routeUser);
 
