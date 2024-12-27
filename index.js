@@ -46,6 +46,7 @@ app.use("/api", routeMascota);
 app.use("/api", routeClients);
 app.use("/api", routeVentas);
 <<<<<<< HEAD
+<<<<<<< HEAD
 app.use("/api", routeCompany)
 app.use("/api", routeUser);
 
@@ -64,5 +65,17 @@ app.use("/api", routeUser);
 //   console.log(`Server is starting at ${PORT}`);
 // });
 >>>>>>> f951db3 (Prueba unitarias con Jest)
+=======
+app.use("/api", routeCompany)
+app.use("/api", routeUser);
+
+
+
+if (process.env.NODE_ENV !== "test") {
+  const PORT = process.env.PORT || 3002;
+  app.listen(PORT, () => console.log(`Servidor en puerto ${PORT}`));
+}
+
+>>>>>>> 32a4054 (cron send notifications by email)
 
 export default app;

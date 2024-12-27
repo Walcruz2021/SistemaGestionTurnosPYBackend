@@ -5,6 +5,7 @@ import {addClient,uploadClients,listClients,listClientId,deleteClient,editClient
 
 
 router.get('/listClientsCompany/:idCompany',listClients)
+router.get('/listClientsCompany/:idCompany',listClients)
 router.post('/client',addClient)
 
 //find Client by idClient
