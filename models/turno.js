@@ -1,5 +1,5 @@
 // libreria que nos permitira conectarse a mongodb
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const turnoSchema = new Schema(
@@ -19,10 +19,11 @@ const turnoSchema = new Schema(
     },
     Company: { type: Schema.Types.ObjectId, ref: "Company" },
     alertSent: { type: Boolean, default: false },
-    isNotifications:{type:Boolean,default:false}//permite saber si se le  enviara notificacion o no
+    isNotifications: { type: Boolean, default: false }, //permite saber si se le  enviara notificacion o no
+    sendNotifications: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
 
 const Turno = mongoose.model("Turno", turnoSchema);
-export default Turno
+export default Turno;
