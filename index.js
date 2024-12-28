@@ -6,7 +6,7 @@ import connectDB from "./db.js";
 const PORT = process.env.PORT || 3002;
 import routeTurns from "./routes/routeTurns.js";
 import routesGastos from "./routes/routeGastos.js";
-import routeMascota from "./routes/routeGastos.js";
+import routeMascota from "./routes/routeMascota.js";
 import routeClients from "./routes/routeClients.js";
 import routeVentas from "./routes/routeVentas.js";
 import routeUser from "./routes/routeUser.js";

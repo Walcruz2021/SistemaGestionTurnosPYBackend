@@ -1,8 +1,7 @@
-const Cliente = require("../models/cliente");
-const Perro = require("../models/perro");
-const Venta = require("../models/venta");
+import Cliente from "../models/cliente.js"
+import Perro from "../models/perro.js";
 
-const editDog = async (req, res) => {
+export const editDog = async (req, res) => {
   const idDog = req.params.id;
   const { nameDog, notaP, raza, tamaño } = req.body;
   const newDog = {
@@ -20,7 +19,7 @@ const editDog = async (req, res) => {
   });
 };
 
-const deleteDog = async (req, res) => {
+export const deleteDog = async (req, res) => {
   console.log(req.params.idDog);
   const newStatus = {
     status: false,
@@ -37,18 +36,18 @@ const deleteDog = async (req, res) => {
     .catch((err) => res.status(400).json("Error:" + err));
 };
 
-const addDog = async (req, res, next) => {
-  const { nameDog, raza, tamaño, notaP} = req.body;
+export const addDog = async (req, res, next) => {
+  const { nameDog, raza, tamaño, notaP } = req.body;
   const perro = new Perro({
     nameDog,
     raza,
     tamaño,
     notaP,
-    status:true
+    status: true,
   });
   try {
     const cliente = await Cliente.findById(req.params.idClient);
-    console.log(cliente)
+    console.log(cliente);
     // se guarda en el campo perro.client el id del cliente al que se le va a guardar el perro
     perro.client = cliente;
     await perro.save();
@@ -64,21 +63,17 @@ const addDog = async (req, res, next) => {
   }
 };
 
-const getDogxId = async (req, res) => {
-  if (mongoose.Types.ObjectId.isValid(req.params.id)) {
-    console.log(req.params.id)
-    const buscado = await Perro.findById(req.params.id);
-    // res.json(buscado)
-    res.send(buscado);
-    // res.json({
-    //   status: "venta encontrada"
-    // })
+export const getDogxId = async (req, res) => {
+  const {idMascota}=req.params
+
+  if(idMascota) {
+    const buscado = await Perro.findById({_id : idMascota});
+    if (buscado) {
+      res.status(200).json({ buscado });
+    } else {
+      res.status(404).json({ msg: "pet not found" });
+    }
   }
 };
 
-module.exports = {
-  editDog,
-  deleteDog,
-  addDog,
-  getDogxId,
-};
+
