@@ -67,9 +67,9 @@ export const getDogxId = async (req, res) => {
   const {idMascota}=req.params
 
   if(idMascota) {
-    const buscado = await Perro.findById({_id : idMascota});
-    if (buscado) {
-      res.status(200).json({ buscado });
+    const findPets = await Perro.findById({_id : idMascota});
+    if (findPets) {
+      res.status(200).json({ findPets });
     } else {
       res.status(404).json({ msg: "pet not found" });
     }
