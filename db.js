@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 let connection
 dotenv.config(); // Carga las variables del archivo .env
-const {DB_USER,DB_PASSWORD,BDMASCOSTASPROD} =process.env
+const {DB_USER,DB_PASSWORD,BDMASCOSTASPROD,BDMASCOSTASPREPROD} =process.env
 
 
 
