@@ -72,7 +72,7 @@ export const searchUser = async (req, res) => {
       });
     } else {
       res.status(404).json({
-        msg: "Companies not found",
+        msg: "user not found",
       });
     }
   } catch (error) {
