@@ -71,7 +71,7 @@ export const searchUser = async (req, res) => {
         mgs: "user find",
       });
     } else {
-      res.status(204).json({
+      res.status(404).json({
         msg: "Companies not found",
       });
     }
