@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 import app from "../index.js";
 
-const { DB_USER, DB_PASSWORD, BDMASCOSTASPREPROD } = process.env;
+const { DB_USER, DB_PASSWORD, BDMASCOSTASPROD,BDMASCOSTASPREPROD } = process.env;
 let server;
 
 export const configDatabase = async () => {
-  const mongoUrl = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.b5p91.mongodb.net/${BDMASCOSTASPREPROD}?retryWrites=true&w=majority`;
+  const mongoUrl = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.b5p91.mongodb.net/${BDMASCOSTASPROD}?retryWrites=true&w=majority`;
   await mongoose.connect(mongoUrl, {
     useUnifiedTopology: true,
   });

@@ -17,7 +17,7 @@ import typeDefs from "./server/graphql/typeDefs.js";
 // const typeDefs=require("./graphql/typeDefs")
 connectDB;
 const app = express();
-startApolloServer(typeDefs, resolvers);
+//startApolloServer(typeDefs, resolvers);
 // // Orígenes permitidos
 const allowedOrigins = [
   "http://localhost:3000",

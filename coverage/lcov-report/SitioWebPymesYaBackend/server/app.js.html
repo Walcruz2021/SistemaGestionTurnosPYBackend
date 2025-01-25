@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">29.03% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>31/31</span>
+                <span class='fraction'>9/31</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">29.03% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>31/31</span>
+                <span class='fraction'>9/31</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -101,28 +101,28 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ApolloServer } from "@apollo/server";
@@ -131,29 +131,29 @@ import { expressMiddleware } from "@apollo/server/express4";
 import cors from "cors";
 import http from "http";
 &nbsp;
-export async function startApolloServer(typeDefs, resolvers) {
-  const app = express();
-  const httpServer = http.createServer(app);
-  const serverGQL = new ApolloServer({
-    typeDefs,
-    resolvers,
-  });
-&nbsp;
-  await serverGQL.start();
-&nbsp;
-  app.use("/graphql", cors(), express.json(), expressMiddleware(serverGQL));
-&nbsp;
-  //SE COMENTA ESTE AL CORRER LOS TEST PORQUE DE LO CONTRARIO SE VISUALIZA ERROR
-  // await new Promise((resolve) =&gt;
-  //   httpServer.listen(
-  //     {
-  //       port: 4000,
-  //     },
-  //     resolve
-  //   )
-  // );
-  // console.log("Server is running on http://localhost:4000/graphql");
-}
+export <span class="fstat-no" title="function not covered" >async function startApolloServer(typeDefs, resolvers) {</span>
+<span class="cstat-no" title="statement not covered" >  const app = express();</span>
+<span class="cstat-no" title="statement not covered" >  const httpServer = http.createServer(app);</span>
+<span class="cstat-no" title="statement not covered" >  const serverGQL = new ApolloServer({</span>
+<span class="cstat-no" title="statement not covered" >    typeDefs,</span>
+<span class="cstat-no" title="statement not covered" >    resolvers,</span>
+<span class="cstat-no" title="statement not covered" >  });</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  await serverGQL.start();</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  app.use("/graphql", cors(), express.json(), expressMiddleware(serverGQL));</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  //SE COMENTA ESTE AL CORRER LOS TEST PORQUE DE LO CONTRARIO SE VISUALIZA ERROR</span>
+<span class="cstat-no" title="statement not covered" >  // await new Promise((resolve) =&gt;</span>
+<span class="cstat-no" title="statement not covered" >  //   httpServer.listen(</span>
+<span class="cstat-no" title="statement not covered" >  //     {</span>
+<span class="cstat-no" title="statement not covered" >  //       port: 4000,</span>
+<span class="cstat-no" title="statement not covered" >  //     },</span>
+<span class="cstat-no" title="statement not covered" >  //     resolve</span>
+<span class="cstat-no" title="statement not covered" >  //   )</span>
+<span class="cstat-no" title="statement not covered" >  // );</span>
+<span class="cstat-no" title="statement not covered" >  // console.log("Server is running on http://localhost:4000/graphql");</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
 //https://graphql.org/learn/execution/ documentation
 &nbsp;</pre></td></tr></table></pre>
@@ -163,7 +163,7 @@ export async function startApolloServer(typeDefs, resolvers) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-12-30T16:46:55.171Z
+                at 2024-12-30T18:09:07.545Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -8,7 +8,7 @@ const {DB_USER,DB_PASSWORD,BDMASCOSTASPROD,BDMASCOSTASPREPROD} =process.env
 
 
 
-const mongoUrl=`mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.b5p91.mongodb.net/${BDMASCOSTASPREPROD}?retryWrites=true&w=majority`
+const mongoUrl=`mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.b5p91.mongodb.net/${BDMASCOSTASPROD}?retryWrites=true&w=majority`
 
 const connectDB = mongoose.connect(mongoUrl, {
   useUnifiedTopology: true, // Solo esta opción es necesaria

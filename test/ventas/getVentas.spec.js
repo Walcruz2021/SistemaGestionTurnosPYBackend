@@ -16,7 +16,6 @@ const verifyMissingFields = async (filter) => {
     "idTurno",
     "date",
     "valorServ",
-    "name",
     "notesTurn",
     "tipoServ",
     "transferencia",
