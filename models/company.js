@@ -7,6 +7,7 @@ const companyShema = new Schema({
     cuit:{type:String},
     province:{type:String},
     country:{type:String},
+    category:{type:String, required:true}
     // User:{
     //     type:Schema.Types.ObjectId,
     //     ref:'Users'

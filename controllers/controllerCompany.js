@@ -4,14 +4,15 @@ import User from "../models/user.js";
 //postman OK
 //graphql OK
 export const addCompany = async (req, res, next) => {
-  const { nameCompany, address, cuit, province, country, emailUser } = req.body;
-  console.log(emailUser)
+  const { nameCompany, address, cuit, province, country, emailUser,category } = req.body;
+  console.log(category)
   const newCompany = new Company({
     nameCompany,
     address,
     cuit,
     province,
     country,
+    category
   });
   const findUser = await User.findOne({ email: emailUser });
   if (findUser) {

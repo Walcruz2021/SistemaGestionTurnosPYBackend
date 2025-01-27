@@ -1,4 +1,4 @@
-import server from "react-prime/lib/server.js";
+  import server from "react-prime/lib/server.js";
 import Cliente from "../models/cliente.js";
 import Perro from "../models/perro.js";
 import Venta from "../models/venta.js";
