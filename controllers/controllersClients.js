@@ -26,7 +26,7 @@ export const listClients = async (req, res) => {
   
       return res.status(200).json({ clientes });
     }else{
-      return res.status(404).json({ message: "Clients not found" });
+      return res.status(204).json({ message: "Clients not found" });
     }
   } catch (err) {
     console.error("Error al listar los clientes:", err);
