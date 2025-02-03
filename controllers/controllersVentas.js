@@ -18,6 +18,7 @@ export const addVenta = async (req, res, next) => {
     año,
     mes,
     idCompany,
+    category,
   } = req.body;
   const venta = new Venta({
     idTurno,
@@ -35,15 +36,16 @@ export const addVenta = async (req, res, next) => {
   });
   try {
     const cliente = await Cliente.findById(req.params.idClient);
-    // console.log(cliente,"---->")
     venta.client = cliente;
     const company = await Company.findById(req.body.idCompany);
     venta.idCompany = company;
-    const dog = await Perro.findById(req.body.idDog);
-    console.log(dog);
-    venta.Dog = dog;
+
+    if (category === "Cliente") {
+      const dog = await Perro.findById(req.body.idDog);
+      venta.Dog = dog;
+    }
+
     await venta.save();
-    //console.log(venta);
     cliente.pedidos.push(venta);
     await cliente.save();
     res.json({
@@ -64,7 +66,7 @@ export const listVentas = async (req, res) => {
         ventas,
       })
     : res.status(404).json({
-        "message": "Ventas not found",
+        message: "Ventas not found",
       });
 };
 
@@ -139,20 +141,18 @@ export const vtasxAnioandMesParam = async (req, res) => {
 };
 
 export const listVentasxId = async (req, res, next) => {
- 
-  const {idVta}=req.params
-  const ventaID = await Venta.findById({_id :idVta});
+  const { idVta } = req.params;
+  const ventaID = await Venta.findById({ _id: idVta });
   // res.json(buscado)
   try {
     if (ventaID) {
       res.status(200).json({
         ventaID,
       });
-    }else{
+    } else {
       res.status(204).json({
-        "msg": "venta not found",
+        msg: "venta not found",
       });
-
     }
   } catch (err) {
     console.log(err);
