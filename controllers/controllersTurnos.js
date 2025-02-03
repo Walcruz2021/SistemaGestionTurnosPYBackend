@@ -79,17 +79,7 @@ export const deleteTurno = async (req, res) => {
     })
   }
 
-  //   const clientFind=await Cliente.findOne(
-  //   { "turnos": idTurn }
-  // );
-  // console.log(clientFind)
-  // await Turno.findByIdAndRemove(idTurno, { userFindAndModify: false })
-  //   .then(() =>
-  //     res.status(200).json({
-  //       status: "TURNO ELIMINADO",
-  //     })
-  //   )
-  //   .catch((err) => res.status(400).json("Error: " + err));
+
 };
 
 export const editTurno = async (req, res) => {
