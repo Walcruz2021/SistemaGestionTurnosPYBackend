@@ -16,7 +16,7 @@ export const addCompany = async (req, res, next) => {
   });
   const findUser = await User.findOne({ email: emailUser });
   if (findUser) {
-    newCompany.seller = findUser;
+    //newCompany.seller = findUser;
     await newCompany.save();
 
     if (findUser.companies) {

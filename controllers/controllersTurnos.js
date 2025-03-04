@@ -83,16 +83,19 @@ export const deleteTurno = async (req, res) => {
 };
 
 export const editTurno = async (req, res) => {
-  const { date, time, notesTurn, isNotifications} = req.body;
+  const { date, time, notesTurn, isNotifications,receta,vacunas,tratamiento,peso,statusFile} = req.body;
+
   const newTurno = {
     date,
     time,
     notesTurn,
-    isNotifications
+    isNotifications,
+    receta,
+    vacunas,
+    tratamiento,
+    peso,
+    statusFile
   };
-
-
-  
   await Turno.findByIdAndUpdate(req.params.id, newTurno, {
     userFindAndModify: false,
   });

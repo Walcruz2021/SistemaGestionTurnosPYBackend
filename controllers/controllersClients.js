@@ -1,4 +1,4 @@
-  import server from "react-prime/lib/server.js";
+import server from "react-prime/lib/server.js";
 import Cliente from "../models/cliente.js";
 import Perro from "../models/perro.js";
 import Venta from "../models/venta.js";
@@ -17,15 +17,18 @@ export const listClients = async (req, res) => {
     }
 
     // Buscar clientes con la compañía y estado activos
-    let clientes = await Cliente.find({ status: true, Company: idCompany }).exec();
+    let clientes = await Cliente.find({
+      status: true,
+      Company: idCompany,
+    }).exec();
 
-    if(clientes.length>0){
+    if (clientes.length > 0) {
       // Población de pedidos y perros
       clientes = await Cliente.populate(clientes, { path: "pedidos" });
       clientes = await Perro.populate(clientes, { path: "perros" });
-  
+
       return res.status(200).json({ clientes });
-    }else{
+    } else {
       return res.status(204).json({ message: "Clients not found" });
     }
   } catch (err) {
@@ -49,7 +52,7 @@ export const listClientId = async (req, res, next) => {
       });
     } else {
       res.status(404).json({
-        "msg": "clients not found",
+        msg: "clients not found",
       });
     }
   } catch (error) {
@@ -59,7 +62,7 @@ export const listClientId = async (req, res, next) => {
 
 export const addClient = async (req, res, next) => {
   try {
-    const { name, phone, address, notesCli, status, Company,email } = req.body;
+    const { name, phone, address, notesCli, status, Company, email } = req.body;
     const cliente = new Cliente({
       name,
       // nameDog:nameDog,
@@ -68,7 +71,7 @@ export const addClient = async (req, res, next) => {
       notesCli,
       status,
       Company,
-      email
+      email,
     });
     await cliente.save();
     res.json({
@@ -80,29 +83,29 @@ export const addClient = async (req, res, next) => {
 };
 
 export const editClient = async (req, res) => {
-  const { name, phone, address, notesCli,email } = req.body;
+  const { name, phone, address, notesCli, email } = req.body;
   const newClient = {
     name,
     phone,
     address,
     notesCli,
-    email
+    email,
   };
 
-  const {idClient}=req.params
+  const { idClient } = req.params;
 
-  const findClient=await Cliente.findByIdAndUpdate(idClient, newClient, {
+  const findClient = await Cliente.findByIdAndUpdate(idClient, newClient, {
     userFindAndModify: false,
   });
-  
-  if(findClient){
+
+  if (findClient) {
     res.status(200).json({
       status: "client updated",
     });
-  }else{
+  } else {
     res.status(400).json({
-      "msg":"Client not found"
-    })
+      msg: "Client not found",
+    });
   }
 };
 
@@ -116,14 +119,14 @@ export const deleteClient = async (req, res) => {
     status: false,
   };
   const { idClient } = req.params;
-  const turns = await Turno.findOne({ idClient: idClient });
-  const ventas=await Venta.findOne({client:idClient})
-  if (turns || ventas) {
-    res.status(404).json({
-      "msg": "turnos o ventas existente",
+  const turns = await Turno.findOne({ Client: idClient });
+  //const ventas=await Venta.findOne({client:idClient})
+  if (turns) {
+    res.status(204).json({
+      msg: "turnos existentes",
     });
   } else {
-    await Cliente.findByIdAndUpdate(req.params.idClient, newStatus, {
+    await Cliente.findByIdAndUpdate(idClient, newStatus, {
       userFindAndModify: false,
     })
       .then(() =>

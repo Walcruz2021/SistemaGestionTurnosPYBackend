@@ -10,6 +10,11 @@ const turnoSchema = new Schema(
     phone: { type: Number, require: true },
     date: { type: String, require: true },
     notesTurn: { type: String, require: true },
+    receta: { type: String, required: false },
+    tratamiento: { type: String, required: false },
+    vacunas: { type: String, required: false },
+    peso: { type: Number, required: false },
+    statusFile:{type:Boolean,default:false},
     time: { type: String, require: true },
     //(sellers)nombre de campo el cual contendra no solo el id del cliente sino ademas todos
     //los datos del mismo(pedidos,turnos,etc)

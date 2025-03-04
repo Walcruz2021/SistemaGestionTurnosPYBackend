@@ -19,6 +19,10 @@ export const addVenta = async (req, res, next) => {
     mes,
     idCompany,
     category,
+    receta,
+    tratamiento,
+    vacunas,
+    peso,
   } = req.body;
   const venta = new Venta({
     idTurno,
@@ -33,6 +37,10 @@ export const addVenta = async (req, res, next) => {
     año,
     mes,
     idCompany,
+    receta,
+    tratamiento,
+    vacunas,
+    peso,
   });
   try {
     const cliente = await Cliente.findById(req.params.idClient);
@@ -40,10 +48,8 @@ export const addVenta = async (req, res, next) => {
     const company = await Company.findById(req.body.idCompany);
     venta.idCompany = company;
 
-    if (category === "Cliente") {
-      const dog = await Perro.findById(req.body.idDog);
-      venta.Dog = dog;
-    }
+    const dog = await Perro.findById(req.body.idDog);
+    venta.Dog = dog;
 
     await venta.save();
     cliente.pedidos.push(venta);

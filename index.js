@@ -11,6 +11,7 @@ import routeClients from "./routes/routeClients.js";
 import routeVentas from "./routes/routeVentas.js";
 import routeUser from "./routes/routeUser.js";
 import routeCompany from "./routes/routeCompany.js"
+import alertConection from "./routes/alertConection.js"
 import resolvers from "./server/graphql/resolvers.js";
 import typeDefs from "./server/graphql/typeDefs.js";
 // const resolvers=require("./graphql/resolvers")
@@ -40,6 +41,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("tiny"));
 
+app.use("/api",alertConection)
 app.use("/api", routeTurns);
 app.use("/api", routesGastos);
 app.use("/api", routeMascota);
