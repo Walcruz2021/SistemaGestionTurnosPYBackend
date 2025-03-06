@@ -78,8 +78,8 @@ export const listVentas = async (req, res) => {
 
 export const ventaXanio = async (req, res) => {
   const idCompany = req.params.idCompany;
-  console.log(idCompany, "ventas x anio");
-  const { anio } = req.body;
+
+  const { anio } = req.query;
 
   const ventas = await Venta.find({ idCompany: idCompany, año: anio });
 
@@ -100,7 +100,7 @@ export const vtasxAnioandMesNow = async (req, res) => {
   let anio = now.getFullYear();
 
   const idCompany = req.params.idCompany;
-  console.log(idCompany);
+
   const vtas = await Venta.find({
     idCompany: idCompany,
     mes: mes,
@@ -122,7 +122,7 @@ export const vtasxAnioandMesNow = async (req, res) => {
 };
 
 export const vtasxAnioandMesParam = async (req, res) => {
-  const { date } = req.body;
+  const { date } = req.query;
 
   let año = Math.trunc(date / 10);
 
@@ -134,6 +134,7 @@ export const vtasxAnioandMesParam = async (req, res) => {
     mes = "" + (año % 10) + mes;
     año = Math.trunc(año / 10);
   }
+
 
   const vtas = await Venta.find({ idCompany: idCompany, mes: mes, año: año });
   if (vtas.length > 0) {
