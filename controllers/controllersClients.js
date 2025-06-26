@@ -43,7 +43,7 @@ export const listClients = async (req, res) => {
 //graphQL OK
 export const listClientId = async (req, res, next) => {
   const { idClient } = req.params;
-
+console.log(idClient)
   const findClient = await Cliente.findById(idClient);
   try {
     if (findClient) {

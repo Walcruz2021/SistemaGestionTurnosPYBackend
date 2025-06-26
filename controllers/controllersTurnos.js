@@ -40,15 +40,17 @@ export const addTurno = async (req, res, next) => {
         msg: "Client not found",
       });
     }
-    turno.Client = cliente;
+    turno.Client = cliente._id;
     await turno.save();
 
-    cliente.turnos.push(turno);
+    cliente.turnos.push(turno._id);
     await cliente.save();
-
+    
+// Convierte el turno a objeto plano y elimina posibles referencias circulares
+    const turnoObj = turno.toObject();
     res.status(200).json({
       status: "turno agendado",
-      turno,
+      turno: turnoObj,
     });
   } catch (err) {
     next(err);
