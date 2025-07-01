@@ -3,17 +3,17 @@ import User from "../models/user.js";
 //postman OK
 //lo tengo con fullname y email averiguar si ademas se mle debe agregar otros datos como companies
 export const addUser = async (req, res) => {
-  const { fullName, status, email } = req.body;
+  const { fullName, status, email,pay } = req.body;
   console.log(fullName)
   const newUser = new User({
     fullName,
     status,
     email,
+    pay
   });
 
   const findUser = await User.findOne({ email: email });
   if (!findUser) {
-    console.log("user NO se encontro");
     await newUser.save();
     return res.status(200).json({
       msg: "user add correctly",

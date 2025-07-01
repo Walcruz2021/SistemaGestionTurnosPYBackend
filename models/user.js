@@ -11,7 +11,8 @@ const userSchema = new Schema({
   fullName: { type: String, required: false },
   email: { type: String, required: true,unique:true},
   companies:[{type:Schema.Types.ObjectId,ref:'Company'}],
-  status:{type:Boolean,default:true}
+  status:{type:Boolean,default:true},
+  pay: { type: Boolean, default: false },//indica si el usuario pago el sistema o es free
 },{timestamps:true})
 
 // userSchema.pre("save", function (next) {
