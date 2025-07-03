@@ -7,6 +7,7 @@ const turnoSchema = new Schema(
     name: { type: String, require: true },
     nameDog: { type: String, require: true },
     idDog: { type: String, require: true },
+    email: { type: String, require: false },
     phone: { type: Number, require: true },
     date: { type: String, require: true },
     notesTurn: { type: String, require: true },
@@ -14,7 +15,7 @@ const turnoSchema = new Schema(
     tratamiento: { type: String, required: false },
     vacunas: { type: String, required: false },
     peso: { type: Number, required: false },
-    statusFile:{type:Boolean,default:false},
+    statusFile: { type: Boolean, default: false },
     time: { type: String, require: true },
     //(sellers)nombre de campo el cual contendra no solo el id del cliente sino ademas todos
     //los datos del mismo(pedidos,turnos,etc)

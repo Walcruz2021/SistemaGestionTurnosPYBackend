@@ -69,7 +69,9 @@ export const sendNotifications = async () => {
       date: { $gte: formattedNow, $lte: formattedTomorrow },
       isNotifications: true,
       sendNotifications: false,
+      email: { $exists: true, $ne: "" }
     });
+
 
     // Enviar alertas por correo
     for (const turno of turnos) {
@@ -105,12 +107,12 @@ export const sendNotifications = async () => {
 
 //este es lo que activa la notificacion automatica, para quer se corra hay que descomentarla
 //mañanse debeir an
-cron.schedule("0 08 * * *", sendNotifications);
+cron.schedule("* 7 * * *", sendNotifications);
 
 
 //* * * * * ejecuta el cron cada minuto
 //0 0 * * * ejecuta el cron cada dia a las 00:00
-//0 9 * * * ejecuta el cron cada dia a las 21:09
+//0 9 * * * ejecuta el cron cada dia a las 21:00
 //0 10 * * * ejecuta el cron cada dia a las 10:00+
 
 //0 → En el minuto 0.

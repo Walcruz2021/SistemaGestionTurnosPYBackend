@@ -14,6 +14,7 @@ import routeCompany from "./routes/routeCompany.js"
 import alertConection from "./routes/alertConection.js"
 import resolvers from "./server/graphql/resolvers.js";
 import typeDefs from "./server/graphql/typeDefs.js";
+import "./routes/alertScheduler.js";
 // const resolvers=require("./graphql/resolvers")
 // const typeDefs=require("./graphql/typeDefs")
 connectDB;

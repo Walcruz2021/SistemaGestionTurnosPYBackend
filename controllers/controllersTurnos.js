@@ -18,6 +18,7 @@ export const addTurno = async (req, res, next) => {
     time,
     idDog,
     Company,
+    email
   } = req.body;
   const turno = new Turno({
     name,
@@ -29,11 +30,12 @@ export const addTurno = async (req, res, next) => {
     time,
     idDog,
     Company,
+    email
   });
 
   try {
     const cliente = await Cliente.findById(req.body.idClient);
-  
+
     //console.log(cliente)
     if (!cliente) {
       return res.status(204).json({
@@ -45,8 +47,8 @@ export const addTurno = async (req, res, next) => {
 
     cliente.turnos.push(turno._id);
     await cliente.save();
-    
-// Convierte el turno a objeto plano y elimina posibles referencias circulares
+
+    // Convierte el turno a objeto plano y elimina posibles referencias circulares
     const turnoObj = turno.toObject();
     res.status(200).json({
       status: "turno agendado",
@@ -69,23 +71,33 @@ export const deleteTurno = async (req, res) => {
     }
   );
 
-  const turnFind = await Turno.findOneAndDelete({_id:idTurn});
+  const turnFind = await Turno.findOneAndDelete({ _id: idTurn });
 
-  if(clientFind && turnFind){
+  if (clientFind && turnFind) {
     res.status(200).json({
-      "msg":"Turn deleted"
-    })
-  }else{
+      msg: "Turn deleted",
+    });
+  } else {
     res.status(400).json({
-      "msg":"turn or client not found"
-    })
+      msg: "turn or client not found",
+    });
   }
-
-
 };
 
 export const editTurno = async (req, res) => {
-  const { date, time, notesTurn, isNotifications,receta,vacunas,tratamiento,peso,statusFile} = req.body;
+  const {
+    date,
+    time,
+    notesTurn,
+    isNotifications,
+    receta,
+    vacunas,
+    tratamiento,
+    peso,
+    statusFile,
+    phone,
+    email
+  } = req.body;
 
   const newTurno = {
     date,
@@ -96,8 +108,12 @@ export const editTurno = async (req, res) => {
     vacunas,
     tratamiento,
     peso,
-    statusFile
+    statusFile,
+    phone,
+    email
   };
+
+  console.log(email)
   await Turno.findByIdAndUpdate(req.params.id, newTurno, {
     userFindAndModify: false,
   });
