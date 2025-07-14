@@ -19,6 +19,7 @@ export const addTurno = async (req, res, next) => {
     idDog,
     Company,
   } = req.body;
+
   const turno = new Turno({
     name,
     nameDog,
@@ -32,21 +33,21 @@ export const addTurno = async (req, res, next) => {
   });
 
   try {
-    const cliente = await Cliente.findById(req.body.idClient);
-  
-    //console.log(cliente)
-    if (!cliente) {
-      return res.status(204).json({
-        msg: "Client not found",
-      });
+    let cliente = null;
+    if (idClient) {
+      cliente = await Cliente.findById(idClient);
     }
-    turno.Client = cliente._id;
-    await turno.save();
 
-    cliente.turnos.push(turno._id);
-    await cliente.save();
-    
-// Convierte el turno a objeto plano y elimina posibles referencias circulares
+    if (cliente) {
+      turno.Client = cliente._id;
+      await turno.save();
+
+      cliente.turnos.push(turno._id);
+      await cliente.save();
+    } else {
+      await turno.save();
+    }
+
     const turnoObj = turno.toObject();
     res.status(200).json({
       status: "turno agendado",
@@ -69,23 +70,35 @@ export const deleteTurno = async (req, res) => {
     }
   );
 
-  const turnFind = await Turno.findOneAndDelete({_id:idTurn});
+  const turnFind = await Turno.findOneAndDelete({ _id: idTurn });
 
-  if(clientFind && turnFind){
+  if (clientFind && turnFind) {
     res.status(200).json({
-      "msg":"Turn deleted"
-    })
-  }else{
+      msg: "Turn deleted",
+    });
+  } else {
     res.status(400).json({
-      "msg":"turn or client not found"
-    })
+      msg: "turn or client not found",
+    });
   }
-
-
 };
 
 export const editTurno = async (req, res) => {
-  const { date, time, notesTurn, isNotifications,receta,vacunas,tratamiento,peso,statusFile} = req.body;
+  const {
+    date,
+    time,
+    notesTurn,
+    isNotifications,
+    receta,
+    vacunas,
+    tratamiento,
+    peso,
+    statusFile,
+    idClient,
+    idDog,
+    nameDog,
+    name,
+  } = req.body;
 
   const newTurno = {
     date,
@@ -96,7 +109,11 @@ export const editTurno = async (req, res) => {
     vacunas,
     tratamiento,
     peso,
-    statusFile
+    statusFile,
+    idClient,
+    idDog,
+    nameDog,
+    name,
   };
   await Turno.findByIdAndUpdate(req.params.id, newTurno, {
     userFindAndModify: false,
