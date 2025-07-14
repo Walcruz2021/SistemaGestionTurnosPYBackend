@@ -18,6 +18,7 @@ export const addTurno = async (req, res, next) => {
     time,
     idDog,
     Company,
+    email
   } = req.body;
 
   const turno = new Turno({
@@ -30,6 +31,7 @@ export const addTurno = async (req, res, next) => {
     time,
     idDog,
     Company,
+    email
   });
 
   try {
@@ -71,13 +73,20 @@ export const deleteTurno = async (req, res) => {
   );
 
   const turnFind = await Turno.findOneAndDelete({ _id: idTurn });
+  const turnFind = await Turno.findOneAndDelete({ _id: idTurn });
 
+  if (clientFind && turnFind) {
   if (clientFind && turnFind) {
     res.status(200).json({
       msg: "Turn deleted",
     });
   } else {
+      msg: "Turn deleted",
+    });
+  } else {
     res.status(400).json({
+      msg: "turn or client not found",
+    });
       msg: "turn or client not found",
     });
   }
@@ -115,6 +124,8 @@ export const editTurno = async (req, res) => {
     nameDog,
     name,
   };
+
+  console.log(email)
   await Turno.findByIdAndUpdate(req.params.id, newTurno, {
     userFindAndModify: false,
   });
