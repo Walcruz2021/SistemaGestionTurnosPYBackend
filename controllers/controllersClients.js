@@ -84,6 +84,7 @@ export const addClient = async (req, res, next) => {
 
 export const editClient = async (req, res) => {
   const { name, phone, address, notesCli, email } = req.body;
+
   const newClient = {
     name,
     phone,
@@ -95,10 +96,23 @@ export const editClient = async (req, res) => {
   const { idClient } = req.params;
 
   const findClient = await Cliente.findByIdAndUpdate(idClient, newClient, {
-    userFindAndModify: false,
+    useFindAndModify: false,
   });
 
+
   if (findClient) {
+    if(findClient.turnos.length){
+
+      for(let turn of findClient.turnos){
+        const turno=await Turno.findOne({_id : turn})
+console.log(turno)
+        if(turn){
+          await Turno.findByIdAndUpdate(turn,{email,phone},{
+            useFindAndModify: false
+          })
+        }
+      }
+    }
     res.status(200).json({
       status: "client updated",
     });

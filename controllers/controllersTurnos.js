@@ -14,11 +14,11 @@ export const addTurno = async (req, res, next) => {
     phone,
     date,
     notesTurn,
-    idClient,
+    Client,
     time,
     idDog,
     Company,
-    email
+    email,
   } = req.body;
 
   const turno = new Turno({
@@ -27,17 +27,17 @@ export const addTurno = async (req, res, next) => {
     phone,
     date,
     notesTurn,
-    idClient,
+    Client,
     time,
     idDog,
     Company,
-    email
+    email,
   });
 
   try {
     let cliente = null;
-    if (idClient) {
-      cliente = await Cliente.findById(idClient);
+    if (Client) {
+      cliente = await Cliente.findById(Client);
     }
 
     if (cliente) {
@@ -65,28 +65,25 @@ export const addTurno = async (req, res, next) => {
 export const deleteTurno = async (req, res) => {
   const { idTurn } = req.params;
 
-  const clientFind = await Cliente.findOneAndUpdate(
-    { turnos: idTurn },
-    {
-      $pull: { turnos: idTurn },
-    }
-  );
+  const clientFind = await Cliente.findOne({ turnos: idTurn });
+
+  if (clientFind) {
+    await Cliente.findOneAndUpdate(
+      { turnos: idTurn },
+      {
+        $pull: { turnos: idTurn },
+      }
+    );
+  }
 
   const turnFind = await Turno.findOneAndDelete({ _id: idTurn });
-  const turnFind = await Turno.findOneAndDelete({ _id: idTurn });
 
-  if (clientFind && turnFind) {
-  if (clientFind && turnFind) {
+  if ((clientFind && turnFind) || (!clientFind && turnFind)) {
     res.status(200).json({
       msg: "Turn deleted",
     });
   } else {
-      msg: "Turn deleted",
-    });
-  } else {
     res.status(400).json({
-      msg: "turn or client not found",
-    });
       msg: "turn or client not found",
     });
   }
@@ -103,10 +100,12 @@ export const editTurno = async (req, res) => {
     tratamiento,
     peso,
     statusFile,
-    idClient,
+    Client,
     idDog,
     nameDog,
     name,
+    phone,
+    email,
   } = req.body;
 
   const newTurno = {
@@ -119,16 +118,29 @@ export const editTurno = async (req, res) => {
     tratamiento,
     peso,
     statusFile,
-    idClient,
+    Client,
     idDog,
     nameDog,
     name,
+    email,
+    phone,
   };
-
-  console.log(email)
+  if (Client) {
+    const findClient = await Cliente.findOne({ _id: Client });
+    if (findClient && Array.isArray(findClient.turnos)) {
+      if (!findClient.turnos.includes(req.params.id)) {
+        await Cliente.findByIdAndUpdate(
+          Client,
+          { $push: { turnos: req.params.id } },
+          { useFindAndModify: false }
+        );
+      }
+    }
+  }
   await Turno.findByIdAndUpdate(req.params.id, newTurno, {
     userFindAndModify: false,
   });
+
   res.status(200).json({
     status: "turno actualizado",
   });
