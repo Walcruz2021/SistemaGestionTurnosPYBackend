@@ -27,6 +27,7 @@ const turnoSchema = new Schema(
     alertSent: { type: Boolean, default: false },
     isNotifications: { type: Boolean, default: false }, //permite saber si se le  enviara notificacion o no
     sendNotifications: { type: Boolean, default: false },
+    category: { type: String,required:false }
   },
   { timestamps: true }
 );

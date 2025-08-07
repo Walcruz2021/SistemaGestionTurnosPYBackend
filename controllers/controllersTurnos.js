@@ -19,6 +19,7 @@ export const addTurno = async (req, res, next) => {
     idDog,
     Company,
     email,
+    category
   } = req.body;
 
   const turno = new Turno({
@@ -32,8 +33,8 @@ export const addTurno = async (req, res, next) => {
     idDog,
     Company,
     email,
+    category
   });
-
   try {
     let cliente = null;
     if (Client) {
@@ -47,6 +48,7 @@ export const addTurno = async (req, res, next) => {
       cliente.turnos.push(turno._id);
       await cliente.save();
     } else {
+      
       await turno.save();
     }
 
