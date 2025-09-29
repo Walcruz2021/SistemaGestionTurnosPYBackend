@@ -1,5 +1,6 @@
-import Cliente from "../models/cliente.js"
+import Cliente from "../models/cliente.js";
 import Perro from "../models/perro.js";
+import Turno from "../models/turno.js";
 
 export const editDog = async (req, res) => {
   const idDog = req.params.id;
@@ -20,20 +21,26 @@ export const editDog = async (req, res) => {
 };
 
 export const deleteDog = async (req, res) => {
-  console.log(req.params.idDog);
   const newStatus = {
     status: false,
   };
-
-  await Perro.findByIdAndUpdate(req.params.idDog, newStatus, {
-    userFindAndModify: false,
-  })
-    .then(() =>
-      res.json({
-        status: "DOG MODIFICADO",
-      })
-    )
-    .catch((err) => res.status(400).json("Error:" + err));
+  const turn = await Turno.findOne({ idDog: req.params.idDog });
+  
+  if (turn) {
+    res.status(204).json({
+      msg: "turnos existentes",
+    });
+  } else {
+    await Perro.findByIdAndUpdate(req.params.idDog, newStatus, {
+      userFindAndModify: false,
+    })
+      .then(() =>
+        res.json({
+          status: "DOG MODIFICADO",
+        })
+      )
+      .catch((err) => res.status(400).json("Error:" + err));
+  }
 };
 
 export const addDog = async (req, res, next) => {
@@ -64,10 +71,10 @@ export const addDog = async (req, res, next) => {
 };
 
 export const getDogxId = async (req, res) => {
-  const {idMascota}=req.params
+  const { idMascota } = req.params;
 
-  if(idMascota) {
-    const findPets = await Perro.findById({_id : idMascota});
+  if (idMascota) {
+    const findPets = await Perro.findById({ _id: idMascota });
     if (findPets) {
       res.status(200).json({ findPets });
     } else {
@@ -75,5 +82,3 @@ export const getDogxId = async (req, res) => {
     }
   }
 };
-
-
