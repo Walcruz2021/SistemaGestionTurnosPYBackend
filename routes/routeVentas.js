@@ -1,6 +1,6 @@
 import express from "express"
 const router=express.Router()
-import {listVentas,ventaXanio,vtasxAnioandMesNow,listVentasxId,ventasxIdDog,addVenta,vtasxAnioandMesParam} from "../controllers/controllersVentas.js"
+import {listVentas,ventaXanio,vtasxAnioandMesNow,listVentasxId,ventasxIdDog,addVenta,vtasxAnioandMesParam,ventasxIdCli} from "../controllers/controllersVentas.js"
 
 router.get("/listVentas", listVentas)
 router.get("/ventasxAnio/:idCompany", ventaXanio);
@@ -8,6 +8,7 @@ router.get("/vtasxAnioandMesNow/:idCompany", vtasxAnioandMesNow);
 router.get("/listVentas/:idVta", listVentasxId);
 // recibira idDog y buscara en la coleccion de ventas, las que tengan incorporados el idClient
 router.get("/ventaCli/:idDog", ventasxIdDog);
+router.get("/ventaPaciente/:idCli", ventasxIdCli);
 
     // {
     // "mes":"07",

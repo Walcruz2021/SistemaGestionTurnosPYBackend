@@ -15,6 +15,7 @@ const turnoSchema = new Schema(
     tratamiento: { type: String, required: false },
     vacunas: { type: String, required: false },
     peso: { type: Number, required: false },
+    //statusFile es el que determina si el cliente o paciente cargo ficha o no
     statusFile: { type: Boolean, default: false },
     time: { type: String, require: true },
     //(sellers)nombre de campo el cual contendra no solo el id del cliente sino ademas todos

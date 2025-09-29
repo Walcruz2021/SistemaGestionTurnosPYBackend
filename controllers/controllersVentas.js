@@ -23,6 +23,7 @@ export const addVenta = async (req, res, next) => {
     tratamiento,
     vacunas,
     peso,
+    idDog,
   } = req.body;
   const venta = new Venta({
     idTurno,
@@ -41,6 +42,7 @@ export const addVenta = async (req, res, next) => {
     tratamiento,
     vacunas,
     peso,
+    idDog,
   });
   try {
     const cliente = await Cliente.findById(req.params.idClient);
@@ -48,8 +50,11 @@ export const addVenta = async (req, res, next) => {
     const company = await Company.findById(req.body.idCompany);
     venta.idCompany = company;
 
-    const dog = await Perro.findById(req.body.idDog);
-    venta.Dog = dog;
+    //si llega idDog es porque se ingreso desde una peluqueria o veterinaria
+    if (idDog) {
+      const dog = await Perro.findById(req.body.idDog);
+      venta.Dog = dog;
+    }
 
     await venta.save();
     cliente.pedidos.push(venta);
@@ -135,7 +140,6 @@ export const vtasxAnioandMesParam = async (req, res) => {
     año = Math.trunc(año / 10);
   }
 
-
   const vtas = await Venta.find({ idCompany: idCompany, mes: mes, año: año });
   if (vtas.length > 0) {
     return res.status(200).json({
@@ -170,6 +174,20 @@ export const ventasxIdDog = async (req, res, next) => {
   const dog = req.params.idDog;
 
   const vta = await Venta.find({ Dog: dog }).populate("Dog").exec();
+  if (vta.length > 0) {
+    res.status(200).json({
+      vta,
+    });
+  } else
+    res.status(204).json({
+      msg: "no existe dog",
+    });
+};
+
+export const ventasxIdCli = async (req, res, next) => {
+  const idCli = req.params.idCli;
+
+  const vta = await Venta.find({ client: idCli });
   if (vta.length > 0) {
     res.status(200).json({
       vta,
