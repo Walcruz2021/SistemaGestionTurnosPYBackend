@@ -1,8 +1,11 @@
 import express from "express";
 import { startApolloServer } from "./server/app.js";
+import dotenv from 'dotenv';
 import morgan from "morgan";
 import cors from "cors";
 import connectDB from "./db.js";
+dotenv.config(); // Carga las variables del archivo .env
+const {DB_USER,DB_PASSWORD,BDMASCOSTASPROD,BDMASCOSTASPREPROD} =process.env
 const PORT = process.env.PORT || 3002;
 import routeTurns from "./routes/routeTurns.js";
 import routesGastos from "./routes/routeGastos.js";
@@ -14,11 +17,18 @@ import routeCompany from "./routes/routeCompany.js"
 import alertConection from "./routes/alertConection.js"
 import resolvers from "./server/graphql/resolvers.js";
 import typeDefs from "./server/graphql/typeDefs.js";
+import { trainAndPredict } from './services/tensorflowService.js'
+import { predictNextSale } from './services/predictNextSale.js'
+import { MongoClient } from 'mongodb';
 import "./routes/alertScheduler.js";
 // const resolvers=require("./graphql/resolvers")
 // const typeDefs=require("./graphql/typeDefs")
+const uri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.b5p91.mongodb.net/${BDMASCOSTASPROD}?retryWrites=true&w=majority`;
+const client = new MongoClient(uri);
+await client.connect();
 connectDB;
 const app = express();
+app.locals.db = client.db('BDAPlicacionMascotas');
 //startApolloServer(typeDefs, resolvers);
 // // Orígenes permitidos
 const allowedOrigins = [

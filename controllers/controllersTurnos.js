@@ -30,7 +30,7 @@ export const addTurno = async (req, res, next) => {
     notesTurn,
     Client,
     time,
-    idDog,
+    idDog: idDog || null,
     Company,
     email,
     category
@@ -53,6 +53,7 @@ export const addTurno = async (req, res, next) => {
     }
 
     const turnoObj = turno.toObject();
+
     res.status(200).json({
       status: "turno agendado",
       turno: turnoObj,

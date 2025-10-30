@@ -1,6 +1,7 @@
 import express from "express"
 const router=express.Router()
-import {listVentas,ventaXanio,vtasxAnioandMesNow,listVentasxId,ventasxIdDog,addVenta,vtasxAnioandMesParam,ventasxIdCli} from "../controllers/controllersVentas.js"
+import {listVentas,ventaXanio,vtasxAnioandMesNow,listVentasxId,ventasxIdDog,addVenta,vtasxAnioandMesParam,ventasxIdCli,rankingVtasTotalByClient,rankingVtasDetailsByClient} from "../controllers/controllersVentas.js"
+import { prediccionVtasMensual,prediccionVtasMensualInCant} from "../controllers/ventas/prediccionVentasMensual.js";
 
 router.get("/listVentas", listVentas)
 router.get("/ventasxAnio/:idCompany", ventaXanio);
@@ -26,5 +27,10 @@ router.get("/ventaPaciente/:idCli", ventasxIdCli);
 //based on the idTurno the idDog and idCompany will be obtained
 router.post("/addVentas/:idClient", addVenta);
 router.get("/vtasxAnioandMesParam/:idCompany", vtasxAnioandMesParam);
+router.get("/prediccionVtasMensual", prediccionVtasMensual);
+router.get("/prediccionVtasMensualInCant",prediccionVtasMensualInCant)
+router.get("/rankingVtasByClients/:idCompany",rankingVtasTotalByClient)
+router.get("/rankingVtasDetailsByClients/:idCompany",rankingVtasDetailsByClient)
+
 
 export default router

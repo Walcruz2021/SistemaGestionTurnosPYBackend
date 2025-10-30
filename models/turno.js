@@ -7,7 +7,7 @@ const turnoSchema = new Schema(
     name: { type: String, require: true },
     nameDog: { type: String, require: true },
     // idDog: { type: String, require: true },
-    idDog: { type: Schema.Types.ObjectId, ref: "Perro" },
+    idDog: { type: Schema.Types.ObjectId, ref: "Perro", default:null, required: false },
     email: { type: String, require: false },
     phone: { type: Number, require: true },
     date: { type: String, require: true },

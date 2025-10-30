@@ -2,7 +2,7 @@ import Cliente from "../models/cliente.js";
 import Perro from "../models/perro.js";
 import Venta from "../models/venta.js";
 import Company from "../models/company.js";
-
+import { ObjectId } from "mongodb";
 export const addVenta = async (req, res, next) => {
   //console.log(req.params.idClient);
   const {
@@ -74,11 +74,11 @@ export const listVentas = async (req, res) => {
   const ventas = await Venta.find();
   ventas.length
     ? res.status(200).json({
-        ventas,
-      })
+      ventas,
+    })
     : res.status(404).json({
-        message: "Ventas not found",
-      });
+      message: "Ventas not found",
+    });
 };
 
 export const ventaXanio = async (req, res) => {
@@ -196,4 +196,173 @@ export const ventasxIdCli = async (req, res, next) => {
     res.status(204).json({
       msg: "no existe dog",
     });
+};
+
+export const rankingVtasTotalByClient = async (req, res, next) => {
+  const { idCompany } = req.params
+
+  try {
+    // 🔹 Conectarte a la base de datos
+    const db = req.app.locals.db; // o como tengas tu cliente de MongoDB
+    const collection = db.collection('ventas'); // nombre exacto de tu colección
+
+    // 🔹 Pipeline de agregación
+    const pipeline = [
+      { $match: { idCompany: new ObjectId(idCompany) } },
+      {
+        $lookup: {
+          from: "clientes",
+          localField: "client",
+          foreignField: "_id",
+          as: "cliente_data"
+        }
+      },
+      { $unwind: "$cliente_data" },
+      {
+        $group: {
+          _id: "$client",
+          totalCantServicios: { $sum: 1 },
+          totalValorServ: { $sum: "$valorServ" },
+          nameClient: { $first: "$cliente_data.name" }
+        }
+      },
+      { $sort: { totalCantServicios: -1 } },
+      { $limit: 5 }
+    ]
+
+    // 🔹 Ejecutar la agregación
+    const ranking = await collection.aggregate(pipeline).toArray();
+
+    // 🔹 Responder
+
+
+    return res.status(200).json({
+      msg: "Suma Vtas por Clientes",
+      ranking,
+    });
+
+  } catch (err) {
+    console.error('Error al obtener ranking de clientes:', err);
+    res.status(500).json({ error: 'Error al obtener ranking de clientes' });
+  }
+};
+
+export const rankingVtasDetailsByClient = async (req, res, next) => {
+  const { idCompany } = req.params
+
+  try {
+    // 🔹 Conectarte a la base de datos
+    const db = req.app.locals.db; // o como tengas tu cliente de MongoDB
+    const collection = db.collection('ventas'); // nombre exacto de tu colección
+
+    // 🔹 Pipeline de agregación
+    // const pipeline = [
+    //   // 🔹 Filtrar por empresa
+    //   { $match: { idCompany: new ObjectId(idCompany) } },
+
+    //   // 🔹 Unir datos del cliente
+    //   {
+    //     $lookup: {
+    //       from: "clientes",
+    //       let: { clienteId: "$client" },
+    //       pipeline: [
+    //         { $match: { $expr: { $eq: ["$_id", "$$clienteId"] } } },
+    //         { $match: { status: true } } // Solo clientes activos
+    //       ],
+    //       as: "cliente_data"
+    //     }
+    //   },
+    //   { $unwind: "$cliente_data" },
+
+    //   // 🔹 Ordenar ventas por fecha (de más reciente a más antigua)
+    //   { $sort: { date: -1 } },
+
+    //   // 🔹 Agrupar por cliente
+    //   {
+    //     $group: {
+    //       _id: "$client",
+    //       cliente_name: { $first: "$cliente_data.name" },
+    //       sales: { $push: "$$ROOT" }, // Guardamos todas las ventas del cliente
+    //       totalSales: { $sum: 1 },
+    //       totalValorServ: { $sum: "$valorServ" }
+    //     }
+    //   },
+
+    //   // 🔹 Dejar solo las últimas 5 ventas por cliente
+    //   {
+    //     $project: {
+    //       cliente_name: 1,
+    //       totalSalesCount: 1,
+    //       totalValorServ: 1,
+    //       lastFiveSales: { $slice: ["$sales.valorServ", 5] }
+    //     }
+    //   },
+
+    //   // 🔹 Ordenar por mayor valor vendido
+    //   { $sort: { totalValorServ: -1 } },
+
+    //   // 🔹 Limitar a los 5 clientes con más valor de ventas
+    //   { $limit: 5 }
+    // ];
+    const pipeline = [
+      // 🔹 Filtrar por empresa
+      { $match: { idCompany: new ObjectId(idCompany) } },
+
+      // 🔹 Unir datos del cliente
+      {
+        $lookup: {
+          from: "clientes",
+          let: { clienteId: "$client" },
+          pipeline: [
+            { $match: { $expr: { $eq: ["$_id", "$$clienteId"] } } },
+            { $match: { status: true } } // Solo clientes activos
+          ],
+          as: "cliente_data"
+        }
+      },
+      { $unwind: "$cliente_data" },
+
+      // ✅ Ordenar por fecha de venta (más reciente primero)
+      { $sort: { date: -1 } },
+
+      // 🔹 Agrupar por cliente
+      {
+        $group: {
+          _id: "$client",
+          cliente_name: { $first: "$cliente_data.name" },
+          sales: { $push: "$$ROOT" }, // ventas ya vienen ordenadas por fecha
+          totalSales: { $sum: 1 },
+          totalValorServ: { $sum: "$valorServ" }
+        }
+      },
+
+      // ✅ Solo las 5 ventas más recientes
+      {
+        $project: {
+          cliente_name: 1,
+          totalSalesCount: 1,
+          totalValorServ: 1,
+          lastFiveSales: { $slice: ["$sales.valorServ", 5] } // tomamos las primeras 5 (ya ordenadas)
+        }
+      },
+
+      // 🔹 Ordenar clientes por mayor valor vendido
+      { $sort: { totalValorServ: -1 } },
+
+      // 🔹 Limitar a los 5 mejores clientes
+      { $limit: 5 }
+    ];
+
+    // 🔹 Ejecutar la agregación
+    const ranking = await collection.aggregate(pipeline).toArray();
+
+    return res.status(200).json({
+      msg: "List Sales By Clients Details",
+      ranking,
+    });
+
+  } catch (err) {
+    console.error('Error al obtener ranking de clientes:', err);
+    res.status(500).json({ error: 'Error al obtener ranking de clientes' });
+  }
 };
