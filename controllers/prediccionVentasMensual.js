@@ -1,4 +1,4 @@
-import { predictNextSale, predictNextSalesInCant } from "../../services/predictNextSale.js";
+import { predictNextSale, predictNextSalesInCant } from "../services/predictNextSale.js";
 
 
 export const prediccionVtasMensual = async (req, res) => {
@@ -15,7 +15,7 @@ export const prediccionVtasMensual = async (req, res) => {
 
 export const prediccionVtasMensualInCant = async (req, res) => {
     const sales = req.query.data.reverse();
-console.log(sales,"data ventas")
+
     try {
         const prediction = await predictNextSalesInCant(sales,5);
         console.log(prediction)
