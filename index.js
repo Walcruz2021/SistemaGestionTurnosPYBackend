@@ -19,6 +19,8 @@ import routeSupply from "./routes/routeSupply.js"
 import routeSupplier from "./routes/routeSupplier.js"
 import routeBrand from "./routes/routeBrand.js"
 import routeStockBatch from "./routes/routeStockBatch.js"
+import routeScripts from "./routes/routeScritps.js"
+import routeCompanySupply from "./routes/routeCompanySupply.js"
 import alertConection from "./routes/alertConection.js"
 import resolvers from "./server/graphql/resolvers.js";
 import typeDefs from "./server/graphql/typeDefs.js";
@@ -70,7 +72,8 @@ app.use("/api", routeSupplier)
 app.use("/api", routeBuy);
 app.use("/api", routeBrand);
 app.use("/api", routeStockBatch);
-
+app.use("/api", routeScripts);
+app.use("/api",routeCompanySupply)
 
 
 if (process.env.NODE_ENV !== "test") {

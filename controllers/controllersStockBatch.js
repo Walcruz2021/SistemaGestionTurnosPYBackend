@@ -2,7 +2,7 @@ import StockBatch from "../models/supply/stockBatch.js";
 
 export const getStockBatchesByIdSupply = async (req, res) => {
     const idSupply = req.params.idSupply;
-    console.log(idSupply)
+
     const listStockBatches = await StockBatch.find({ idSupply: idSupply });
 
     try {

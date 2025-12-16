@@ -7,7 +7,7 @@ router.put('/editSupply/:idSupply', editSupply);
 router.put('/editSupplyByList', editSupplyByList);
 router.get('/getSupplyXId/:idSupply', getSupplyXId);
 router.get('/getSuppliesBySupplier/:idSupplier', getSuppliesBySupplier);
-router.get('/getListSupplies', getListSupplies);
+router.get('/getListSupplies/:idCompany', getListSupplies);
 router.get('/getSuppliesBycategory/:category', getSuppliesBycategory);
 router.get('/getListBuySupplies/:idCompany', getListBuySupplies);
 

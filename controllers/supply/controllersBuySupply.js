@@ -2,46 +2,98 @@ import BuySupply from "../../models/supply/buySupply.js";
 import StockBatch from "../../models/supply/stockBatch.js"
 import { response } from "express";
 import mongoose from "mongoose";
-
+import Supply from "../../models/supply/supply.js";
+import CompanySupply from "../../models/companySupply.js";
 
 export const addBuySupply = async (req, res) => {
-    const { detailsSupply, montoN, montoB, date, iva, taxes, typeInvoice, paymentMethod, Company, NInvoice, nameSupplier, idSupplier } = req.body;
-    //    detailsSupply ==>[]
-    //    {
-    //         idSupply: "",
-    //         nameSupply: "",
-    //         quantity: "",
-    //         unitCost: "",
-    //         idBrand: "",
-    //         nameBrand: "",
-    //         valueUnidMed: "",
-    //         details:""
-    //     }
+    const {
+        detailsSupply,
+        montoN,
+        montoB,
+        date,
+        iva,
+        taxes,
+        typeInvoice,
+        paymentMethod,
+        Company,
+        NInvoice,
+        nameSupplier,
+        idSupplier
+    } = req.body;
+
+    // detailsSupply ==>[] // { // idSupply: "", // nameSupply: "", // quantity: "", // unitCost: "", // idBrand: "", // nameBrand: "", // valueUnidMed: "", // details:"", // priceSale:"" // }
+    console.log(detailsSupply)
     try {
+        // 1️⃣ Crear la compra
         const newBuySupply = new BuySupply({
-            detailsSupply, montoN, montoB, date, iva, taxes, typeInvoice, paymentMethod, Company, NInvoice, nameSupplier, idSupplier
+            detailsSupply,
+            montoN,
+            montoB,
+            date,
+            iva,
+            taxes,
+            typeInvoice,
+            paymentMethod,
+            Company,
+            NInvoice,
+            nameSupplier,
+            idSupplier
         });
+
         await newBuySupply.save();
-        const length = await StockBatch.countDocuments()
-        // 2️⃣ Guardar cada lote de stock
+
+        let lotCounter = await StockBatch.countDocuments();
+
+        // 2️⃣ Procesar cada insumo comprado
         for (const item of detailsSupply) {
-            await StockBatch.create({
-                idSupply: item.idSupply,        // referencia al producto
-                quantity: item.quantity,          // cantidad comprada
-                unitCost: item.unitCost,      // precio unitario de compra
-                datePurchase: date,           // fecha de la compra
-                buySupply: newBuySupply._id,   // referencia a la compra
-                nameLot: `Lote ${length}`
+
+
+            // 🔎 Buscar CompanySupply
+            let companySupply = await CompanySupply.findOne({
+                idCompany: Company,
+                idGlobalSupply: item.idSupply
             });
+
+
+
+            // 🆕 Si no existe, crearlo
+            if (!companySupply) {
+                companySupply = await CompanySupply.create({
+                    idCompany: Company,
+                    idGlobalSupply: item.idSupply,
+                    nameSupply: item.nameSupply,
+                    priceSale: item.priceSale
+                });
+            }
+
+
+            // 📦 Crear el lote de stock ligado al CompanySupply
+            await StockBatch.create({
+                idSupply: item.idSupply,
+                idCompanySupply: companySupply._id, // 🔥 CLAVE
+                idCompany: Company,
+                quantity: item.quantity,
+                unitCost: item.unitCost,
+                datePurchase: date,
+                buySupply: newBuySupply._id,
+                nameLot: `Lote ${++lotCounter}`
+            });
+
+            await CompanySupply.findByIdAndUpdate(companySupply._id, {
+                priceSale: item.priceSale
+            })
         }
 
-        return res.status(200).json({ message: "addBuySupply successful", newBuySupply });
+        return res.status(200).json({
+            message: "addBuySupply successful",
+            newBuySupply
+        });
+
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.status(500).json({ message: "Error en el servidor" });
     }
-
-}
+};
 
 export const editBuySupply = async (req, res) => {
     const { idBuySupply } = req.params;

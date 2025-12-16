@@ -1,6 +1,8 @@
 import Supply from "../../models/supply/supply.js";
 import Supplier from "../../models/supplier/supplier.js";
 import BuySupplies from "../../models/supply/buySupply.js"
+import CompanySupply from "../../models/companySupply.js";
+import mongoose from "mongoose";
 
 export const getSupplyXId = async (req, res) => {
     const { idSupply } = req.params;
@@ -126,7 +128,7 @@ export const editSupplyByList = async (req, res) => {
 
 
 export const addSupply = async (req, res) => {
-    const { nameSupply, categorySupply,idBrand, nameBrand, Company, typeUnidMed, valueUnidMed,priceSale } = req.body;
+    const { nameSupply, categorySupply, idBrand, nameBrand, Company, typeUnidMed, valueUnidMed, priceSale } = req.body;
 
     try {
 
@@ -170,17 +172,51 @@ export const getSuppliesBySupplier = async (req, res) => {
 }
 
 
-//se determino que exista un listado de insumos en general y no diferenciado por idCompany
+//se determino que exista un listado de insumos en general
 export const getListSupplies = async (req, res) => {
-    // const { idCompany } = req.params;
-
     try {
-        const supplies = await Supply.aggregate([
+        const { idCompany } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(idCompany)) {
+            return res.status(400).json({ message: "ID de empresa inválido." });
+        }
+
+        const idCompanyObj = new mongoose.Types.ObjectId(idCompany);
+
+        const supplies = await CompanySupply.aggregate([
+            {
+                $match: {
+                    idCompany: idCompanyObj
+                }
+            },
             {
                 $lookup: {
-                    from: "stockbatches",    
-                    localField: "_id",
-                    foreignField: "idSupply",
+                    from: "supplies",
+                    localField: "idGlobalSupply",
+                    foreignField: "_id",
+                    as: "global"
+                }
+            },
+            { $unwind: "$global" },
+            {
+                $lookup: {
+                    from: "stockbatches",
+                    let: {
+                        companySupplyId: "$_id",
+                        idCompany: idCompanyObj
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $eq: ["$idCompanySupply", "$$companySupplyId"] },
+                                        { $eq: ["$idCompany", "$$idCompany"] }
+                                    ]
+                                }
+                            }
+                        }
+                    ],
                     as: "batches"
                 }
             },
@@ -191,7 +227,13 @@ export const getListSupplies = async (req, res) => {
             },
             {
                 $project: {
-                    batches: 0 
+                    _id: 1,
+                    idCompany: 1,
+                    idGlobalSupply: 1,
+                    global: 1,
+                    batches: 1,
+                    priceSale: 1,
+                    totalStock: 1
                 }
             }
         ]);
@@ -199,10 +241,10 @@ export const getListSupplies = async (req, res) => {
         return res.status(200).json(supplies);
 
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Error en el servidor" });
+        console.error(error);
+        return res.status(500).json({ message: "Error del servidor." });
     }
-}
+};
 
 export const getSuppliesBycategory = async (req, res) => {
     const { category } = req.params;
