@@ -23,18 +23,13 @@ export const getSupplyXId = async (req, res) => {
 }
 
 
+//esta ruta no se utilizara momentanemente ya que el usuario no deberia poder editar un insumo
 export const editSupply = async (req, res) => {
     const { idSupply } = req.params;
-    const { nameSupply, categorySupply, idSupplier, nameSupplier, cant } = req.body;
-    console.log(cant)
+    const { categorySupply, nameBrand,nameSupply,idBrand,priceSale,typeUnidMed,valueUnidMed,Company} = req.body;
+
     try {
-        // Convertir cantidad a número
-        const cantNumber = Number(cant);
-
-        if (isNaN(cantNumber)) {
-            return res.status(400).json({ message: "La cantidad debe ser un número válido" });
-        }
-
+        
         // Obtener supply actual
         const existingSupply = await Supply.findById(idSupply);
 
@@ -42,25 +37,24 @@ export const editSupply = async (req, res) => {
             return res.status(404).json({ message: "Supply not found" });
         }
 
-        // Suma correcta
-        const newStock = (existingSupply.cant || 0) + cantNumber;
 
         // Actualizar
-        const updatedSaleSupply = await Supply.findByIdAndUpdate(
+        const updatedSupply = await Supply.findByIdAndUpdate(
             idSupply,
             {
                 nameSupply,
                 categorySupply,
-                idSupplier,
-                nameSupplier,
-                cant: newStock
+                idBrand,
+                nameBrand,
+                typeUnidMed,
+                valueUnidMed
             },
             { new: true }
         );
 
         return res.status(200).json({
             message: "Supply updated successfully",
-            updatedSaleSupply
+            updatedSupply
         });
 
     } catch (error) {
@@ -128,6 +122,7 @@ export const editSupplyByList = async (req, res) => {
 
 
 export const addSupply = async (req, res) => {
+
     const { nameSupply, categorySupply, idBrand, nameBrand, Company, typeUnidMed, valueUnidMed, priceSale } = req.body;
 
     try {
@@ -143,7 +138,15 @@ export const addSupply = async (req, res) => {
             priceSale
         });
 
-        await newSupply.save();
+        const newSupplyAdded = await newSupply.save();
+
+        //se debe crear un companySupply ya que no aparecerá en el listado al querer realizar una compra
+        const newCompanySupply = new CompanySupply({
+            idCompany: Company,
+            idGlobalSupply: newSupplyAdded._id
+        })
+
+        await newCompanySupply.save()
         return res.status(200).json({ message: "Supply saved successfully", newSupply });
 
     } catch (error) {
@@ -215,6 +218,9 @@ export const getListSupplies = async (req, res) => {
                                     ]
                                 }
                             }
+                        },
+                        {
+                            $sort: { datePurchase: 1 } 
                         }
                     ],
                     as: "batches"

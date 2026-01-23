@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import {addSupply, editSupply,getSupplyXId,getSuppliesBySupplier,getListSupplies,getSuppliesBycategory,getListBuySupplies,editSupplyByList} from "../controllers/supply/controllersSupply.js";
+import {addSupply, editSupply,getSupplyXId,getSuppliesBySupplier,getListSupplies,getSuppliesBycategory,getListBuySupplies,editSupplyByList} from "../../controllers/supply/controllersSupply.js";
 
 router.post('/addSupply', addSupply);
 router.put('/editSupply/:idSupply', editSupply);

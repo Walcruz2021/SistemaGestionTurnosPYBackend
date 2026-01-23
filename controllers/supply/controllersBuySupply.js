@@ -1,5 +1,6 @@
 import BuySupply from "../../models/supply/buySupply.js";
 import StockBatch from "../../models/supply/stockBatch.js"
+import StockBatchBackup from "../../models/supply/stockBatchBackup.js"
 import { response } from "express";
 import mongoose from "mongoose";
 import Supply from "../../models/supply/supply.js";
@@ -22,7 +23,7 @@ export const addBuySupply = async (req, res) => {
     } = req.body;
 
     // detailsSupply ==>[] // { // idSupply: "", // nameSupply: "", // quantity: "", // unitCost: "", // idBrand: "", // nameBrand: "", // valueUnidMed: "", // details:"", // priceSale:"" // }
-    console.log(detailsSupply)
+  
     try {
         // 1️⃣ Crear la compra
         const newBuySupply = new BuySupply({
@@ -79,6 +80,18 @@ export const addBuySupply = async (req, res) => {
                 nameLot: `Lote ${++lotCounter}`
             });
 
+            //no se lo utilizara momentaneamente
+            //     await StockBatchBackup.create({
+            //     idSupply: item.idSupply,
+            //     idCompanySupply: companySupply._id, // 🔥 CLAVE
+            //     idCompany: Company,
+            //     quantity: item.quantity,
+            //     unitCost: item.unitCost,
+            //     datePurchase: date,
+            //     buySupply: newBuySupply._id,
+            //     nameLot: `Lote ${++lotCounter}`
+            // });
+
             await CompanySupply.findByIdAndUpdate(companySupply._id, {
                 priceSale: item.priceSale
             })
@@ -118,7 +131,6 @@ export const editBuySupply = async (req, res) => {
         return res.status(500).json({ message: "Error en el servidor" });
     }
 }
-
 
 
 export const getBuySupplyXId = async (req, res) => {

@@ -1,6 +1,6 @@
 import express from "express"
 const router=express.Router()
-import {getStockBatchesByIdSupply} from "../controllers/controllersStockBatch.js"
+import {getStockBatchesByIdSupply} from "../../controllers/controllersStockBatch.js"
 
 
 router.get("/getStockBatchesByIdSupply/:idSupply", getStockBatchesByIdSupply);
