@@ -1,4 +1,4 @@
-import saleSupply from "../../models/supply/saleSupply.js";
+
 import CompanySupply from "../../models/companySupply.js";
 import StockBatch from "../../models/supply/stockBatch.js";
 import SaleSupply from "../../models/supply/saleSupply.js";
@@ -139,25 +139,169 @@ export const addSaleSupply = async (req, res) => {
     }
 };
 
-// export const editSaleSupply = async (req, res) => {
-//     const { idSaleSupply } = req.params;
-//     const { date, totalSale, details, priceBuy, priceSale } = req.body;
+//request idCompanySupply for find sales by model
+export const saleByModel = async (req, res) => {
 
-//     try {
-//         const updatedSaleSupply = await saleSupply.findByIdAndUpdate(
-//             idSaleSupply,
-//             { date, totalSale, details, priceBuy, priceSale },
-//             { new: true }
-//         );
+    const { idCompanySupply, idCompany } = req.body;
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
-//         if (!updatedSaleSupply) {
-//             return res.status(404).json({ message: "SaleSupply not found" });
-//         }
+    try {
+        // 1️⃣ Validar CompanySupply
+        const companySupply = await CompanySupply.findOne({
+            _id: idCompanySupply,
+            idCompany
+        }).session(session);
 
-//         return res.status(200).json({ message: "SaleSupply updated successfully", updatedSaleSupply });
+        if (!companySupply) {
+            throw new Error("Insumo inválido para la empresa");
+        }
 
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).json({ message: "Error en el servidor" });
-//     }
-// }
+        // 2️⃣ Verificar ventas por Modelos
+        const salesAgg = await SaleSupply.aggregate(
+
+            [
+                {
+                    $match: {
+                        idCompany: new mongoose.Types.ObjectId(idCompany),
+                        "items.idCompanySupply": new mongoose.Types.ObjectId(idCompanySupply)
+                    }
+                },
+                { $unwind: "$items" },
+                {
+                    $match: {
+                        "items.idCompanySupply": new mongoose.Types.ObjectId(idCompanySupply)
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$items.idCompanySupply",
+                        totalQuantity: { $sum: "$items.quantitySale" },
+                        totalRevenue: { $sum: "$items.subtotal" },
+                        totalProfit: { $sum: "$items.profit" }
+                    }
+                }
+            ]
+
+        ).session(session);
+
+        return res.status(200).json({
+            salesByModel: salesAgg
+        });
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+//requests month for find sales by month
+export const listSalesByMonth = async (req, res) => {
+    const { idCompany, month, year } = req.body;
+
+    if (!idCompany || !month || !year) {
+        return res.status(400).json({
+            message: "Parámetros incompletos"
+        });
+    }
+
+    try {
+        const startDate = new Date(year, month - 1, 1);
+        const endDate = new Date(year, month, 1);
+
+        const salesByMonth = await SaleSupply.aggregate([
+            {
+                $match: {
+                    idCompany: new mongoose.Types.ObjectId(idCompany),
+                    date: {
+                        $gte: startDate,
+                        $lt: endDate
+                    }
+                }
+            }
+        ]);
+
+        return res.status(200).json({
+            sales: salesByMonth,
+            total: salesByMonth.length
+        });
+        //si no se encuentran ventas devolvera un array vacio
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "Error interno del servidor"
+        });
+    }
+};
+
+export const listSalesTopFive = async (req, res) => {
+
+    const { idCompany } = req.body;
+
+    if (!idCompany) {
+        return res.status(400).json({
+            message: "Parámetros incompletos"
+        });
+    }
+
+    const topFiveSale = await SaleSupply.aggregate([
+
+        {
+            $match: {
+                idCompany: new mongoose.Types.ObjectId(idCompany)
+            }
+        }
+        ,
+        //explore th field items field of the collection
+        {
+            $unwind:
+                "$items"
+        },
+
+        //grouped by supply
+        {
+            $group: {
+                _id: "$items.idGlobalSupply",
+                totalQuantity: { $sum: "$items.quantitySale" },
+                totalRevenue: { $sum: "$items.subtotal" },
+                totalProfit: { $sum: "$items.profit" }
+            }
+        },
+
+        { $sort: { totalProfit: -1 } },
+        { $limit: 5 },
+
+        //brings the data supply
+        {
+            $lookup: {
+                from: "supplies",
+                localField: "_id",
+                foreignField: "_id",
+                as: "supply"
+            }
+        },
+        {
+            $unwind: "$supply"
+        },
+
+        //data for the frontend
+        {
+            $project: {
+                _id: 0,
+                idGlobalSupply: "$_id",
+                nameSupply: "$supply.nameSupply",
+                brand: "$supply.nameBrand",
+                talle: "$supply.valueUnidMed",
+                category:"$supply.categorySupply",
+                totalQuantity: 1,
+                totalRevenue: 1,
+                totalProfit: 1
+            }
+        }
+    ])
+
+    return res.status(200).json({
+        topFiveSale
+    })
+}
+

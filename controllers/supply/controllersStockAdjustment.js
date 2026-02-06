@@ -8,8 +8,8 @@ export const createStockAdjustment = async (req, res) => {
         idCompany,
         idCompanySupply,
         quantity,
-        type,
-        description,
+        typeAdjustment,
+        noteAdjustment,
         date
     } = req.body;
 
@@ -18,7 +18,7 @@ export const createStockAdjustment = async (req, res) => {
 
     try {
         // 1️⃣ Validaciones básicas
-        if (!idCompany || !idCompanySupply || !quantity || !type) {
+        if (!idCompany || !idCompanySupply || !quantity || !typeAdjustment) {
             throw new Error("Faltan datos obligatorios");
         }
 
@@ -26,8 +26,8 @@ export const createStockAdjustment = async (req, res) => {
             throw new Error("La cantidad debe ser mayor a cero");
         }
 
-        const allowedTypes = ["THEFT", "DAMAGED", "EXPIRED", "LOST"];
-        if (!allowedTypes.includes(type)) {
+        const allowedTypes = ["DAÑADO", "VENCIDO", "PERDIDO", "ROBO", "DIFERENCIA DE INVENTARIO", "DONACIÓN", "MUESTRA"];
+        if (!allowedTypes.includes(typeAdjustment)) {
             throw new Error("Tipo de ajuste inválido");
         }
 
@@ -91,10 +91,10 @@ export const createStockAdjustment = async (req, res) => {
                         idCompanySupply,
                         idStockBatch: batch._id,
                         quantity: usedQty,
-                        type,
+                        typeAdjustment,
                         unitCost: batch.unitCost,
                         totalCost: usedQty * batch.unitCost,
-                        description: description || "",
+                        noteAdjustment: noteAdjustment || "",
                         date: date || new Date()
                     }
                 ],

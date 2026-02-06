@@ -11,4 +11,5 @@ router.get('/getListSupplies/:idCompany', getListSupplies);
 router.get('/getSuppliesBycategory/:category', getSuppliesBycategory);
 router.get('/getListBuySupplies/:idCompany', getListBuySupplies);
 
+
 export default router;

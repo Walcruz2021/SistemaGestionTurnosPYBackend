@@ -18,16 +18,16 @@ const stockAdjustmentSchema = new Schema({
 
   quantity: { type: Number, required: true }, // SIEMPRE positiva
 
-  type: {
+  typeAdjustment: {
     type: String,
     enum: [
-      "DAMAGED",// "DAÑADO"
-      "EXPIRED", // "VENCIDO"   
-      "LOST", // "PERDIDO"
-      "THEFT", // "ROBO"
-      "INVENTORY_DIFF", // "DIFERENCIA DE INVENTARIO"
-      "DONATION", // "DONACIÓN"
-      "SAMPLE" // "MUESTRA"
+      "DAÑADO",// "DAÑADO"
+      "VENCIDO", // "VENCIDO"   
+      "PERDIDO", // "PERDIDO"
+      "ROBO", // "ROBO"
+      "DIFERENCIA DE INVENTARIO", // "DIFERENCIA DE INVENTARIO"
+      "DONACIÓN", // "DONACIÓN"
+      "MUESTRA" // "MUESTRA"
     ],
     required: true
   },
@@ -36,7 +36,7 @@ const stockAdjustmentSchema = new Schema({
 
   totalCost: { type: Number, required: true }, // quantity * unitCost
 
-  description: { type: String },
+  noteAdjustment: { type: String },
 
   date: { type: Date, default: Date.now }
 
