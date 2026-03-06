@@ -3,6 +3,8 @@ import Perro from "../models/perro.js";
 import Venta from "../models/venta.js";
 import Company from "../models/company.js";
 import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
+
 export const addVenta = async (req, res, next) => {
   //console.log(req.params.idClient);
   const {
@@ -86,17 +88,72 @@ export const ventaXanio = async (req, res) => {
 
   const { anio } = req.query;
 
-  const ventas = await Venta.find({ idCompany: idCompany, año: anio });
+  //const ventas = await Venta.find({ idCompany: idCompany, año: anio });
+  const result = await Venta.aggregate([
+    {
 
-  if (ventas.length > 0) {
-    res.status(200).json({
-      ventas,
-    });
-  } else {
-    res.status(204).json({
-      msg: "vta no encontrada",
-    });
-  }
+      $match: {
+        idCompany: new mongoose.Types.ObjectId(idCompany),
+        año: parseInt(anio),
+      }
+    },
+    {
+
+      $facet: {
+
+
+        sumaByMes: [
+          {
+
+            $group: {
+              _id: "$mes",//agrupa todos los elementos por mes, el _id es el campo por el cual se agrupa
+              totalValorServ: { $sum: "$valorServ" },
+              totalEfectivo: { $sum: "$efectivo" },
+              totalTarjeta: { $sum: "$tarjeta" },
+              totalTransferencia: { $sum: "$transferencia" },
+              totalCantServicios: { $sum: 1 }
+            }
+          },
+          {
+            $sort: { _id: 1 } // Ordena por mes de forma ascendente
+          }
+        ],
+
+        sumaTotal: [
+          {
+
+            $group: {
+              _id: null,//agrupa todos los elementos por mes, el _id es el campo por el cual se agrupa
+              totalValorServ: { $sum: "$valorServ" },
+              totalEfectivo: { $sum: "$efectivo" },
+              totalTarjeta: { $sum: "$tarjeta" },
+              totalTransferencia: { $sum: "$transferencia" },
+              totalCantServicios: { $sum: 1 }
+            }
+          }
+        ],
+
+
+      }
+
+    }
+
+  ])
+
+  const data = result[0];
+
+  return res.status(200).json({
+    totalByMonth: data.sumaByMes,
+    totalByYear: data.sumaTotal[0] || {
+      totalValorServ: 0,
+      totalEfectivo: 0,
+      totalTarjeta: 0,
+      totalTransferencia: 0,
+      totalCantServicios: 0
+    }
+  })
+
+
 };
 
 export const vtasxAnioandMesNow = async (req, res) => {
@@ -127,12 +184,14 @@ export const vtasxAnioandMesNow = async (req, res) => {
 };
 
 export const vtasxAnioandMesParam = async (req, res) => {
+
+
   const { date } = req.query;
 
-  let año = Math.trunc(date / 10);
+  let str = date.toString();
 
-  let mes = date % 10;
-
+  let año = parseInt(str.slice(0, 4));
+  let mes = parseInt(str.slice(4));
   const idCompany = req.params.idCompany;
 
   if (((Math.log(año) * Math.LOG10E + 1) | 0) > 4) {

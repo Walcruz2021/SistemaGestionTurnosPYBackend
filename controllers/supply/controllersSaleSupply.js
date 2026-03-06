@@ -196,7 +196,16 @@ export const saleByModel = async (req, res) => {
 
 //requests month for find sales by month
 export const listSalesByMonth = async (req, res) => {
-    const { idCompany, month, year } = req.body;
+
+    const idCompany = req.params.idCompany;
+
+    const { date } = req.query;
+
+    let str = date.toString();
+
+    let year = parseInt(str.slice(0, 4));
+    let month = parseInt(str.slice(4));
+
 
     if (!idCompany || !month || !year) {
         return res.status(400).json({
@@ -205,17 +214,24 @@ export const listSalesByMonth = async (req, res) => {
     }
 
     try {
-        const startDate = new Date(year, month - 1, 1);
-        const endDate = new Date(year, month, 1);
+    
 
         const salesByMonth = await SaleSupply.aggregate([
             {
                 $match: {
-                    idCompany: new mongoose.Types.ObjectId(idCompany),
-                    date: {
-                        $gte: startDate,
-                        $lt: endDate
-                    }
+                    idCompany: new mongoose.Types.ObjectId(idCompany)
+                }
+            },
+            {
+                $addFields: {
+                    year: { $year: "$date" },
+                    month: { $month: "$date" }
+                }
+            },
+            {
+                $match: {
+                    year: year,
+                    month: month
                 }
             }
         ]);
@@ -292,7 +308,7 @@ export const listSalesTopFive = async (req, res) => {
                 nameSupply: "$supply.nameSupply",
                 brand: "$supply.nameBrand",
                 talle: "$supply.valueUnidMed",
-                category:"$supply.categorySupply",
+                category: "$supply.categorySupply",
                 totalQuantity: 1,
                 totalRevenue: 1,
                 totalProfit: 1
@@ -305,3 +321,148 @@ export const listSalesTopFive = async (req, res) => {
     })
 }
 
+//requests month for find sales by month Now
+export const listSalesByMonthNow = async (req, res) => {
+    let now = new Date();
+    //   let month = now.getMonth() + 1;
+    let month = now.getMonth() + 1;
+    let year = now.getFullYear();
+
+    const idCompany = req.params.idCompany
+
+
+
+    if (!idCompany || !month || !year) {
+        return res.status(400).json({
+            message: "Parámetros incompletos"
+        });
+    }
+
+    try {
+        const startDate = new Date(year, month - 1, 1);
+        const endDate = new Date(year, month, 1);
+
+        const salesByMonth = await SaleSupply.aggregate([
+            {
+                $match: {
+                    idCompany: new mongoose.Types.ObjectId(idCompany),
+                    date: {
+                        $gte: startDate,
+                        $lt: endDate
+                    }
+                }
+            }
+        ]);
+
+        return res.status(200).json({
+            sales: salesByMonth,
+            total: salesByMonth.length
+        });
+        //si no se encuentran ventas devolvera un array vacio
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "Error interno del servidor"
+        });
+    }
+};
+
+
+export const salesByAnio = async (req, res) => {
+  const idCompany = req.params.idCompany;
+  const { date } = req.query;
+
+  if (!idCompany || !date) {
+    return res.status(400).json({
+      message: "Parámetros incompletos"
+    });
+  }
+
+  try {
+    const year = parseInt(date);
+
+    const startDate = new Date(Date.UTC(year, 0, 1));
+    const endDate = new Date(Date.UTC(year + 1, 0, 1));
+
+    const result = await SaleSupply.aggregate([
+      {
+        $match: {
+          idCompany: new mongoose.Types.ObjectId(idCompany),
+          date: {
+            $gte: startDate,
+            $lt: endDate
+          }
+        }
+      },
+
+      // Agregamos año y mes en UTC
+      {
+        $addFields: {
+          year: { $year: { date: "$date", timezone: "UTC" } },
+          month: { $month: { date: "$date", timezone: "UTC" } }
+        }
+      },
+
+      {
+        $facet: {
+
+          // 📄 1️⃣ Lista completa
+          sales: [
+            { $sort: { date: 1 } }
+          ],
+
+          // 📊 2️⃣ Totales generales
+          totals: [
+            {
+              $group: {
+                _id: null,
+                totalSale: { $sum: "$totalSale" },
+                totalPaymentMethodEfectivo: { $sum: "$paymentMethodEfectivo" },
+                totalPaymentMethodTarjeta: { $sum: "$paymentMethodTarjeta" },
+                totalPaymentMethodTransferencia: { $sum: "$paymentMethodTransferencia" },
+                totalTransactions: { $sum: 1 }
+              }
+            }
+          ],
+
+          // 📅 3️⃣ Totales por mes
+          monthlyTotals: [
+            {
+              $group: {
+                _id: "$month",
+                totalSale: { $sum: "$totalSale" },
+                totalPaymentMethodEfectivo: { $sum: "$paymentMethodEfectivo" },
+                totalPaymentMethodTarjeta: { $sum: "$paymentMethodTarjeta" },
+                totalPaymentMethodTransferencia: { $sum: "$paymentMethodTransferencia" },
+                totalTransactions: { $sum: 1 }
+              }
+            },
+            { $sort: { _id: 1 } }
+          ]
+        }
+      }
+    ]);
+
+    const data = result[0];
+
+    return res.status(200).json({
+      year,
+      sales: data.sales,
+      totals: data.totals[0] || {
+        totalSale: 0,
+        totalPaymentMethodEfectivo: 0,
+        totalPaymentMethodTarjeta: 0,
+        totalPaymentMethodTransferencia: 0,
+        totalTransactions: 0
+      },
+      monthlyTotals: data.monthlyTotals
+    });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Error interno del servidor"
+    });
+  }
+};
