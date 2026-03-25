@@ -26,10 +26,10 @@ export const getSupplyXId = async (req, res) => {
 //esta ruta no se utilizara momentanemente ya que el usuario no deberia poder editar un insumo
 export const editSupply = async (req, res) => {
     const { idSupply } = req.params;
-    const { categorySupply, nameBrand,nameSupply,idBrand,priceSale,typeUnidMed,valueUnidMed,Company} = req.body;
+    const { categorySupply, nameBrand, nameSupply, idBrand, priceSale, typeUnidMed, valueUnidMed, Company } = req.body;
 
     try {
-        
+
         // Obtener supply actual
         const existingSupply = await Supply.findById(idSupply);
 
@@ -175,7 +175,13 @@ export const getSuppliesBySupplier = async (req, res) => {
 }
 
 
-//se determino que exista un listado de insumos en general
+/**
+ * 
+ * @param {*} req idCompany id of the Company
+ * @param {*} res 
+ * @returns collection CompanySupplies. list supplies with stock and batches of the company logued
+ */
+
 export const getListSupplies = async (req, res) => {
     try {
         const { idCompany } = req.params;
@@ -220,7 +226,7 @@ export const getListSupplies = async (req, res) => {
                             }
                         },
                         {
-                            $sort: { datePurchase: 1 } 
+                            $sort: { datePurchase: 1 }
                         }
                     ],
                     as: "batches"
@@ -252,6 +258,21 @@ export const getListSupplies = async (req, res) => {
     }
 };
 
+export const getListSuppliesGral = async (req, res) => {
+    try {
+        const listSuppliesGral=await Supply.find()
+        return res.status(200).json({
+            listSuppliesGral
+        })
+    } catch (error) {
+         console.error(error);
+        return res.status(500).json({ message: "Error del servidor." });
+    }
+
+
+};
+
+
 export const getSuppliesBycategory = async (req, res) => {
     const { category } = req.params;
 
@@ -270,20 +291,3 @@ export const getSuppliesBycategory = async (req, res) => {
     }
 }
 
-export const getListBuySupplies = async (req, res) => {
-    const { idCompany } = req.params
-    const listGetBuySupplies = await BuySupplies.find({ Company: idCompany })
-    try {
-        if (listGetBuySupplies.length) {
-            return res.status(200).json({
-                message: "BuySupplies retrieved successfully", listGetBuySupplies
-            })
-        } else {
-            return res.status(404).json({ message: "No BuySupplies found for this company" })
-        }
-
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Error en el servidor" });
-    }
-}

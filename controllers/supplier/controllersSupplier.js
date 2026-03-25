@@ -69,10 +69,7 @@ export const listSupplier = async (req, res) => {
     try {
         const listSupplier = await Supplier.find({ status: true, Company:idCompany});
 
-        if (!listSupplier.length > 0) {
-            return res.status(404).json({ message: "list Supplier not found" });
-        }
-
+    
         return res.status(200).json({ message: "Suppliers retrieved successfully", listSupplier });
 
     } catch (error) {

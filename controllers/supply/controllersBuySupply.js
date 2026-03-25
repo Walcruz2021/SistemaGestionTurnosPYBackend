@@ -151,4 +151,50 @@ export const getBuySupplyXId = async (req, res) => {
     }
 }
 
+export const getBuySupplyXNInvoice = async (req, res) => {
+    const { idCompany } = req.params;
+     const { NInvoice } = req.query;
 
+    try {
+        const findSupply = await BuySupply.findOne({ NInvoice,Company:idCompany });
+
+        return res.status(200).json({ message: "BuySupply retrieved successfully", findSupply });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Error en el servidor" });
+    }
+}
+
+export const getListBuySuppliesByDateCurrent = async (req, res) => {
+    const date = new Date();
+
+    const year = date.getUTCFullYear();
+    const month = date.getUTCMonth(); // ⚠️ 0-based (ENERO = 0)
+
+    const { idCompany } = req.params;
+
+    try {
+        // ✅ inicio del mes
+    const startDate = new Date(Date.UTC(year, month, 1));
+        const endDate = new Date(Date.UTC(year, month + 1, 1));
+
+
+        const listGetBuySupplies = await BuySupply.find({
+            Company: idCompany,
+            date: {
+                $gte: startDate,
+                $lt: endDate
+            }
+        }).sort({ date: -1 });
+
+        return res.status(200).json({
+            message: "BuySupplies retrieved successfully",
+            listGetBuySupplies
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Error en el servidor" });
+    }
+};

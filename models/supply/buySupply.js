@@ -21,7 +21,7 @@ const buySupplySchema = new Schema({
     typeInvoice: { type: String },
     NInvoice: { type: String },
     taxes: { type: Number },
-    date: { type: String, required: true },
+    date: { type: Date, required: true },
     nameSupplier: { type: String, required: true },
     idSupplier: { type: Schema.Types.ObjectId, ref: 'Supplier', required: true },
     detailsSupply: {
