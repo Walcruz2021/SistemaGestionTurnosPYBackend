@@ -163,21 +163,24 @@ export const vtasxAnioandMesNow = async (req, res) => {
 
   const idCompany = req.params.idCompany;
 
-  const vtas = await Venta.find({
-    idCompany: idCompany,
-    mes: mes,
-    año: anio,
-  });
+  if (!idCompany || !mes || !anio) {
+    return res.status(400).json({
+      message: "Parámetros incompletos"
+    });
+  }
 
   try {
-    if (vtas) {
-      return res.status(200).json({
-        vtas,
-      });
-    } else
-      return res.status(204).json({
-        msg: "no existen ventas",
-      });
+    const vtas = await Venta.find({
+      idCompany: idCompany,
+      mes: mes,
+      año: anio,
+    });
+
+
+    return res.status(200).json({
+      vtas: vtas,
+    });
+
   } catch (error) {
     console.log(error);
   }
@@ -199,15 +202,25 @@ export const vtasxAnioandMesParam = async (req, res) => {
     año = Math.trunc(año / 10);
   }
 
-  const vtas = await Venta.find({ idCompany: idCompany, mes: mes, año: año });
-  if (vtas.length > 0) {
+  if (!idCompany || !mes || !año) {
+    return res.status(400).json({
+      message: "Parámetros incompletos"
+    });
+  }
+
+  try {
+    const vtas = await Venta.find({ idCompany: idCompany, mes: mes, año: año });
+
     return res.status(200).json({
-      vtas,
+      vtas: vtas,
     });
-  } else
-    return res.status(204).json({
-      msg: "no existen ventas",
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Error interno del servidor"
     });
+  }
+
 };
 
 export const listVentasxId = async (req, res, next) => {
