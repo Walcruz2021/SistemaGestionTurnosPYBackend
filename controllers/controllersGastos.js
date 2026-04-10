@@ -1,5 +1,5 @@
-import  Gastos from "../models/gastos.js";
-import  Company  from "../models/company.js";
+import Gastos from "../models/gastos.js";
+import Company from "../models/company.js";
 
 export const addGastos = async (req, res) => {
   const {
@@ -45,7 +45,7 @@ export const addGastos = async (req, res) => {
 export const getGastosDirXanio = async (req, res) => {
   const { año } = req.body;
   const idCompany = req.params.idCompany;
-  console.log(idCompany);
+
   const gastosFind = await Gastos.find({
     idCompany: idCompany,
     año: año,
@@ -66,23 +66,30 @@ export const gtosXanio = async (req, res) => {
   const idCompany = req.params.idCompany;
   const { anio } = req.query;
 
-  const gastos = await Gastos.find({ idCompany: idCompany, año: anio });
-  console.log(gastos);
-  if (gastos.length > 0) {
+  const listBills = await Gastos.find({ idCompany: idCompany, año: anio });
+
+  if (!idCompany || !anio) {
+    return res.status(400).json({
+      msg: "idCompany and anio are required"
+    })
+  }
+
+  try {
+
     res.status(200).json({
-      gastos,
+      listBills,
     });
-  } else {
-    res.status(204).json({
-      msg: "gastos no encontrado",
-    });
+
+
+  } catch (error) {
+    console.log(error)
   }
 };
 
 export const getGastosIndXanio = async (req, res) => {
   const { año } = req.body;
   const idCompany = req.params.idCompany;
-  console.log(idCompany);
+
   const gastosFind = await Gastos.find({
     idCompany: idCompany,
     año: año,

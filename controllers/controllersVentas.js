@@ -3,6 +3,8 @@ import Perro from "../models/perro.js";
 import Venta from "../models/venta.js";
 import Company from "../models/company.js";
 import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
+
 export const addVenta = async (req, res, next) => {
   //console.log(req.params.idClient);
   const {
@@ -86,17 +88,72 @@ export const ventaXanio = async (req, res) => {
 
   const { anio } = req.query;
 
-  const ventas = await Venta.find({ idCompany: idCompany, año: anio });
+  //const ventas = await Venta.find({ idCompany: idCompany, año: anio });
+  const result = await Venta.aggregate([
+    {
 
-  if (ventas.length > 0) {
-    res.status(200).json({
-      ventas,
-    });
-  } else {
-    res.status(204).json({
-      msg: "vta no encontrada",
-    });
-  }
+      $match: {
+        idCompany: new mongoose.Types.ObjectId(idCompany),
+        año: parseInt(anio),
+      }
+    },
+    {
+
+      $facet: {
+
+
+        sumaByMes: [
+          {
+
+            $group: {
+              _id: "$mes",//agrupa todos los elementos por mes, el _id es el campo por el cual se agrupa
+              totalValorServ: { $sum: "$valorServ" },
+              totalEfectivo: { $sum: "$efectivo" },
+              totalTarjeta: { $sum: "$tarjeta" },
+              totalTransferencia: { $sum: "$transferencia" },
+              totalCantServicios: { $sum: 1 }
+            }
+          },
+          {
+            $sort: { _id: 1 } // Ordena por mes de forma ascendente
+          }
+        ],
+
+        sumaTotal: [
+          {
+
+            $group: {
+              _id: null,//agrupa todos los elementos por mes, el _id es el campo por el cual se agrupa
+              totalValorServ: { $sum: "$valorServ" },
+              totalEfectivo: { $sum: "$efectivo" },
+              totalTarjeta: { $sum: "$tarjeta" },
+              totalTransferencia: { $sum: "$transferencia" },
+              totalCantServicios: { $sum: 1 }
+            }
+          }
+        ],
+
+
+      }
+
+    }
+
+  ])
+
+  const data = result[0];
+
+  return res.status(200).json({
+    totalByMonth: data.sumaByMes,
+    totalByYear: data.sumaTotal[0] || {
+      totalValorServ: 0,
+      totalEfectivo: 0,
+      totalTarjeta: 0,
+      totalTransferencia: 0,
+      totalCantServicios: 0
+    }
+  })
+
+
 };
 
 export const vtasxAnioandMesNow = async (req, res) => {
@@ -106,33 +163,38 @@ export const vtasxAnioandMesNow = async (req, res) => {
 
   const idCompany = req.params.idCompany;
 
-  const vtas = await Venta.find({
-    idCompany: idCompany,
-    mes: mes,
-    año: anio,
-  });
+  if (!idCompany || !mes || !anio) {
+    return res.status(400).json({
+      message: "Parámetros incompletos"
+    });
+  }
 
   try {
-    if (vtas) {
-      return res.status(200).json({
-        vtas,
-      });
-    } else
-      return res.status(204).json({
-        msg: "no existen ventas",
-      });
+    const vtas = await Venta.find({
+      idCompany: idCompany,
+      mes: mes,
+      año: anio,
+    });
+
+
+    return res.status(200).json({
+      vtas: vtas,
+    });
+
   } catch (error) {
     console.log(error);
   }
 };
 
 export const vtasxAnioandMesParam = async (req, res) => {
+
+
   const { date } = req.query;
 
-  let año = Math.trunc(date / 10);
+  let str = date.toString();
 
-  let mes = date % 10;
-
+  let año = parseInt(str.slice(0, 4));
+  let mes = parseInt(str.slice(4));
   const idCompany = req.params.idCompany;
 
   if (((Math.log(año) * Math.LOG10E + 1) | 0) > 4) {
@@ -140,15 +202,25 @@ export const vtasxAnioandMesParam = async (req, res) => {
     año = Math.trunc(año / 10);
   }
 
-  const vtas = await Venta.find({ idCompany: idCompany, mes: mes, año: año });
-  if (vtas.length > 0) {
+  if (!idCompany || !mes || !año) {
+    return res.status(400).json({
+      message: "Parámetros incompletos"
+    });
+  }
+
+  try {
+    const vtas = await Venta.find({ idCompany: idCompany, mes: mes, año: año });
+
     return res.status(200).json({
-      vtas,
+      vtas: vtas,
     });
-  } else
-    return res.status(204).json({
-      msg: "no existen ventas",
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Error interno del servidor"
     });
+  }
+
 };
 
 export const listVentasxId = async (req, res, next) => {

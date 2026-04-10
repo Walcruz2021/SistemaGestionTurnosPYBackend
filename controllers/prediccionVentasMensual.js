@@ -1,4 +1,4 @@
-import { predictNextSale, predictNextSalesInCant } from "../../services/predictNextSale.js";
+import { predictNextSale, predictNextSalesInCant } from "../services/predictNextSale.js";
 
 
 export const prediccionVtasMensual = async (req, res) => {

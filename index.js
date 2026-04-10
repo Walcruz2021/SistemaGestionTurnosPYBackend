@@ -14,6 +14,15 @@ import routeClients from "./routes/routeClients.js";
 import routeVentas from "./routes/routeVentas.js";
 import routeUser from "./routes/routeUser.js";
 import routeCompany from "./routes/routeCompany.js"
+import routeBuy from "./routes/routeBuy.js"
+import routeSupply from "./routes/supply/routeSupply.js"
+import routeSupplier from "./routes/routeSupplier.js"
+import routeBrand from "./routes/routeBrand.js"
+import routeStockBatch from "./routes/supply/routeStockBatch.js"
+import routeSaleSupply from "./routes/supply/routeSaleSupply.js"
+import routeScripts from "./routes/routeScritps.js"
+import routeCompanySupply from "./routes/companySupply/routeCompanySupply.js"
+import routeStockAdjusment from "./routes/supply/routeStockAdjustment.js";
 import alertConection from "./routes/alertConection.js"
 import resolvers from "./server/graphql/resolvers.js";
 import typeDefs from "./server/graphql/typeDefs.js";
@@ -60,7 +69,15 @@ app.use("/api", routeClients);
 app.use("/api", routeVentas);
 app.use("/api", routeCompany)
 app.use("/api", routeUser);
-
+app.use("/api", routeSupply);
+app.use("/api", routeSupplier)
+app.use("/api", routeBuy);
+app.use("/api", routeBrand);
+app.use("/api", routeStockBatch);
+app.use("/api", routeSaleSupply);
+app.use("/api", routeScripts);
+app.use("/api", routeCompanySupply)
+app.use("/api", routeStockAdjusment);
 
 
 if (process.env.NODE_ENV !== "test") {
