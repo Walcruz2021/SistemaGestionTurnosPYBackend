@@ -30,14 +30,16 @@ import { trainAndPredict } from './services/tensorflowService.js'
 import { predictNextSale } from './services/predictNextSale.js'
 import { MongoClient } from 'mongodb';
 import "./routes/alertScheduler.js";
+
 // const resolvers=require("./graphql/resolvers")
 // const typeDefs=require("./graphql/typeDefs")
-const uri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.b5p91.mongodb.net/${BDMASCOSTASPROD}?retryWrites=true&w=majority`;
-const client = new MongoClient(uri);
-await client.connect();
-connectDB;
+// const uri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.b5p91.mongodb.net/${BDMASCOSTASPROD}?retryWrites=true&w=majority`;
+// const uri=`mongodb://walter:83367585walter@cluster0-shard-00-00.b5p91.mongodb.net:27017,cluster0-shard-00-01.b5p91.mongodb.net:27017,cluster0-shard-00-02.b5p91.mongodb.net:27017/${BDMASCOSTASPROD}?ssl=true&replicaSet=atlas-rjqw2o-shard-0&authSource=admin&appName=Cluster0`
+// const client = new MongoClient(uri);
+// await client.connect();
+//connectDB;
 const app = express();
-app.locals.db = client.db('BDAPlicacionMascotas');
+//app.locals.db = client.db('BDAPlicacionMascotas');
 //startApolloServer(typeDefs, resolvers);
 // // Orígenes permitidos
 const allowedOrigins = [
@@ -84,6 +86,7 @@ if (process.env.NODE_ENV !== "test") {
   const PORT = process.env.PORT || 3002;
   app.listen(PORT, () => console.log(`Servidor en puerto ${PORT}`));
 }
+
 
 
 

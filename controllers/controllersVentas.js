@@ -272,14 +272,11 @@ export const ventasxIdCli = async (req, res, next) => {
 
 export const rankingVtasTotalByClient = async (req, res, next) => {
   const { idCompany } = req.params
-
   try {
     // 🔹 Conectarte a la base de datos
-    const db = req.app.locals.db; // o como tengas tu cliente de MongoDB
-    const collection = db.collection('ventas'); // nombre exacto de tu colección
 
     // 🔹 Pipeline de agregación
-    const pipeline = [
+    const ranking = await Venta.aggregate([
       { $match: { idCompany: new ObjectId(idCompany) } },
       {
         $lookup: {
@@ -300,10 +297,10 @@ export const rankingVtasTotalByClient = async (req, res, next) => {
       },
       { $sort: { totalCantServicios: -1 } },
       { $limit: 5 }
-    ]
+    ])
 
     // 🔹 Ejecutar la agregación
-    const ranking = await collection.aggregate(pipeline).toArray();
+    //const ranking = await Venta.aggregate(pipeline).toArray();
 
     // 🔹 Responder
 
@@ -323,9 +320,7 @@ export const rankingVtasDetailsByClient = async (req, res, next) => {
   const { idCompany } = req.params
 
   try {
-    // 🔹 Conectarte a la base de datos
-    const db = req.app.locals.db; // o como tengas tu cliente de MongoDB
-    const collection = db.collection('ventas'); // nombre exacto de tu colección
+    // 🔹 Conectarte a la base de datos    const collection = db.collection('ventas'); // nombre exacto de tu colección
 
     // 🔹 Pipeline de agregación
     // const pipeline = [
@@ -376,7 +371,7 @@ export const rankingVtasDetailsByClient = async (req, res, next) => {
     //   // 🔹 Limitar a los 5 clientes con más valor de ventas
     //   { $limit: 5 }
     // ];
-    const pipeline = [
+    const ranking = await Venta.aggregate([
       // 🔹 Filtrar por empresa
       { $match: { idCompany: new ObjectId(idCompany) } },
 
@@ -423,10 +418,10 @@ export const rankingVtasDetailsByClient = async (req, res, next) => {
 
       // 🔹 Limitar a los 5 mejores clientes
       { $limit: 5 }
-    ];
+    ]);
 
     // 🔹 Ejecutar la agregación
-    const ranking = await collection.aggregate(pipeline).toArray();
+    // const ranking = await collection.aggregate(pipeline).toArray();
 
     return res.status(200).json({
       msg: "List Sales By Clients Details",
