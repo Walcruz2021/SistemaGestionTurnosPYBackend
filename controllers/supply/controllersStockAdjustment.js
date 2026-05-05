@@ -13,6 +13,7 @@ export const createStockAdjustment = async (req, res) => {
         date
     } = req.body;
 
+
     const session = await mongoose.startSession();
     session.startTransaction();
 

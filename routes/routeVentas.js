@@ -30,6 +30,8 @@ router.get("/vtasxAnioandMesParam/:idCompany", vtasxAnioandMesParam);
 router.get("/prediccionVtasMensual", prediccionVtasMensual);
 router.get("/prediccionVtasMensualInCant",prediccionVtasMensualInCant)
 router.get("/rankingVtasByClients/:idCompany",rankingVtasTotalByClient)
+
+//Se lo utilizan en listClients para elegir desde un select a un cliente activo y predecir sus ventas
 router.get("/rankingVtasDetailsByClients/:idCompany",rankingVtasDetailsByClient)
 
 
