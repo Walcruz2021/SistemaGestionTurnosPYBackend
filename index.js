@@ -38,6 +38,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:3000",
   "https://frontend-app-peluqueria.vercel.app", // Reemplaza esto con la URL de tu frontend en Vercel
+  "https://www.sistemapy.com.ar/"
 ];
 
 const corsOptions = {
