@@ -12,6 +12,9 @@ const companySupplySchema = new Schema({
         enum: ['active', 'inactive'],
         default: 'active'
     },
+    visibleStore: { type: Boolean, required: false },
+    description: { type: String, required: false },
+    imgStore:[{type:String,required:false}]
 
 }, { timestamps: true });
 

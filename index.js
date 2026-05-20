@@ -14,6 +14,7 @@ import routeClients from "./routes/routeClients.js";
 import routeVentas from "./routes/routeVentas.js";
 import routeUser from "./routes/routeUser.js";
 import routeCompany from "./routes/routeCompany.js"
+import routeModelBrand from "./routes/routesModelBrand/routeModelBrand.js"
 import routeBuy from "./routes/routeBuy.js"
 import routeSupply from "./routes/supply/routeSupply.js"
 import routeSupplier from "./routes/routeSupplier.js"
@@ -74,6 +75,7 @@ app.use("/api", routeSaleSupply);
 app.use("/api", routeScripts);
 app.use("/api", routeCompanySupply)
 app.use("/api", routeStockAdjusment);
+app.use("/api", routeModelBrand);
 
 
 if (process.env.NODE_ENV !== "test") {

@@ -33,7 +33,7 @@ export const validationCompanyExist = async (req, res) => {
   try {
     const findUser = await User.findOne({ email: email }).populate(
       "companies",
-      "nameCompany cuit address province country category"
+      "nameCompany cuit address province country category slug phoneSale"
     );
     //const findUser = await User.findOne({ email: email });
     if (findUser) {

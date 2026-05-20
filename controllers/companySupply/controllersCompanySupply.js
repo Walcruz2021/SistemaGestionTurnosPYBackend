@@ -47,6 +47,7 @@ export const editCompanySupply = async (req, res) => {
     }
 };
 
+//busca el insumo con el mismo idGlobalSupply de la CompanySupply y le agrega su nombre (Supply) al CompanySupply
 export const addFieldNameSupplyinCompanySupply = async (req, res) => {
     try {
 
@@ -60,7 +61,6 @@ export const addFieldNameSupplyinCompanySupply = async (req, res) => {
 
             if (supply) {
                 company.nameSupply = supply.nameSupply;
-
             }
             await company.save();
         }
@@ -73,3 +73,63 @@ export const addFieldNameSupplyinCompanySupply = async (req, res) => {
         process.exit(1);
     }
 }
+
+
+//add field visibleStore to CompanySupply
+export const addFieldVisibleStoreinCompanySupply = async (req, res) => {
+    try {
+
+        const companyS = await CompanySupply.find();
+
+
+        for (const company of companyS) {
+
+            await CompanySupply.findByIdAndUpdate({ _id: company._id }, {
+                $set: {
+                    visibleStore: true
+                }
+            })
+        }
+
+        return res.status(200).json({
+            message: "add vivibleStore success"
+        });
+    } catch (error) {
+        console.error(error);
+        process.exit(1);
+    }
+}
+
+
+export const editCompanySupplyByParameters = async (req, res) => {
+    const { idCompanySupply } = req.params;
+    const newData  = req.body;
+    
+    try {
+
+        // Obtener supply actual
+        const existingCompanySupply = await CompanySupply.findOne({ _id: idCompanySupply });
+
+
+        if (!existingCompanySupply) {
+            return res.status(404).json({ message: "CompanySupply not found" });
+        }
+
+
+        const updatedCompSupply = await CompanySupply.findByIdAndUpdate(
+            existingCompanySupply._id,
+            {
+                $set: newData
+            },
+            { new: true }
+        );
+
+        return res.status(200).json({
+            message: "CompanySupply updated successfully",
+            updatedCompSupply
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error en el servidor" });
+    }
+};

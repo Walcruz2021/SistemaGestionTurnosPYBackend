@@ -22,7 +22,6 @@ export const getSupplyXId = async (req, res) => {
     }
 }
 
-
 //esta ruta no se utilizara momentanemente ya que el usuario no deberia poder editar un insumo
 export const editSupply = async (req, res) => {
     const { idSupply } = req.params;
@@ -245,7 +244,9 @@ export const getListSupplies = async (req, res) => {
                     global: 1,
                     batches: 1,
                     priceSale: 1,
-                    totalStock: 1
+                    totalStock: 1,
+                    description:1,
+                    imgStore:1
                 }
             }
         ]);
