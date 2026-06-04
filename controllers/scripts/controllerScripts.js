@@ -1,5 +1,5 @@
 import StockBatch from "../../models/supply/stockBatch.js";
-import CompanySupply from "../../models/companySupply.js";
+import CompanySupply from "../../models/companySupply/companySupply.js";
 import Supply from "../../models/supply/supply.js";
 
 //agrega campo nuevo solbre cierta coleccion. EN este caso sobre StockBatch

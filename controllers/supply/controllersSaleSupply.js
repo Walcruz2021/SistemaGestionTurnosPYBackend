@@ -1,5 +1,5 @@
 
-import CompanySupply from "../../models/companySupply.js";
+import CompanySupply from "../../models/companySupply/companySupply.js";
 import StockBatch from "../../models/supply/stockBatch.js";
 import SaleSupply from "../../models/supply/saleSupply.js";
 import ReturnSale from "../../models/supply/returnSale.js";

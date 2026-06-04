@@ -4,16 +4,23 @@ import User from "../models/user.js";
 //postman OK
 //graphql OK
 export const addCompany = async (req, res, next) => {
-  const { nameCompany, address, cuit, province, country, emailUser,category } = req.body;
-  console.log(category)
+  const { nameCompany, address, cuit, province, country, emailUser,category,slug } = req.body;
+
   const newCompany = new Company({
     nameCompany,
     address,
     cuit,
     province,
     country,
-    category
+    category,
+    slug
   });
+
+  if(!nameCompany || !address || !category || !slug){
+    return res.status(400).json({
+      "msg":"missing data"
+    })
+  }
   const findUser = await User.findOne({ email: emailUser });
   if (findUser) {
     //newCompany.seller = findUser;
@@ -23,11 +30,12 @@ export const addCompany = async (req, res, next) => {
       findUser.companies.push(newCompany);
       await findUser.save();
     }
-    res.json({
-      status: "company add successfully",
+    res.status(200).json({
+      message:"Company added successfully",
+      data: newCompany
     });
   }else{
-    res.status(204).json({
+    res.status(400).json({
       "msg":"user not found"
     })
   }

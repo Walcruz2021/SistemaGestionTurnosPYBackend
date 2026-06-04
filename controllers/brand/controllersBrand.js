@@ -1,12 +1,17 @@
-import Brand from "../models/brand.js";
+import Brand from "../../models/brand/brand.js";
 
 export const addBrand = async (req, res) => {
-    const { nameBrand } = req.body;
-
+    const { nameBrand, categories } = req.body;
 
     try {
+
+        const findBrand=await Brand.findOne({nameBrand:nameBrand})
+        if(findBrand){
+            return res.status(400).json({msg:"The brand already exists"})
+        }
         const newBrand = new Brand({
-            nameBrand
+            nameBrand,
+            categories
         });
         await newBrand.save();
         return res.status(200).json({
@@ -23,9 +28,7 @@ export const addBrand = async (req, res) => {
 export const listBrands = async (req, res) => {
     try {
 
-        let brands = await Brand.find({
-
-        });
+        let brands = await Brand.find({}).populate("categories", "name");
 
         if (brands.length > 0) {
 

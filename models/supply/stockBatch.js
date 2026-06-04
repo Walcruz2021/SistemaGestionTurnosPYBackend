@@ -10,6 +10,7 @@ const stockBatchSchema = new Schema({
     nameLot: { type: String, required: false },
     idCompany: { type: Schema.Types.ObjectId, ref: 'Company', required: true },
     idCompanySupply: { type: Schema.Types.ObjectId, ref: 'CompanySupply', required: false },
+    idVariant: { type: Schema.Types.ObjectId, ref: 'SupplyVariant', required: true },
 }, { timestamps: true });
 
 

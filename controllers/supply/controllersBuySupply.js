@@ -4,8 +4,9 @@ import StockBatchBackup from "../../models/supply/stockBatchBackup.js"
 import { response } from "express";
 import mongoose from "mongoose";
 import Supply from "../../models/supply/supply.js";
-import CompanySupply from "../../models/companySupply.js";
-
+import CompanySupply from "../../models/companySupply/companySupply.js";
+import CompanySupplyVariant from "../../models/companySupplyVariant/companySupplyVariant.js";
+import SupplyVariant from "../../models/supply/supplyVariant.js";
 export const addBuySupply = async (req, res) => {
     const {
         detailsSupply,
@@ -22,8 +23,8 @@ export const addBuySupply = async (req, res) => {
         idSupplier
     } = req.body;
 
-    // detailsSupply ==>[] // { // idSupply: "", // nameSupply: "", // quantity: "", // unitCost: "", // idBrand: "", // nameBrand: "", // valueUnidMed: "", // details:"", // priceSale:"" // }
-  
+    // detailsSupply ==>[] // { // idVariant:"",idSupply: "", // nameSupply: "", // quantity: "", // unitCost: "", // idBrand: "", // nameBrand: "", // valueUnidMed: "", // details:"", // priceSale:"" // }
+console.log(detailsSupply,"detalle de compra")
     try {
         // 1️⃣ Crear la compra
         const newBuySupply = new BuySupply({
@@ -47,8 +48,7 @@ export const addBuySupply = async (req, res) => {
 
         // 2️⃣ Procesar cada insumo comprado
         for (const item of detailsSupply) {
-
-
+      
             // 🔎 Buscar CompanySupply
             let companySupply = await CompanySupply.findOne({
                 idCompany: Company,
@@ -63,8 +63,10 @@ export const addBuySupply = async (req, res) => {
                     idCompany: Company,
                     idGlobalSupply: item.idSupply,
                     nameSupply: item.nameSupply,
-                    priceSale: item.priceSale
+                    priceSale: item.priceSale,
+                    visibleStore: true
                 });
+                console.log(companySupply,"companySupply creado desde compra")
             }
 
 
@@ -73,6 +75,7 @@ export const addBuySupply = async (req, res) => {
                 idSupply: item.idSupply,
                 idCompanySupply: companySupply._id, // 🔥 CLAVE
                 idCompany: Company,
+                idVariant: item.idVariant,
                 quantity: item.quantity,
                 unitCost: item.unitCost,
                 datePurchase: date,
@@ -80,21 +83,35 @@ export const addBuySupply = async (req, res) => {
                 nameLot: `Lote ${++lotCounter}`
             });
 
-            //no se lo utilizara momentaneamente
-            //     await StockBatchBackup.create({
-            //     idSupply: item.idSupply,
-            //     idCompanySupply: companySupply._id, // 🔥 CLAVE
-            //     idCompany: Company,
-            //     quantity: item.quantity,
-            //     unitCost: item.unitCost,
-            //     datePurchase: date,
-            //     buySupply: newBuySupply._id,
-            //     nameLot: `Lote ${++lotCounter}`
-            // });
+            const supplyVariant = await SupplyVariant.findOne({ idSupply: item.idSupply });
 
-            await CompanySupply.findByIdAndUpdate(companySupply._id, {
-                priceSale: item.priceSale
-            })
+            if (companySupply.idGlobalSupply.toString() ===
+                supplyVariant.idSupply.toString()) {
+                //siempre si o si se debe ingresar por este lado. No se puede ingresar un pedigree con modelo airforce1
+                const findCompanySupplyVariant = await CompanySupplyVariant.findOne({
+                    idCompanySupply: companySupply._id,
+                    idSupplyVariant: item.idVariant
+                });
+
+                if (findCompanySupplyVariant) {
+               
+                    findCompanySupplyVariant.priceSale = item.priceSale;
+                    await findCompanySupplyVariant.save();
+                    continue;
+                } else {
+
+      
+                    const companySupplyVariant = await CompanySupplyVariant.create({
+                        idCompanySupply: companySupply._id,
+                        idSupplyVariant: item.idVariant,
+                        priceSale: item.priceSale
+                    })
+                }
+
+            } else{
+                res.status(400).json({ message: `El insumo ${item.nameSupply} no corresponde al modelo ${item.nameVariant}` });
+                return;
+            }
         }
 
         return res.status(200).json({
@@ -153,10 +170,10 @@ export const getBuySupplyXId = async (req, res) => {
 
 export const getBuySupplyXNInvoice = async (req, res) => {
     const { idCompany } = req.params;
-     const { NInvoice } = req.query;
+    const { NInvoice } = req.query;
 
     try {
-        const findSupply = await BuySupply.findOne({ NInvoice,Company:idCompany });
+        const findSupply = await BuySupply.findOne({ NInvoice, Company: idCompany });
 
         return res.status(200).json({ message: "BuySupply retrieved successfully", findSupply });
 
@@ -176,7 +193,7 @@ export const getListBuySuppliesByDateCurrent = async (req, res) => {
 
     try {
         // ✅ inicio del mes
-    const startDate = new Date(Date.UTC(year, month, 1));
+        const startDate = new Date(Date.UTC(year, month, 1));
         const endDate = new Date(Date.UTC(year, month + 1, 1));
 
 
@@ -198,3 +215,4 @@ export const getListBuySuppliesByDateCurrent = async (req, res) => {
         return res.status(500).json({ message: "Error en el servidor" });
     }
 };
+

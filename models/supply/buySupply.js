@@ -8,8 +8,8 @@ const detailsSupplySchema = new Schema({
     unitCost: { type: Number, required: true },
     idBrand: { type: Schema.Types.ObjectId, ref: 'Brand', required: true },
     nameBrand: { type: String, required: true },
-    valueUnidMed: { type: String, required: false },
-    details: { type: String, required: false }
+    details: { type: String, required: false },
+    idVariant: { type: Schema.Types.ObjectId, ref: 'SupplyVariant', required: true },
 });
 
 const buySupplySchema = new Schema({

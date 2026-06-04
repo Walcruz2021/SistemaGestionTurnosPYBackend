@@ -1,6 +1,6 @@
-import CompanySupply from "../../models/companySupply.js";
+import CompanySupply from "../../models/companySupply/companySupply.js";
 import Supply from "../../models/supply/supply.js";
-
+import mongoose from "mongoose";
 
 export const addCompanySupply = async (req, res, next) => {
     const { status, idGlobalSupply, priceSale, idCompany } = req.body;
@@ -8,7 +8,7 @@ export const addCompanySupply = async (req, res, next) => {
     try {
 
         await companySupply.save();
-        res.status(201).json({ message: "Company Supply Added Successfully", companySupply });
+        res.status(200).json({ message: "Company Supply Added Successfully", companySupply });
     } catch (error) {
         console.log(error)
     }
@@ -73,3 +73,45 @@ export const addFieldNameSupplyinCompanySupply = async (req, res) => {
         process.exit(1);
     }
 }
+
+
+export const listSuppliesStore = async (req, res) => {
+
+    try {
+
+        const { idCompany } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(idCompany)) {
+            return res.status(400).json({
+                message: "ID de empresa inválido"
+            });
+        }
+
+        const supplies = await CompanySupply.find({
+            idCompany,
+            status: "active",
+            visibleStore: true
+        })
+            .populate({
+                path: "idGlobalSupply",
+                populate: [
+                    {
+                        path: "idBrand"
+                    },
+                    {
+                        path: "idCategory"
+                    }
+                ]
+            });
+
+        return res.status(200).json(supplies);
+
+    } catch (error) {
+
+        console.log(error);
+
+        return res.status(500).json({
+            message: "Error del servidor"
+        });
+    }
+};

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import CompanySupply from "../../models/companySupply.js";
+import CompanySupply from "../../models/companySupply/companySupply.js";
 import StockBatch from "../../models/supply/stockBatch.js";
 import StockAdjustment from "../../models/supply/stockAdjustment.js";
 
