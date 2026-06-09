@@ -5,6 +5,8 @@ import Supplier from "../../models/supplier/supplier.js";
 import BuySupplies from "../../models/supply/buySupply.js"
 import CompanySupply from "../../models/companySupply/companySupply.js";
 import mongoose from "mongoose";
+import axios from "axios";
+import FormData from "form-data";
 
 export const getSupplyXId = async (req, res) => {
     const { idSupply } = req.params;
@@ -129,7 +131,8 @@ export const addSupply = async (req, res) => {
         nameSupply,
         idBrand,
         description,
-        imgStore
+        imgStore,
+        idCategory
     } = req.body;
 
     try {
@@ -137,6 +140,7 @@ export const addSupply = async (req, res) => {
         // Validations
         if (
             !nameSupply ||
+            !idCategory ||
             !idBrand
         ) {
             return res.status(400).json({
@@ -169,6 +173,7 @@ export const addSupply = async (req, res) => {
             nameSupply: normalizedNameSupply,
             idBrand,
             description,
+            idCategory,
             imgStore
         });
 
@@ -521,4 +526,104 @@ export const getSuppliesBycategory = async (req, res) => {
         return res.status(500).json({ message: "Error en el servidor" });
     }
 }
+
+/**
+ * Add image to Supply
+ * @param {*} image 
+ * @param {*} idSupply 
+ */
+// export const addSupplyImage = async (req, res) => {
+//     try {
+//         const { idSupply } = req.params;
+
+//         const findSupply = await Supply.findById(idSupply);
+
+//         if (!findSupply) {
+//             return res.status(404).json({
+//                 msg: "Supply not found"
+//             });
+//         }
+
+//         if (!req.file) {
+//             return res.status(400).json({
+//                 msg: "Image is required"
+//             });
+//         }
+
+//         const base64Image = req.file.buffer.toString("base64");
+// console.log(process.env.API_KEY_IMGBB)
+//         const uploadImage = await axios.post(
+//             `https://api.imgbb.com/1/upload?key=${process.env.API_KEY_IMGBB}`,
+//             {
+//                 image: base64Image
+//             }
+//         );
+
+//         findSupply.imgStore.push(uploadImage.data.data.url);
+
+//         await findSupply.save();
+
+//         return res.status(200).json({
+//             msg: "Image uploaded successfully",
+//             image: uploadImage.data.data.url
+//         });
+
+//     } catch (error) {
+//         console.log(error);
+
+//         return res.status(500).json({
+//             msg: "Internal server error"
+//         });
+//     }
+// };
+
+export const addSupplyImage = async (req, res) => {
+    try {
+        const { idSupply } = req.params;
+
+        const findSupply = await Supply.findById(idSupply);
+
+        if (!findSupply) {
+            return res.status(404).json({
+                msg: "Supply not found"
+            });
+        }
+
+        if (!req.file) {
+            return res.status(400).json({
+                msg: "Image is required"
+            });
+        }
+
+        const base64Image = req.file.buffer.toString("base64");
+
+        const formData = new FormData();
+
+
+        formData.append("image", base64Image);
+
+        const uploadResponse = await axios.post(
+            `https://api.imgbb.com/1/upload?key=${process.env.API_KEY_IMGBB}`,
+            formData,
+            {
+                headers: formData.getHeaders()
+            }
+        );
+        // console.log(uploadResponse)
+        findSupply.imgStore = uploadResponse.data.data.url;
+
+        await findSupply.save();
+        return res.status(200).json({
+            msg: "Image received successfully"
+        });
+
+    } catch (error) {
+        // console.log(error);
+        console.log("STATUS:", error.response?.status);
+        console.log("DATA:", error.response?.data);
+        return res.status(500).json({
+            msg: "Internal server error"
+        });
+    }
+};
 

@@ -1,8 +1,8 @@
 import express from 'express';
 const router = express.Router();
-import {addSupply, editSupply,getSupplyXId,getSuppliesBySupplier,getListSupplies,getSuppliesBycategory,editSupplyByList,getListSuppliesGral} from "../../controllers/supply/controllersSupply.js";
+import {addSupply, editSupply,getSupplyXId,getSuppliesBySupplier,getListSupplies,getSuppliesBycategory,editSupplyByList,getListSuppliesGral,addSupplyImage} from "../../controllers/supply/controllersSupply.js";
 import {addFieldStatus,addFieldNumSale} from "../../controllers/supply/controllersSaleSupply.js";
-
+import upload from "../../middleware/multerConfig.js";
 
 
 router.post('/addSupply', addSupply);
@@ -15,6 +15,10 @@ router.get('/getListSuppliesGral', getListSuppliesGral);
 router.get('/getSuppliesBycategory/:category', getSuppliesBycategory);
 router.put('/addFieldStatus', addFieldStatus);
 router.put('/addFieldNumSale', addFieldNumSale);
-
+router.post(
+    "/addSupplyImage/:idSupply",
+    upload.single("image"), 
+    addSupplyImage
+);
 
 export default router;

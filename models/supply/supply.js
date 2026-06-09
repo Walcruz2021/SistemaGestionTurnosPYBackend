@@ -6,7 +6,11 @@ const supplySchema = new Schema({
     //lowercase convierte automaticamente el texto a minuscula
     nameSupply: { type: String, required: true, trim: true, lowercase: true, unique: true },// no pueden haber dos supply con el mismo nombre
     idBrand: { type: Schema.Types.ObjectId, ref: 'Brand', required: true },
-    // idCategory: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
+    // categories: [{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Category"
+    // }],
+    idCategory: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
     createdAt: { type: Date, default: Date.now },
     description: { type: String, required: false },
     imgStore: { type: String, required: false },
