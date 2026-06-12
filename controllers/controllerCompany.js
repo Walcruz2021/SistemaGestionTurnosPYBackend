@@ -4,7 +4,7 @@ import User from "../models/user.js";
 //postman OK
 //graphql OK
 export const addCompany = async (req, res, next) => {
-  const { nameCompany, address, cuit, province, country, emailUser,category,slug } = req.body;
+  const { nameCompany, address, cuit, province, country, emailUser, category, slug } = req.body;
 
   const newCompany = new Company({
     nameCompany,
@@ -16,9 +16,9 @@ export const addCompany = async (req, res, next) => {
     slug
   });
 
-  if(!nameCompany || !address || !category || !slug){
+  if (!nameCompany || !address || !category || !slug) {
     return res.status(400).json({
-      "msg":"missing data"
+      "msg": "missing data"
     })
   }
   const findUser = await User.findOne({ email: emailUser });
@@ -31,12 +31,12 @@ export const addCompany = async (req, res, next) => {
       await findUser.save();
     }
     res.status(200).json({
-      message:"Company added successfully",
+      message: "Company added successfully",
       data: newCompany
     });
-  }else{
+  } else {
     res.status(400).json({
-      "msg":"user not found"
+      "msg": "user not found"
     })
   }
 };
@@ -44,7 +44,7 @@ export const addCompany = async (req, res, next) => {
 //postman OK
 //graphql OK
 export const getCompanyXId = async (req, res, next) => {
-  const {idCompany}=req.params
+  const { idCompany } = req.params
   console.log(idCompany)
   try {
     if (idCompany) {
@@ -64,3 +64,27 @@ export const getCompanyXId = async (req, res, next) => {
     console.log(error);
   }
 };
+
+export const getCompanyBySlugCompany = async (req, res, next) => {
+  const slugCompany = req.params.slugCompany
+
+  if (!slugCompany) {
+    res.status(400).json({
+      msg: "slugCompany is undefined"
+    })
+  }
+
+
+  const company = await Company.findOne({
+    slug: slugCompany
+  });
+
+  if (!company) {
+    res.status(400).json({
+      msg: "company not found"
+    })
+  }
+
+  return res.status(200).json({company});
+
+}
