@@ -1,6 +1,9 @@
 
 import CompanySupply from "../../models/companySupply/companySupply.js";
 import StockBatch from "../../models/supply/stockBatch.js";
+import Inventory from "../../models/inventory/inventory.js"
+import CompanySupplyVariant from "../../models/companySupplyVariant/companySupplyVariant.js"
+import SupplyVariant from "../../models/supply/supplyVariant.js"
 import SaleSupply from "../../models/supply/saleSupply.js";
 import ReturnSale from "../../models/supply/returnSale.js";
 import Supply from "../../models/supply/supply.js"
@@ -9,148 +12,373 @@ import { sub } from "@tensorflow/tfjs";
 import { argsToArgsConfig } from "graphql/type/definition.js";
 
 export const addSaleSupply = async (req, res) => {
-    const { idCompany, platformMethod, paymentMethodEfectivo, paymentMethodTarjeta, paymentMethodTransferencia, items, date } = req.body;
 
+    const {
+        idCompany,
+        platformMethod,
+        paymentMethodEfectivo,
+        paymentMethodTarjeta,
+        paymentMethodTransferencia,
+        items,
+        date
+    } = req.body;
 
     const session = await mongoose.startSession();
-    session.startTransaction();
 
     try {
+
+        session.startTransaction();
+
         let totalSale = 0;
         let totalCost = 0;
         let totalProfit = 0;
+
         const itemsFormatted = [];
 
         for (const item of items) {
 
-            // 1️⃣ Validar CompanySupply
-            const companySupply = await CompanySupply.findOne({
-                _id: item.idCompanySupply,
-                idCompany
-            }).session(session);
+            //--------------------------------------------------
+            // 1. Buscar variante comercial
+            //--------------------------------------------------
+
+            const companySupplyVariant =
+                await CompanySupplyVariant
+                    .findById(item.idCompanySupplyVariant)
+                    .populate("idSupplyVariant")
+                    .populate({
+                        path: "idCompanySupply",
+                        populate: {
+                            path: "idGlobalSupply"
+                        }
+                    })
+                    .session(session);
+
+            if (!companySupplyVariant) {
+                throw new Error(
+                    "CompanySupplyVariant no encontrada"
+                );
+            }
+
+            //--------------------------------------------------
+            // 2. Buscar CompanySupply
+            //--------------------------------------------------
+
+            const companySupply =
+                await CompanySupply.findById(
+                    companySupplyVariant.idCompanySupply
+                ).session(session);
 
             if (!companySupply) {
-                throw new Error("Insumo inválido para la empresa");
+                throw new Error(
+                    "CompanySupply no encontrado"
+                );
             }
 
-            // 2️⃣ Verificar stock disponible
-            const stockAgg = await StockBatch.aggregate([
-                {
-                    $match: {
-                        idCompanySupply: new mongoose.Types.ObjectId(companySupply._id),
-                        idCompany: new mongoose.Types.ObjectId(idCompany)
-                    }
-                },
-                {
-                    $group: {
-                        _id: null,
-                        total: { $sum: "$quantity" }
-                    }
-                }
-            ]).session(session);
+            //--------------------------------------------------
+            // 3. Buscar SupplyVariant
+            //--------------------------------------------------
 
+            const supplyVariant =
+                await SupplyVariant.findById(
+                    companySupplyVariant.idSupplyVariant
+                ).session(session);
 
-
-            const stockAvailable = stockAgg[0]?.total || 0;
-
-            if (stockAvailable < item.quantitySale) {
-                throw new Error(`Stock insuficiente para ${companySupply.nameSupply}`);
+            if (!supplyVariant) {
+                throw new Error(
+                    "SupplyVariant no encontrado"
+                );
             }
 
-            // // 3️⃣ Descontar stock FIFO
-            let remaining = item.quantitySale;
-            const priceSaleUnit = companySupply.priceSale;
+            //--------------------------------------------------
+            // 4. Buscar Supply
+            //--------------------------------------------------
 
+            const supply =
+                await Supply.findById(
+                    companySupply.idGlobalSupply
+                ).session(session);
+
+            if (!supply) {
+                throw new Error(
+                    "Supply no encontrado"
+                );
+            }
+
+            //--------------------------------------------------
+            // 5. Validar stock consolidado
+            //--------------------------------------------------
+
+            const inventory =
+                await Inventory.findOne({
+                    idCompany,
+                    idVariant:
+                        companySupplyVariant.idSupplyVariant
+                }).session(session);
+
+            if (!inventory) {
+                throw new Error(
+                    `No existe inventario para ${supply.nameSupply}`
+                );
+            }
+
+            if (
+                inventory.currentStock <
+                item.quantitySale
+            ) {
+                throw new Error(
+                    `Stock insuficiente para ${supply.nameSupply}`
+                );
+            }
+
+            //--------------------------------------------------
+            // 6. Buscar lotes FIFO
+            //--------------------------------------------------
 
             const batches = await StockBatch.find({
-                idCompanySupply: companySupply._id,
+
+                idCompany,
+
+                idVariant:
+                    companySupplyVariant.idSupplyVariant,
+
                 quantity: { $gt: 0 }
+
             })
-                .sort({ datePurchase: 1 })
+                .sort({
+                    datePurchase: 1
+                })
                 .session(session);
 
+            let remaining =
+                Number(item.quantitySale);
+
+            let itemSubtotal = 0;
+            let itemCost = 0;
+            let itemProfit = 0;
+
+            const batchesConsumed = [];
+
+            //--------------------------------------------------
+            // 7. Consumir FIFO
+            //--------------------------------------------------
+
             for (const batch of batches) {
-                if (remaining <= 0) break;
 
-                // La expresión Math.min(batch.quantity, remaining) devolverá el valor más bajo entre batch.quantity y remaining.
-                // Esto puede ser útil, por ejemplo, para asegurarse de que la cantidad de descuento que se aplique no exceda la cantidad restante disponible
-                // en stock.Así que, al final, discount contendrá el menor valor entre la cantidad del lote y la cantidad restante.
-                const usedQty = Math.min(batch.quantity, remaining);
-                const discount = Number(item.discount * usedQty) || 0;
-                const surcharge = Number(item.surcharge * usedQty) || 0;
-                const subtotalSale = usedQty * priceSaleUnit - discount + surcharge;
-                const subtotalCost = usedQty * batch.unitCost;
-                const profit = subtotalSale - subtotalCost;
+                if (remaining <= 0) {
+                    break;
+                }
 
-                itemsFormatted.push({
-                    idCompanySupply: companySupply._id,
-                    idGlobalSupply: companySupply.idGlobalSupply,
-                    idStockBatch: batch._id,
-                    quantitySale: usedQty,
-                    unitCost: batch.unitCost,
-                    priceSaleUnit,
-                    subtotal: subtotalSale,
-                    surcharge: surcharge || 0,
-                    discount: discount || 0,
-                    profit,
-                    nameSupply: companySupply.nameSupply
+                const usedQty = Math.min(
+                    batch.quantity,
+                    remaining
+                );
+
+                const discount =
+                    (item.discount || 0)
+                    * usedQty;
+
+                const surcharge =
+                    (item.surcharge || 0)
+                    * usedQty;
+
+                const subtotalSale =
+                    (
+                        usedQty *
+                        companySupplyVariant.priceSale
+                    )
+                    - discount
+                    + surcharge;
+
+                const subtotalCost =
+                    usedQty *
+                    batch.unitCost;
+
+                const profit =
+                    subtotalSale -
+                    subtotalCost;
+
+                batchesConsumed.push({
+
+                    idStockBatch:
+                        batch._id,
+
+                    quantity:
+                        usedQty,
+
+                    unitCost:
+                        batch.unitCost
+
                 });
 
-
                 batch.quantity -= usedQty;
+
+                await batch.save({
+                    session
+                });
+
                 remaining -= usedQty;
 
-                totalSale += subtotalSale;
-                totalCost += subtotalCost;
-                totalProfit += profit;
-
-
-                await batch.save({ session });
+                itemSubtotal += subtotalSale;
+                itemCost += subtotalCost;
+                itemProfit += profit;
             }
+
+            //--------------------------------------------------
+            // Seguridad
+            //--------------------------------------------------
+
+            if (remaining > 0) {
+                throw new Error(
+                    `No se pudo completar FIFO para ${supply.nameSupply}`
+                );
+            }
+
+            //--------------------------------------------------
+            // 8. Actualizar inventario
+            //--------------------------------------------------
+
+            inventory.currentStock -=
+                item.quantitySale;
+
+            await inventory.save({
+                session
+            });
+
+            //--------------------------------------------------
+            // 9. Registrar item venta
+            //--------------------------------------------------
+
+            itemsFormatted.push({
+
+                idCompanySupplyVariant:
+                    companySupplyVariant._id,
+
+                idSupplyVariant:
+                    supplyVariant._id,
+
+                idGlobalSupply:
+                    supply._id,
+
+                nameSupply:
+                    supply.nameSupply,
+
+                variantName:
+                    supplyVariant.name,
+
+                quantitySale:
+                    item.quantitySale,
+
+                quantityReturned: 0,
+
+                unitCost:
+                    itemCost /
+                    item.quantitySale,
+
+                priceSaleUnit:
+                    companySupplyVariant.priceSale,
+
+                subtotal:
+                    itemSubtotal,
+
+                surcharge:
+                    item.surcharge || 0,
+
+                discount:
+                    item.discount || 0,
+
+                profit:
+                    itemProfit,
+
+                batchesConsumed
+
+            });
+
+            totalSale += itemSubtotal;
+            totalCost += itemCost;
+            totalProfit += itemProfit;
         }
 
+        //--------------------------------------------------
+        // 10. Generar número de venta
+        //--------------------------------------------------
 
+        const timestamp =
+            Date.now()
+                .toString()
+                .slice(-6);
 
-        const timestamp = Date.now().toString().slice(-6);
-        const random = Math.floor(Math.random() * 1000);
+        const random =
+            Math.floor(
+                Math.random() * 1000
+            );
 
-        const numeSale = `SALE-${timestamp}-${random}`;
+        const numeSale =
+            `SALE-${timestamp}-${random}`;
 
+        //--------------------------------------------------
+        // 11. Crear venta
+        //--------------------------------------------------
 
-        // 5️⃣ Crear venta
-        const sale = await SaleSupply.create(
-            [{
-                idCompany,
-                platformMethod,
-                paymentMethodEfectivo,
-                paymentMethodTarjeta,
-                paymentMethodTransferencia,
-                date,
-                totalSale,
-                totalCost,
-                totalProfit,
-                items: itemsFormatted,
-                status: "completed",
-                numeSale
-            }],
-            { session }
-        );
+        const sale =
+            await SaleSupply.create(
+                [{
+                    idCompany,
+
+                    numeSale,
+
+                    date,
+
+                    platformMethod,
+
+                    paymentMethodEfectivo:
+                        paymentMethodEfectivo || 0,
+
+                    paymentMethodTarjeta:
+                        paymentMethodTarjeta || 0,
+
+                    paymentMethodTransferencia:
+                        paymentMethodTransferencia || 0,
+
+                    totalSale,
+
+                    totalCost,
+
+                    totalProfit,
+
+                    totalReturned: 0,
+
+                    status: "completed",
+
+                    items:
+                        itemsFormatted
+                }],
+                {
+                    session
+                }
+            );
+
         await session.commitTransaction();
-        session.endSession();
 
         return res.status(200).json({
-            message: "Venta registrada correctamente",
+            message:
+                "Venta registrada correctamente",
             sale: sale[0]
         });
 
     } catch (error) {
+
         await session.abortTransaction();
+
+        return res.status(400).json({
+            message:
+                error.message ||
+                "Error al registrar venta"
+        });
+
+    } finally {
+
         session.endSession();
 
-        console.error(error);
-        return res.status(400).json({
-            message: error.message || "Error al registrar la venta"
-        });
     }
 };
 
@@ -530,7 +758,7 @@ export const returnSale = async (req, res) => {
                 const surchargeNew = itemSale.surcharge * proportion;
                 const discountNew = itemSale.discount * proportion;
                 const profit = itemSale.profit * proportion;
-              
+
                 totalReturn += subtotal;
 
                 const newItemReturn = {

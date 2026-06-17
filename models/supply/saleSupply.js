@@ -1,44 +1,155 @@
 import mongoose from "mongoose";
+
 const { Schema } = mongoose;
 
-const itemsSaleSchema = new Schema({
-    idCompanySupply: { type: Schema.Types.ObjectId, ref: 'CompanySupply', required: true },
-    idGlobalSupply: { type: Schema.Types.ObjectId, ref: 'Supply', required: true },
+const BatchConsumedSchema = new Schema({
+
     idStockBatch: {
         type: Schema.Types.ObjectId,
         ref: "StockBatch",
         required: true
     },
-    quantitySale: { type: Number, required: true },
-    quantityReturned: { type: Number, required: false, default: 0 },
-    unitCost: { type: Number, required: false },
-    priceSaleUnit: { type: Number, required: true },
-    subtotal: { type: Number, required: true },
-    surcharge: { type: Number, required: false },
-    discount: { type: Number, required: false },
+
+    quantity: {
+        type: Number,
+        required: true
+    },
+
+    unitCost: {
+        type: Number,
+        required: true
+    }
+
+}, {
+    _id: false
+});
+
+const SaleItemSchema = new Schema({
+
+    idCompanySupplyVariant: {
+        type: Schema.Types.ObjectId,
+        ref: "CompanySupplyVariant",
+        required: true
+    },
+
+    idSupplyVariant: {
+        type: Schema.Types.ObjectId,
+        ref: "SupplyVariant",
+        required: true
+    },
+
+    idGlobalSupply: {
+        type: Schema.Types.ObjectId,
+        ref: "Supply",
+        required: true
+    },
+
+    nameSupply: {
+        type: String,
+        required: true
+    },
+
+    variantName: {
+        type: String,
+        required: true
+    },
+
+    quantitySale: {
+        type: Number,
+        required: true
+    },
+
+    quantityReturned: {
+        type: Number,
+        default: 0
+    },
+
+    unitCost: {
+        type: Number,
+        required: true
+    },
+
+    priceSaleUnit: {
+        type: Number,
+        required: true
+    },
+
+    subtotal: {
+        type: Number,
+        required: true
+    },
+
+    discount: {
+        type: Number,
+        default: 0
+    },
+
+    surcharge: {
+        type: Number,
+        default: 0
+    },
+
     profit: {
         type: Number,
         required: true
     },
-    nameSupply:{type:String,required:true}
-}, { _id: true });
 
-const saleSupplySchema = new Schema({
-    idCompany: { type: Schema.Types.ObjectId, ref: 'Company', required: true },
-    numeSale: { type: String, unique: true, index: true },
-    date: { type: Date, default: Date.now },
-    paymentMethodEfectivo: { type: Number, required: false, default: 0 },
-    paymentMethodTarjeta: { type: Number, required: false, default: 0 },
-    paymentMethodTransferencia: { type: Number, required: false, default: 0 },
+    batchesConsumed: {
+        type: [BatchConsumedSchema],
+        default: []
+    }
 
+});
 
-    platformMethod: { type: String, enum: ['Mercado Libre', 'Local', 'Facebook', 'Instagram', 'Tik Tok'], required: true },
-    totalSale: { type: Number, required: true },
-    items: { type: [itemsSaleSchema], required: true },
+const SaleSupplySchema = new Schema({
+
+    idCompany: {
+        type: Schema.Types.ObjectId,
+        ref: "Company",
+        required: true
+    },
+
+    numeSale: {
+        type: String,
+        required: true,
+        unique: true
+    },
+
+    date: {
+        type: Date,
+        required: true
+    },
+
+    platformMethod: {
+        type: String,
+        default: null
+    },
+
+    paymentMethodEfectivo: {
+        type: Number,
+        default: 0
+    },
+
+    paymentMethodTarjeta: {
+        type: Number,
+        default: 0
+    },
+
+    paymentMethodTransferencia: {
+        type: Number,
+        default: 0
+    },
+
+    totalSale: {
+        type: Number,
+        required: true
+    },
+
     totalCost: {
         type: Number,
         required: true
     },
+
     totalProfit: {
         type: Number,
         required: true
@@ -46,11 +157,32 @@ const saleSupplySchema = new Schema({
 
     totalReturned: {
         type: Number,
-        required: false,
         default: 0
     },
-    status: { type: String, enum: ["completed", "partial_return","returned"] }
-}, { timestamps: true });
 
-const saleSupply = mongoose.model("SaleSupply", saleSupplySchema);
-export default saleSupply;
+    items: {
+        type: [SaleItemSchema],
+        default: []
+    },
+
+    status: {
+        type: String,
+        enum: [
+            "completed",
+            "partially_returned",
+            "returned",
+            "cancelled"
+        ],
+        default: "completed"
+    }
+
+}, {
+    timestamps: true
+});
+
+const SaleSupply = mongoose.model(
+    "SaleSupply",
+    SaleSupplySchema
+);
+
+export default SaleSupply;

@@ -421,7 +421,7 @@ export const getListSupplies = async (req, res) => {
                         // FORMATO FINAL DE CADA VARIANTE
                         {
                             $project: {
-                                _id: 1,
+                                idCompanySupplyVariant: "$_id",
                                 idSupplyVariant: 1,
 
                                 // precio de venta empresa
