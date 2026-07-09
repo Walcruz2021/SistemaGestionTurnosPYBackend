@@ -10,6 +10,8 @@ const detailsSupplySchema = new Schema({
     nameBrand: { type: String, required: true },
     details: { type: String, required: false },
     idVariant: { type: Schema.Types.ObjectId, ref: 'SupplyVariant', required: true },
+    dueDate: { type: Date},
+    details: { type: String}
 });
 
 const buySupplySchema = new Schema({

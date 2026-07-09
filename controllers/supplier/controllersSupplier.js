@@ -47,11 +47,34 @@ export const addSupplier = async (req, res) => {
     const { nameSupplier, address, cuit, phone, Company } = req.body;
 
     try {
+        if (!nameSupplier || !address || !phone || !Company) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
+        const cleanNameSupplier = nameSupplier.trim();
+
+        if (!cleanNameSupplier) {
+            throw new Error("The supplier name is required.");
+        }
+  
+
+        const cleanAddress = address.trim();
+
+        if (!cleanAddress) {
+            throw new Error("The supplier address is required.");
+        }
+
+          const cleanPhone = phone.trim();
+
+        if (!cleanPhone) {
+            throw new Error("The supplier phone is required.");
+        }
+
         const newSupplier = new Supplier({
-            nameSupplier,
-            address,
+            nameSupplier: cleanNameSupplier,
+            address: cleanAddress,
             cuit,
-            phone,
+            phone: cleanPhone,
             Company
         });
 
@@ -59,17 +82,17 @@ export const addSupplier = async (req, res) => {
         return res.status(200).json({ message: "Supplier saved successfully", newSupplier });
 
     } catch (error) {
-        console.log(error);
+        console.dir(error, { depth: null });
         return res.status(500).json({ message: "Error en el servidor" });
     }
 }
 
 export const listSupplier = async (req, res) => {
-    const {idCompany} = req.params
+    const { idCompany } = req.params
     try {
-        const listSupplier = await Supplier.find({ status: true, Company:idCompany});
+        const listSupplier = await Supplier.find({ status: true, Company: idCompany });
 
-    
+
         return res.status(200).json({ message: "Suppliers retrieved successfully", listSupplier });
 
     } catch (error) {

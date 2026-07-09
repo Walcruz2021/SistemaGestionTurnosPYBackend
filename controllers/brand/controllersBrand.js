@@ -28,7 +28,9 @@ export const addBrand = async (req, res) => {
 export const listBrands = async (req, res) => {
     try {
 
-        let brands = await Brand.find({}).populate("categories", "name");
+        const {categoryCompany}=req.params
+console.log(categoryCompany)
+        let brands = await Brand.find({categoryCompany:categoryCompany}).populate("categories", "name");
 
         if (brands.length > 0) {
 

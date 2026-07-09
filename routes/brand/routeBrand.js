@@ -3,7 +3,7 @@ const router = express.Router();
 import {addBrand,listBrands} from "../../controllers/brand/controllersBrand.js";
 
 router.post('/addBrand', addBrand)
-router.get('/listBrands', listBrands);
+router.get('/listBrands/:categoryCompany', listBrands);
 
 
 export default router;

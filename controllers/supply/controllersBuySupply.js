@@ -66,7 +66,7 @@ console.log(detailsSupply,"detalle de compra")
                     priceSale: item.priceSale,
                     visibleStore: true
                 });
-                console.log(companySupply,"companySupply creado desde compra")
+                
             }
 
 

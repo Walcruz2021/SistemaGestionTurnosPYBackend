@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const brandSchema = new Schema({
     nameBrand: { type: String, required: false,unique: true,trim:true, lowercase:true },
     categories: [{ type: Schema.Types.ObjectId, ref: "Category",required:true }],
+    categoryCompany:{type:String}
 
 }, { timestamps: true });
 

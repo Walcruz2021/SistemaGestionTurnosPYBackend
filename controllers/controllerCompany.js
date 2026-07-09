@@ -4,40 +4,62 @@ import User from "../models/user.js";
 //postman OK
 //graphql OK
 export const addCompany = async (req, res, next) => {
-  const { nameCompany, address, cuit, province, country, emailUser, category, slug } = req.body;
+  try {
+    const {
+      nameCompany,
+      address,
+      cuit,
+      province,
+      country,
+      emailUser,
+      category,
+      slug,
+    } = req.body;
 
-  const newCompany = new Company({
-    nameCompany,
-    address,
-    cuit,
-    province,
-    country,
-    category,
-    slug
-  });
+    if (!nameCompany || !address || !category || !slug) {
+      return res.status(400).json({
+        msg: "missing data",
+      });
+    }
 
-  if (!nameCompany || !address || !category || !slug) {
-    return res.status(400).json({
-      "msg": "missing data"
-    })
-  }
-  const findUser = await User.findOne({ email: emailUser });
-  if (findUser) {
-    //newCompany.seller = findUser;
+    const findUser = await User.findOne({ email: emailUser });
+
+    if (!findUser) {
+      return res.status(404).json({
+        msg: "user not found",
+      });
+    }
+
+    // Generar slug único
+    let finalSlug = slug;
+    let counter = 1;
+
+    while (await Company.exists({ slug: finalSlug })) {
+      finalSlug = `${slug}-${counter}`;
+      counter++;
+    }
+
+    const newCompany = new Company({
+      nameCompany,
+      address,
+      cuit,
+      province,
+      country,
+      category,
+      slug: finalSlug,
+    });
+
     await newCompany.save();
 
-    if (findUser.companies) {
-      findUser.companies.push(newCompany);
-      await findUser.save();
-    }
-    res.status(200).json({
+    findUser.companies.push(newCompany._id);
+    await findUser.save();
+
+    return res.status(200).json({
       message: "Company added successfully",
-      data: newCompany
+      data: newCompany,
     });
-  } else {
-    res.status(400).json({
-      "msg": "user not found"
-    })
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -85,6 +107,6 @@ export const getCompanyBySlugCompany = async (req, res, next) => {
     })
   }
 
-  return res.status(200).json({company});
+  return res.status(200).json({ company });
 
 }
