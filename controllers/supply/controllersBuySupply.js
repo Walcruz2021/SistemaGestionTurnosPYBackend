@@ -24,7 +24,7 @@ export const addBuySupply = async (req, res) => {
     } = req.body;
 
     // detailsSupply ==>[] // { // idVariant:"",idSupply: "", // nameSupply: "", // quantity: "", // unitCost: "", // idBrand: "", // nameBrand: "", // valueUnidMed: "", // details:"", // priceSale:"" // }
-console.log(detailsSupply,"detalle de compra")
+    console.log(detailsSupply, "detalle de compra")
     try {
         // 1️⃣ Crear la compra
         const newBuySupply = new BuySupply({
@@ -48,7 +48,7 @@ console.log(detailsSupply,"detalle de compra")
 
         // 2️⃣ Procesar cada insumo comprado
         for (const item of detailsSupply) {
-      
+
             // 🔎 Buscar CompanySupply
             let companySupply = await CompanySupply.findOne({
                 idCompany: Company,
@@ -66,7 +66,7 @@ console.log(detailsSupply,"detalle de compra")
                     priceSale: item.priceSale,
                     visibleStore: true
                 });
-                
+
             }
 
 
@@ -94,13 +94,13 @@ console.log(detailsSupply,"detalle de compra")
                 });
 
                 if (findCompanySupplyVariant) {
-               
+
                     findCompanySupplyVariant.priceSale = item.priceSale;
                     await findCompanySupplyVariant.save();
                     continue;
                 } else {
 
-      
+
                     const companySupplyVariant = await CompanySupplyVariant.create({
                         idCompanySupply: companySupply._id,
                         idSupplyVariant: item.idVariant,
@@ -108,7 +108,7 @@ console.log(detailsSupply,"detalle de compra")
                     })
                 }
 
-            } else{
+            } else {
                 res.status(400).json({ message: `El insumo ${item.nameSupply} no corresponde al modelo ${item.nameVariant}` });
                 return;
             }
@@ -173,7 +173,16 @@ export const getBuySupplyXNInvoice = async (req, res) => {
     const { NInvoice } = req.query;
 
     try {
-        const findSupply = await BuySupply.findOne({ NInvoice, Company: idCompany });
+        const findSupply = await BuySupply.findOne({ NInvoice, Company: idCompany }).populate({
+            path: 'detailsSupply.idVariant',
+            select: 'name'
+        });
+
+        if (!findSupply) {
+            return res.status(404).json({
+                message: "Buy not found with this invoice number"
+            });
+        }
 
         return res.status(200).json({ message: "BuySupply retrieved successfully", findSupply });
 
@@ -203,7 +212,16 @@ export const getListBuySuppliesByDateCurrent = async (req, res) => {
                 $gte: startDate,
                 $lt: endDate
             }
-        }).sort({ date: -1 });
+        }).sort({ date: -1 }).populate({
+            path: 'detailsSupply.idVariant',
+            select: 'name'
+        });
+
+        if (!listGetBuySupplies) {
+            return res.status(404).json({
+                message: "Buy not found with date current"
+            });
+        }
 
         return res.status(200).json({
             message: "BuySupplies retrieved successfully",
